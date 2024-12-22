@@ -1,6 +1,8 @@
-Thisi s my first mod EVER made
+This is my first mod
 Also first time ive codded in java
 :)
 
 0.0.0 --> Deleted a couple files, and added forge/mc version into build.gradle
 0.0.0 --> Basic Setup
+
+0.0.3 --> I skipped a few versions. They were mostly for setting up some dependencies, but then I figured that I don't need them
