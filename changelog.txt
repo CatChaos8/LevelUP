@@ -6,3 +6,4 @@ Also first time ive codded in java
 0.0.0 --> Basic Setup
 
 0.0.3 --> I skipped a few versions. They were mostly for setting up some dependencies, but then I figured that I don't need them
+0.0.4 --> Started

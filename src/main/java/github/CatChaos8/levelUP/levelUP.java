@@ -7,12 +7,12 @@ public class levelUP {
 
         //Outputs into console
         System.out.println("test");
-        int dexterity;
-        int constitution;
-        int strength;
-        int intelligence;
-        int endurance;
+        int dexterity = 0;
+        int constitution = 0;
+        int strength = 0;
+        int intelligence = 0;
+        int endurance = 0;
 
     }
-
 }
+ 
