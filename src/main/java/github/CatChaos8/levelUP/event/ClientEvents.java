@@ -26,12 +26,13 @@ public class ClientEvents {
 
     }
 
-    @Mod.EventBusSubscriber(modid = levelUP.MODID, value = Dist.CLIENT)
+    @Mod.EventBusSubscriber(modid = levelUP.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ClientModBusEvents {
+
         @SubscribeEvent
         public static void onKeyRegister(RegisterKeyMappingsEvent event){
             event.register(KeyBinding.OPEN_KEY);
-
         }
+
     }
 }
