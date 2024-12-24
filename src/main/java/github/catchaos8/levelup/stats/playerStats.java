@@ -1,4 +1,4 @@
-package github.CatChaos8.levelUP.stats;
+package github.catchaos8.levelup.stats;
 
 
 import net.minecraft.nbt.CompoundTag;

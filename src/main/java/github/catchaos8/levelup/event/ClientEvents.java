@@ -1,8 +1,8 @@
-package github.CatChaos8.levelUP.event;
+package github.catchaos8.levelup.event;
 
-import github.CatChaos8.levelUP.levelUP;
+import github.catchaos8.levelup.levelUP;
 
-import github.CatChaos8.levelUP.utility.KeyBinding;
+import github.catchaos8.levelup.utility.KeyBinding;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
