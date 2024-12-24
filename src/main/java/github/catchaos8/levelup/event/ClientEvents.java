@@ -26,7 +26,7 @@ public class ClientEvents {
 
     }
 
-    @Mod.EventBusSubscriber(modid = levelUP.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = levelUP.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ClientModBusEvents {
 
         @SubscribeEvent
