@@ -21,6 +21,23 @@ public class ClientEvents {
             if(KeyBinding.OPEN_KEY.consumeClick()) {
                 Minecraft.getInstance().player.sendSystemMessage(Component.literal("Pressed open GUI key"));
             }
+
+            if(KeyBinding.UPGRADE_CON.consumeClick()) {
+                Minecraft.getInstance().player.sendSystemMessage(Component.literal("Pressed Upgrade Con key"));
+            }
+            if(KeyBinding.UPGRADE_DEX.consumeClick()) {
+                Minecraft.getInstance().player.sendSystemMessage(Component.literal("Pressed Upgrade Dex key"));
+            }
+            if(KeyBinding.UPGRADE_END.consumeClick()) {
+                Minecraft.getInstance().player.sendSystemMessage(Component.literal("Pressed Upgrade Endurance key"));
+            }
+            if(KeyBinding.UPGRADE_STR.consumeClick()) {
+                Minecraft.getInstance().player.sendSystemMessage(Component.literal("Pressed Upgrade Str key"));
+            }
+            if(KeyBinding.UPGRADE_INT.consumeClick()) {
+                Minecraft.getInstance().player.sendSystemMessage(Component.literal("Pressed Upgrade Int key"));
+            }
+
         }
 
     }

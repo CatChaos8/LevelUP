@@ -1,4 +1,10 @@
 {
   "key.category.levelup": "LevelUP",
-  "key.levelup.open_gui": "Open LevelUP GUI"
+  "key.levelup.open_gui": "Open LevelUP GUI",
+
+  "key.levelup.upgrade_con": "Increase Constitution",
+  "key.levelup.upgrade_str": "Increase Strength",
+  "key.levelup.upgrade_dex": "Increase Dexterity",
+  "key.levelup.upgrade_int": "Increase Intelligence",
+  "key.levelup.upgrade_end": "Increase Endurance"
 }
