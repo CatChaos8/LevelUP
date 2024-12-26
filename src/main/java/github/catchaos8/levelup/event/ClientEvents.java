@@ -29,7 +29,7 @@ public class ClientEvents {
                 Minecraft.getInstance().player.sendSystemMessage(Component.literal("Pressed Upgrade Dex key"));
             }
             if(KeyBinding.UPGRADE_END.consumeClick()) {
-                Minecraft.getInstance().player.sendSystemMessage(Component.literal("Pressed Upgrade Endurance key"));
+                Minecraft.getInstance().player.sendSystemMessage(Component.literal("Pressed Upgrade End key"));
             }
             if(KeyBinding.UPGRADE_STR.consumeClick()) {
                 Minecraft.getInstance().player.sendSystemMessage(Component.literal("Pressed Upgrade Str key"));
@@ -48,7 +48,12 @@ public class ClientEvents {
         @SubscribeEvent
         public static void onKeyRegister(RegisterKeyMappingsEvent event) {
             event.register(KeyBinding.OPEN_KEY);
-        }
 
+            event.register(KeyBinding.UPGRADE_CON);
+            event.register(KeyBinding.UPGRADE_DEX);
+            event.register(KeyBinding.UPGRADE_INT);
+            event.register(KeyBinding.UPGRADE_STR);
+            event.register(KeyBinding.UPGRADE_END);
+        }
     }
 }
