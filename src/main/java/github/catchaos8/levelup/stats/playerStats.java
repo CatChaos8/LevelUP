@@ -13,6 +13,11 @@ public class playerStats {
     private int intelligence = 0;
     private int endurance = 0;
 
+    private int freepoints = 0;
+    private int classxp = 0;
+    private int classLevel = 0;
+
+
     public int getDext() {
         return dexterity;
     }
@@ -27,6 +32,16 @@ public class playerStats {
     }
     public int getEndu() {
         return endurance;
+    }
+
+    public int getFreepoints() {
+        return freepoints;
+    }
+    public int getClassxp() {
+        return classxp;
+    }
+    public int getClassLevel() {
+        return classLevel;
     }
 
     public void addDext(int add) {
@@ -45,6 +60,17 @@ public class playerStats {
         this.endurance = endurance + add;
     }
 
+    public void addFP(int add) {
+        this.freepoints = freepoints + add;
+    }
+    public void addCXP(int add) {
+        this.classxp = classxp + add;
+    }
+    public void setCLevel(int add) {
+        this.classLevel = classLevel + add;
+    }
+
+
     public void subDext(int sub) {
         this.dexterity = Math.min(dexterity - sub, min_stat);
     }
@@ -61,12 +87,26 @@ public class playerStats {
         this.endurance = Math.min(endurance - sub, min_stat);
     }
 
+    public void subFP(int sub) {
+        this.freepoints = freepoints - sub;
+    }
+    public void subCXP(int sub) {
+        this.classxp = classxp - sub;
+    }
+    public void subCLevel(int sub) {
+        this.classLevel = classLevel - sub;
+    }
+
     public void copyFrom(playerStats source){
         this.dexterity = source.dexterity;
         this.constitution = source.constitution;
         this.strength = source.strength;
         this.intelligence = source.intelligence;
         this.endurance = source.endurance;
+
+        this.freepoints = source.freepoints;
+        this.classxp = source.classxp;
+        this.classLevel = source.classLevel;
     }
 
 
@@ -76,5 +116,9 @@ public class playerStats {
         nbt.putInt("strength", strength);
         nbt.putInt("intelligence", intelligence);
         nbt.putInt("endurance", endurance);
+
+        nbt.putInt("freepoints", freepoints);
+        nbt.putInt("classxp", classxp);
+        nbt.putInt("classLevel", classLevel);
     }
 }

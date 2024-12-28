@@ -1,5 +1,7 @@
 package github.catchaos8.levelup.event;
 import github.catchaos8.levelup.levelUP;
+import github.catchaos8.levelup.networking.ModNetwork;
+import github.catchaos8.levelup.networking.packet.LevelUPStatsPackets;
 import github.catchaos8.levelup.utility.KeyBinding;
 
 import net.minecraft.client.Minecraft;
@@ -20,6 +22,8 @@ public class ClientEvents {
 
             if(KeyBinding.OPEN_KEY.consumeClick()) {
                 Minecraft.getInstance().player.sendSystemMessage(Component.literal("Pressed open GUI key"));
+                //To send a packet to the serv:
+                //ModNetwork.sendToServer(new LevelUPStatsPackets());
             }
 
             if(KeyBinding.UPGRADE_CON.consumeClick()) {
