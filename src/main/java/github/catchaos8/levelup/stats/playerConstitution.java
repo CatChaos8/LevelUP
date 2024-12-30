@@ -16,7 +16,7 @@ public class playerConstitution {
     }
 
     public void subCons(int sub) {
-        this.constitution = Math.min(constitution - sub, min_stat);
+        this.constitution = Math.max(constitution - sub, min_stat);
     }
 
     public void copyFrom(playerConstitution source){
