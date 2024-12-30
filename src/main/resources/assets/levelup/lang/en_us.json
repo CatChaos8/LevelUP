@@ -6,5 +6,7 @@
   "key.levelup.upgrade_str": "Increase Strength",
   "key.levelup.upgrade_dex": "Increase Dexterity",
   "key.levelup.upgrade_int": "Increase Intelligence",
-  "key.levelup.upgrade_end": "Increase Endurance"
+  "key.levelup.upgrade_end": "Increase Endurance",
+
+  "message.levelup.increase_con": "Constitution Increased"
 }

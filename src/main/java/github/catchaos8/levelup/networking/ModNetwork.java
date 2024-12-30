@@ -1,8 +1,10 @@
 package github.catchaos8.levelup.networking;
 
 import github.catchaos8.levelup.levelUP;
+import github.catchaos8.levelup.networking.packet.IncreaseConstitutionC2SPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -25,6 +27,12 @@ public class ModNetwork {
                 .simpleChannel();
 
         INSTANCE = net;
+
+        net.messageBuilder(IncreaseConstitutionC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(IncreaseConstitutionC2SPacket::new)
+                .encoder(IncreaseConstitutionC2SPacket::toBytes)
+                .consumerMainThread(IncreaseConstitutionC2SPacket::handle)
+                .add();
     }
 
     public static <MSG> void sendToServer(MSG message) {

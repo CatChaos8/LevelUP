@@ -6,6 +6,9 @@ import net.minecraft.nbt.CompoundTag;
 public class playerStats {
 
     private final int min_stat = 0;
+    private final int min_freepoints = 0;
+    private final int min_classxp = 0;
+    private final int min_classLevel = 1;
 
     private int dexterity = 0;
     private int constitution = 0;
@@ -88,13 +91,13 @@ public class playerStats {
     }
 
     public void subFP(int sub) {
-        this.freepoints = freepoints - sub;
+        this.freepoints = Math.min(freepoints - sub, min_freepoints);
     }
     public void subCXP(int sub) {
-        this.classxp = classxp - sub;
+        this.classxp = Math.min(classxp - sub, min_classxp);
     }
     public void subCLevel(int sub) {
-        this.classLevel = classLevel - sub;
+        this.classLevel = Math.min(classLevel - sub, min_classLevel);
     }
 
     public void copyFrom(playerStats source){
@@ -121,4 +124,16 @@ public class playerStats {
         nbt.putInt("classxp", classxp);
         nbt.putInt("classLevel", classLevel);
     }
+    public void loadNBTData(CompoundTag nbt) {
+        dexterity = nbt.getInt("dexterity");
+        constitution = nbt.getInt("constitution");
+        strength = nbt.getInt("strength");
+        intelligence = nbt.getInt("intelligence");
+        endurance = nbt.getInt("endurance");
+
+        freepoints = nbt.getInt("freepoints");
+        classxp = nbt.getInt("classxp");
+        classLevel = nbt.getInt("classLevel");
+    }
+
 }
