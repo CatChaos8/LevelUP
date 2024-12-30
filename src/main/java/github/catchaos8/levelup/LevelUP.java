@@ -10,13 +10,13 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
-@Mod(levelUP.MOD_ID)
-public class levelUP {
+@Mod(LevelUP.MOD_ID)
+public class LevelUP {
     public static final String MOD_ID = "levelup";
     public static final Logger LOGGER = LogUtils.getLogger();
 
 
-    public levelUP() {
+    public LevelUP() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         modEventBus.addListener(this::commonSetup);

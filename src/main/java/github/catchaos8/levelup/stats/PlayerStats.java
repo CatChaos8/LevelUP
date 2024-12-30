@@ -3,7 +3,7 @@ package github.catchaos8.levelup.stats;
 
 import net.minecraft.nbt.CompoundTag;
 
-public class playerStats {
+public class PlayerStats {
 
     private final int min_stat = 0;
     private final int min_freepoints = 0;
@@ -100,7 +100,7 @@ public class playerStats {
         this.classLevel = Math.min(classLevel - sub, min_classLevel);
     }
 
-    public void copyFrom(playerStats source){
+    public void copyFrom(PlayerStats source){
         this.dexterity = source.dexterity;
         this.constitution = source.constitution;
         this.strength = source.strength;

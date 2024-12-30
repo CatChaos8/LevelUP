@@ -1,6 +1,6 @@
 package github.catchaos8.levelup.networking;
 
-import github.catchaos8.levelup.levelUP;
+import github.catchaos8.levelup.LevelUP;
 import github.catchaos8.levelup.networking.packet.IncreaseConstitutionC2SPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,7 +20,7 @@ public class ModNetwork {
 
     public static void register() {
         SimpleChannel net = NetworkRegistry.ChannelBuilder
-                .named(new ResourceLocation(levelUP.MOD_ID, "messages"))
+                .named(new ResourceLocation(LevelUP.MOD_ID, "messages"))
                 .networkProtocolVersion(() ->"1.0")
                 .clientAcceptedVersions(s -> true)
                 .serverAcceptedVersions(s -> true)

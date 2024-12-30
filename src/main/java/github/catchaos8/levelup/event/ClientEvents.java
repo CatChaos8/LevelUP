@@ -1,8 +1,7 @@
 package github.catchaos8.levelup.event;
-import github.catchaos8.levelup.levelUP;
+import github.catchaos8.levelup.LevelUP;
 import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.networking.packet.IncreaseConstitutionC2SPacket;
-import github.catchaos8.levelup.networking.packet.LevelUPStatsPackets;
 import github.catchaos8.levelup.utility.KeyBinding;
 
 import net.minecraft.client.Minecraft;
@@ -15,7 +14,7 @@ import net.minecraftforge.fml.common.Mod;
 
 public class ClientEvents {
 
-    @Mod.EventBusSubscriber(modid = levelUP.MOD_ID, value = Dist.CLIENT)
+    @Mod.EventBusSubscriber(modid = LevelUP.MOD_ID, value = Dist.CLIENT)
     public static class ClientForgeEvents {
 
         @SubscribeEvent
@@ -47,7 +46,7 @@ public class ClientEvents {
 
     }
 
-    @Mod.EventBusSubscriber(modid = levelUP.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = LevelUP.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ClientModBusEvents {
 
         @SubscribeEvent

@@ -1,10 +1,9 @@
 package github.catchaos8.levelup.networking.packet;
 
-import github.catchaos8.levelup.stats.playerStatsProvider;
+import github.catchaos8.levelup.stats.PlayerStatsProvider;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -35,7 +34,7 @@ public class IncreaseConstitutionC2SPacket {
             if(hasEnoughPoints(player)) {
                 //Increase Constitution
 
-                player.getCapability(playerStatsProvider.PLAYER_CONSTITUTION).ifPresent(constitution -> {
+                player.getCapability(PlayerStatsProvider.PLAYER_CONSTITUTION).ifPresent(constitution -> {
                     constitution.addCons(1);
                     player.sendSystemMessage(Component.literal("Current Constitution " + constitution.getCons())
                             .withStyle(ChatFormatting.GREEN));

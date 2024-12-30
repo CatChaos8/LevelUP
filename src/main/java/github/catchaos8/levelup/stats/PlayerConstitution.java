@@ -3,7 +3,7 @@ package github.catchaos8.levelup.stats;
 
 import net.minecraft.nbt.CompoundTag;
 
-public class playerConstitution {
+public class PlayerConstitution {
     private int constitution = 0;
     private final int min_stat = 0;
 
@@ -19,7 +19,7 @@ public class playerConstitution {
         this.constitution = Math.max(constitution - sub, min_stat);
     }
 
-    public void copyFrom(playerConstitution source){
+    public void copyFrom(PlayerConstitution source){
         this.constitution = source.constitution;
     }
 

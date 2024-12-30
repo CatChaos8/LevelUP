@@ -11,15 +11,15 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class playerStatsProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
-    public static Capability<playerConstitution> PLAYER_CONSTITUTION = CapabilityManager.get(new CapabilityToken<playerConstitution>() { });
+public class PlayerStatsProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
+    public static Capability<PlayerConstitution> PLAYER_CONSTITUTION = CapabilityManager.get(new CapabilityToken<PlayerConstitution>() { });
 
-    private playerConstitution constitution = null;
-    private final LazyOptional<playerConstitution> optional = LazyOptional.of(this::createPlayerConstitution);
+    private PlayerConstitution constitution = null;
+    private final LazyOptional<PlayerConstitution> optional = LazyOptional.of(this::createPlayerConstitution);
 
-    private playerConstitution createPlayerConstitution() {
+    private PlayerConstitution createPlayerConstitution() {
         if (this.constitution == null) {
-            this.constitution = new playerConstitution();
+            this.constitution = new PlayerConstitution();
         }
         return this.constitution;
     }
