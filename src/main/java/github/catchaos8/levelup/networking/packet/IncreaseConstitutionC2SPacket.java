@@ -34,7 +34,7 @@ public class IncreaseConstitutionC2SPacket {
             if(hasEnoughPoints(player)) {
                 //Increase Constitution
 
-                player.getCapability(PlayerStatsProvider.PLAYER_CONSTITUTION).ifPresent(constitution -> {
+                player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(constitution -> {
                     constitution.addCons(1);
                     player.sendSystemMessage(Component.literal("Current Constitution " + constitution.getCons())
                             .withStyle(ChatFormatting.GREEN));

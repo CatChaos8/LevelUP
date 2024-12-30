@@ -10,11 +10,13 @@ public class PlayerStats {
     private final int min_classxp = 0;
     private final int min_classLevel = 1;
 
-    private int dexterity = 0;
-    private int constitution = 0;
-    private int strength = 0;
-    private int intelligence = 0;
-    private int endurance = 0;
+    private int[] stats = {
+            0, //Dex
+            0, //Con
+            0, //Str
+            0, //Int
+            0  //End
+    };
 
     private int freepoints = 0;
     private int classxp = 0;
@@ -22,19 +24,19 @@ public class PlayerStats {
 
 
     public int getDext() {
-        return dexterity;
+        return stats[0];
     }
     public int getCons() {
-        return constitution;
+        return stats[1];
     }
     public int getStre() {
-        return strength;
+        return stats[2];
     }
     public int getInte() {
-        return intelligence;
+        return stats[3];
     }
     public int getEndu() {
-        return endurance;
+        return stats[4];
     }
 
     public int getFreepoints() {
@@ -48,19 +50,19 @@ public class PlayerStats {
     }
 
     public void addDext(int add) {
-        this.dexterity = dexterity + add;
+        this.stats[0] = stats[0] + add;
     }
     public void addCons(int add) {
-        this.constitution = constitution + add;
+        this.stats[1] = stats[1] + add;
     }
     public void addStre(int add) {
-        this.strength = strength + add;
+        this.stats[2] = stats[2] + add;
     }
     public void addInte(int add) {
-        this.intelligence = intelligence + add;
+        this.stats[3] = stats[3] + add;
     }
     public void addEndu(int add) {
-        this.endurance = endurance + add;
+        this.stats[4] = stats[4] + add;
     }
 
     public void addFP(int add) {
@@ -75,19 +77,19 @@ public class PlayerStats {
 
 
     public void subDext(int sub) {
-        this.dexterity = Math.min(dexterity - sub, min_stat);
+        this.stats[0] = Math.min(stats[0] - sub, min_stat);
     }
     public void subCons(int sub) {
-        this.constitution = Math.min(constitution - sub, min_stat);
+        this.stats[1] = Math.min(stats[1] - sub, min_stat);
     }
     public void subStre(int sub) {
-        this.strength = Math.min(strength - sub, min_stat);
+        this.stats[2] = Math.min(stats[2] - sub, min_stat);
     }
     public void subInte(int sub) {
-        this.intelligence = Math.min(intelligence - sub, min_stat);
+        this.stats[3] = Math.min(stats[3] - sub, min_stat);
     }
     public void subEndu(int sub) {
-        this.endurance = Math.min(endurance - sub, min_stat);
+        this.stats[4] = Math.min(stats[4] - sub, min_stat);
     }
 
     public void subFP(int sub) {
@@ -101,11 +103,11 @@ public class PlayerStats {
     }
 
     public void copyFrom(PlayerStats source){
-        this.dexterity = source.dexterity;
-        this.constitution = source.constitution;
-        this.strength = source.strength;
-        this.intelligence = source.intelligence;
-        this.endurance = source.endurance;
+        this.stats[0] = source.stats[0];
+        this.stats[1] = source.stats[1];
+        this.stats[2] = source.stats[2];
+        this.stats[3] = source.stats[3];
+        this.stats[4] = source.stats[4];
 
         this.freepoints = source.freepoints;
         this.classxp = source.classxp;
@@ -114,22 +116,22 @@ public class PlayerStats {
 
 
     public void saveNBTData(CompoundTag nbt) {
-        nbt.putInt("dexterity", dexterity);
-        nbt.putInt("constitution", constitution);
-        nbt.putInt("strength", strength);
-        nbt.putInt("intelligence", intelligence);
-        nbt.putInt("endurance", endurance);
+        nbt.putInt("dexterity", stats[0]);
+        nbt.putInt("constitution", stats[1]);
+        nbt.putInt("strength", stats[2]);
+        nbt.putInt("intelligence", stats[3]);
+        nbt.putInt("endurance", stats[4]);
 
         nbt.putInt("freepoints", freepoints);
         nbt.putInt("classxp", classxp);
         nbt.putInt("classLevel", classLevel);
     }
     public void loadNBTData(CompoundTag nbt) {
-        dexterity = nbt.getInt("dexterity");
-        constitution = nbt.getInt("constitution");
-        strength = nbt.getInt("strength");
-        intelligence = nbt.getInt("intelligence");
-        endurance = nbt.getInt("endurance");
+        stats[0] = nbt.getInt("dexterity");
+        stats[1] = nbt.getInt("constitution");
+        stats[2] = nbt.getInt("strength");
+        stats[3] = nbt.getInt("intelligence");
+        stats[4] = nbt.getInt("endurance");
 
         freepoints = nbt.getInt("freepoints");
         classxp = nbt.getInt("classxp");

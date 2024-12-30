@@ -10,12 +10,14 @@ import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
+@Mod.EventBusSubscriber(modid = LevelUP.MOD_ID)
 public class ModEvents {
     @SubscribeEvent
     public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player) {
-            if(!event.getObject().getCapability(PlayerStatsProvider.PLAYER_CONSTITUTION).isPresent()) {
+            if(!event.getObject().getCapability(PlayerStatsProvider.PLAYER_STATS).isPresent()) {
                 event.addCapability(new ResourceLocation(LevelUP.MOD_ID, "properties"), new PlayerStatsProvider());
             }
 
@@ -25,8 +27,8 @@ public class ModEvents {
     @SubscribeEvent
     public static void onPlayerCloned(PlayerEvent.Clone event) {
         if(event.isWasDeath()) {
-            event.getOriginal().getCapability(PlayerStatsProvider.PLAYER_CONSTITUTION).ifPresent(oldStore -> {
-                event.getEntity().getCapability(PlayerStatsProvider.PLAYER_CONSTITUTION).ifPresent(newStore -> {
+            event.getOriginal().getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(oldStore -> {
+                event.getEntity().getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(newStore -> {
                     newStore.copyFrom(oldStore);
                 });
             });
