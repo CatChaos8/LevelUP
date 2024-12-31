@@ -12,16 +12,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class PlayerStatsProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
-    public static Capability<PlayerConstitution> PLAYER_STATS = CapabilityManager.get(new CapabilityToken<PlayerConstitution>() { });
+    public static Capability<PlayerStats> PLAYER_STATS = CapabilityManager.get(new CapabilityToken<PlayerStats>() { });
 
-    private PlayerConstitution constitution = null;
-    private final LazyOptional<PlayerConstitution> optional = LazyOptional.of(this::createPlayerConstitution);
+    private PlayerStats stats = null;
+    private final LazyOptional<PlayerStats> optional = LazyOptional.of(this::createPlayerStats);
 
-    private PlayerConstitution createPlayerConstitution() {
-        if (this.constitution == null) {
-            this.constitution = new PlayerConstitution();
+    private PlayerStats createPlayerStats() {
+        if (this.stats == null) {
+            this.stats = new PlayerStats();
         }
-        return this.constitution;
+        return this.stats;
     }
 
 
@@ -35,12 +35,12 @@ public class PlayerStatsProvider implements ICapabilityProvider, INBTSerializabl
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag nbt = new CompoundTag();
-        createPlayerConstitution().saveNBTData(nbt);
+        createPlayerStats().saveNBTData(nbt);
         return nbt;
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        createPlayerConstitution().loadNBTData(nbt);
+        createPlayerStats().loadNBTData(nbt);
     }
 }

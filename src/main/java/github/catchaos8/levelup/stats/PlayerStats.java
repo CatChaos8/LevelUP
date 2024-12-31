@@ -3,6 +3,8 @@ package github.catchaos8.levelup.stats;
 
 import net.minecraft.nbt.CompoundTag;
 
+import java.util.Arrays;
+
 public class PlayerStats {
 
     private final int min_stat = 0;
@@ -49,20 +51,8 @@ public class PlayerStats {
         return classLevel;
     }
 
-    public void addDext(int add) {
-        this.stats[0] = stats[0] + add;
-    }
-    public void addCons(int add) {
-        this.stats[1] = stats[1] + add;
-    }
-    public void addStre(int add) {
-        this.stats[2] = stats[2] + add;
-    }
-    public void addInte(int add) {
-        this.stats[3] = stats[3] + add;
-    }
-    public void addEndu(int add) {
-        this.stats[4] = stats[4] + add;
+    public void addStat(int statType, int add) {
+        this.stats[statType] = stats[statType] + add;
     }
 
     public void addFP(int add) {
@@ -75,21 +65,8 @@ public class PlayerStats {
         this.classLevel = classLevel + add;
     }
 
-
-    public void subDext(int sub) {
-        this.stats[0] = Math.min(stats[0] - sub, min_stat);
-    }
-    public void subCons(int sub) {
-        this.stats[1] = Math.min(stats[1] - sub, min_stat);
-    }
-    public void subStre(int sub) {
-        this.stats[2] = Math.min(stats[2] - sub, min_stat);
-    }
-    public void subInte(int sub) {
-        this.stats[3] = Math.min(stats[3] - sub, min_stat);
-    }
-    public void subEndu(int sub) {
-        this.stats[4] = Math.min(stats[4] - sub, min_stat);
+    public void subStat(int statType, int sub) {
+        this.stats[statType] = Math.max(stats[statType] - sub, min_stat);
     }
 
     public void subFP(int sub) {
@@ -103,11 +80,7 @@ public class PlayerStats {
     }
 
     public void copyFrom(PlayerStats source){
-        this.stats[0] = source.stats[0];
-        this.stats[1] = source.stats[1];
-        this.stats[2] = source.stats[2];
-        this.stats[3] = source.stats[3];
-        this.stats[4] = source.stats[4];
+        this.stats = Arrays.copyOf(source.stats, source.stats.length);
 
         this.freepoints = source.freepoints;
         this.classxp = source.classxp;

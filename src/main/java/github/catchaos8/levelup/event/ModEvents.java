@@ -1,7 +1,7 @@
 package github.catchaos8.levelup.event;
 
 import github.catchaos8.levelup.LevelUP;
-import github.catchaos8.levelup.stats.PlayerConstitution;
+import github.catchaos8.levelup.stats.PlayerStats;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -36,6 +36,6 @@ public class ModEvents {
     }
     @SubscribeEvent
     public static void onRegisterCapabilites(RegisterCapabilitiesEvent event) {
-        event.register(PlayerConstitution.class);
+        event.register(PlayerStats.class);
     }
 }
