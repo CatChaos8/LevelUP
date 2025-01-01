@@ -8,107 +8,57 @@ import java.util.Arrays;
 public class PlayerStats {
 
     private final int min_stat = 0;
-    private final int min_freepoints = 0;
-    private final int min_classxp = 0;
-    private final int min_classLevel = 1;
 
     private int[] stats = {
-            0, //Dex
             0, //Con
+            0, //Dex
             0, //Str
             0, //Int
-            0  //End
+            0, //End
+            0, //Freepoints
+            0, //Class XP
+            0  //Class Level
     };
 
-    private int freepoints = 0;
-    private int classxp = 0;
-    private int classLevel = 0;
-
-
-    public int getDext() {
-        return stats[0];
-    }
-    public int getCons() {
-        return stats[1];
-    }
-    public int getStre() {
-        return stats[2];
-    }
-    public int getInte() {
-        return stats[3];
-    }
-    public int getEndu() {
-        return stats[4];
-    }
-
-    public int getFreepoints() {
-        return freepoints;
-    }
-    public int getClassxp() {
-        return classxp;
-    }
-    public int getClassLevel() {
-        return classLevel;
+    public int getStat(int type) {
+        return stats[type];
     }
 
     public void addStat(int statType, int add) {
         this.stats[statType] = stats[statType] + add;
     }
 
-    public void addFP(int add) {
-        this.freepoints = freepoints + add;
-    }
-    public void addCXP(int add) {
-        this.classxp = classxp + add;
-    }
-    public void setCLevel(int add) {
-        this.classLevel = classLevel + add;
-    }
-
     public void subStat(int statType, int sub) {
         this.stats[statType] = Math.max(stats[statType] - sub, min_stat);
     }
 
-    public void subFP(int sub) {
-        this.freepoints = Math.min(freepoints - sub, min_freepoints);
-    }
-    public void subCXP(int sub) {
-        this.classxp = Math.min(classxp - sub, min_classxp);
-    }
-    public void subCLevel(int sub) {
-        this.classLevel = Math.min(classLevel - sub, min_classLevel);
-    }
-
     public void copyFrom(PlayerStats source){
         this.stats = Arrays.copyOf(source.stats, source.stats.length);
-
-        this.freepoints = source.freepoints;
-        this.classxp = source.classxp;
-        this.classLevel = source.classLevel;
     }
 
 
     public void saveNBTData(CompoundTag nbt) {
-        nbt.putInt("dexterity", stats[0]);
-        nbt.putInt("constitution", stats[1]);
+        nbt.putInt("constitution", stats[0]);
+        nbt.putInt("dexterity", stats[1]);
         nbt.putInt("strength", stats[2]);
         nbt.putInt("intelligence", stats[3]);
         nbt.putInt("endurance", stats[4]);
 
-        nbt.putInt("freepoints", freepoints);
-        nbt.putInt("classxp", classxp);
-        nbt.putInt("classLevel", classLevel);
+
+        nbt.putInt("freepoints", stats[5]);
+        nbt.putInt("classxp", stats[6]);
+        nbt.putInt("classLevel", stats[7]);
     }
     public void loadNBTData(CompoundTag nbt) {
-        stats[0] = nbt.getInt("dexterity");
-        stats[1] = nbt.getInt("constitution");
+        stats[0] = nbt.getInt("constitution");
+        stats[1] = nbt.getInt("dexterity");
         stats[2] = nbt.getInt("strength");
         stats[3] = nbt.getInt("intelligence");
         stats[4] = nbt.getInt("endurance");
 
-        freepoints = nbt.getInt("freepoints");
-        classxp = nbt.getInt("classxp");
-        classLevel = nbt.getInt("classLevel");
+        stats[5] = nbt.getInt("freepoints");
+        stats[6] = nbt.getInt("classxp");
+        stats[7] = nbt.getInt("classLevel");
     }
 
 }

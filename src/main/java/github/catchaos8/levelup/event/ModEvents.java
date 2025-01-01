@@ -1,6 +1,7 @@
 package github.catchaos8.levelup.event;
 
 import github.catchaos8.levelup.LevelUP;
+import github.catchaos8.levelup.commands.get.*;
 import github.catchaos8.levelup.stats.PlayerStats;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -8,12 +9,31 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = LevelUP.MOD_ID)
 public class ModEvents {
+
+    @SubscribeEvent
+    public static void onCommandsRegister(RegisterCommandsEvent event) {
+        new GetStatsCommand(event.getDispatcher());
+        new GetDexCommand(event.getDispatcher());
+        new GetConCommand(event.getDispatcher());
+        new GetStrCommand(event.getDispatcher());
+        new GetIntCommand(event.getDispatcher());
+        new GetEndCommand(event.getDispatcher());
+
+        new GetAllStatsCommand(event.getDispatcher());
+
+        new GetFreePointsCommand(event.getDispatcher());
+        new GetClassXPCommand(event.getDispatcher());
+        new GetClassLevelCommand(event.getDispatcher());
+    }
+
+
     @SubscribeEvent
     public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player) {

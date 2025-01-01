@@ -8,5 +8,14 @@
   "key.levelup.upgrade_int": "Increase Intelligence",
   "key.levelup.upgrade_end": "Increase Endurance",
 
+  "stat.levelup.con": "Constitution: ",
+  "stat.levelup.dex": "Dexterity: ",
+  "stat.levelup.str": "Strength: ",
+  "stat.levelup.int": "Intelligence: ",
+  "stat.levelup.end": "Endurance: ",
+  "stat.levelup.fp": "Free Points: ",
+  "stat.levelup.cxp" : "Class XP: ",
+  "stat.levelup.clvl": "Class LVL: ",
+
   "message.levelup.increase_con": "Constitution Increased"
 }

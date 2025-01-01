@@ -10,7 +10,6 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.function.Supplier;
 
 public class IncreaseConstitutionC2SPacket {
-    public static final String MESSAGE_INCREASE_CON = "message.levelup.increase_con";
 
     public IncreaseConstitutionC2SPacket() {
 
@@ -35,14 +34,12 @@ public class IncreaseConstitutionC2SPacket {
                 //Increase Constitution
 
                 player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(constitution -> {
-                    constitution.addStat(1, 1);
-                    player.sendSystemMessage(Component.literal("Current Constitution " + constitution.getCons())
+                    constitution.addStat(0, 1);
+                    player.sendSystemMessage(Component.literal("Current Constitution " + constitution.getStat(0))
                             .withStyle(ChatFormatting.GREEN));
                 });
                 //Set Modifier to stats based on constitution
 
-                //Tell player Constitution has increased & constitution
-                player.sendSystemMessage(Component.translatable(MESSAGE_INCREASE_CON));
             } else {
                 //say not enough points
 
