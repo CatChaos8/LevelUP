@@ -25,7 +25,6 @@ public class ClientEvents {
                 //To send a packet to the serv:
                 ModNetwork.sendToServer(new IncreaseConstitutionC2SPacket());
             }
-
             if(KeyBinding.UPGRADE_CON.consumeClick()) {
                 ModNetwork.sendToServer(new IncreaseConstitutionC2SPacket());
             }
