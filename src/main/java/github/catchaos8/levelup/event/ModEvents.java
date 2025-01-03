@@ -4,6 +4,8 @@ import github.catchaos8.levelup.LevelUP;
 import github.catchaos8.levelup.commands.get.*;
 import github.catchaos8.levelup.stats.PlayerStats;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -52,6 +54,8 @@ public class ModEvents {
                     newStore.copyFrom(oldStore);
                 });
             });
+
+            Minecraft.getInstance().player.sendSystemMessage(Component.literal("" + event.getEntity().getCapability(PlayerStatsProvider.PLAYER_STATS)));
         }
     }
     @SubscribeEvent
