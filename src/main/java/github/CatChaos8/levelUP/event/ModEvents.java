@@ -2,6 +2,7 @@ package github.catchaos8.levelup.event;
 
 import github.catchaos8.levelup.LevelUP;
 import github.catchaos8.levelup.commands.get.*;
+import github.catchaos8.levelup.commands.set.*;
 import github.catchaos8.levelup.stats.PlayerStats;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
 import net.minecraft.client.Minecraft;
@@ -22,8 +23,8 @@ public class ModEvents {
     @SubscribeEvent
     public static void onCommandsRegister(RegisterCommandsEvent event) {
         new GetStatsCommand(event.getDispatcher());
-        new GetDexCommand(event.getDispatcher());
         new GetConCommand(event.getDispatcher());
+        new GetDexCommand(event.getDispatcher());
         new GetStrCommand(event.getDispatcher());
         new GetIntCommand(event.getDispatcher());
         new GetEndCommand(event.getDispatcher());
@@ -33,6 +34,19 @@ public class ModEvents {
         new GetFreePointsCommand(event.getDispatcher());
         new GetClassXPCommand(event.getDispatcher());
         new GetClassLevelCommand(event.getDispatcher());
+
+
+        new SetConCommand(event.getDispatcher());
+        new SetDexCommand(event.getDispatcher());
+        new SetStrCommand(event.getDispatcher());
+        new SetIntCommand(event.getDispatcher());
+        new SetEndCommand(event.getDispatcher());
+
+        new SetAllStatsCommand(event.getDispatcher());
+
+        new SetFreePointsCommand(event.getDispatcher());
+        new SetClassXPCommand(event.getDispatcher());
+        new SetClassLevelCommand(event.getDispatcher());
     }
 
 

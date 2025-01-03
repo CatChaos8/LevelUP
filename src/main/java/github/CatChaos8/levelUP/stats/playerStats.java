@@ -32,6 +32,10 @@ public class PlayerStats {
         this.stats[statType] = Math.max(stats[statType] - sub, min_stat);
     }
 
+    public void setStat(int statType, int amount) {
+        this.stats[statType] = Math.max(amount, min_stat);
+    }
+
     public void copyFrom(PlayerStats source){
         this.stats = Arrays.copyOf(source.stats, source.stats.length);
     }
