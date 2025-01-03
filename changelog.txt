@@ -7,3 +7,12 @@ Also first time ive codded in java
 
 0.0.3 --> I skipped a few versions. They were mostly for setting up some dependencies, but then I figured that I don't need them
 0.0.4 --> Started
+
+
+0.0.7 --> It now... fails because package KeyBinding doesn't exist?
+
+0.07 - 0.0.9 --> Fixing stuff/figuring out stuff
+
+0.1.0 --> First stable build
+
+0.1.7 --> Made mod command 'levelup stat get <stat>'

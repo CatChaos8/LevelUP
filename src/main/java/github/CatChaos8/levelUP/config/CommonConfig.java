@@ -1,4 +1,4 @@
-package github.CatChaos8.levelUP.config;
+package github.catchaos8.levelup.config;
 
 public class CommonConfig {
 
