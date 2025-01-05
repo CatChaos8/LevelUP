@@ -1,7 +1,8 @@
 package github.catchaos8.levelup.networking;
 
 import github.catchaos8.levelup.LevelUP;
-import github.catchaos8.levelup.networking.packet.IncreaseConstitutionC2SPacket;
+import github.catchaos8.levelup.networking.packet.IncreaseStatC2SPacket;
+import github.catchaos8.levelup.networking.packet.StatDataSyncS2CPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -28,10 +29,16 @@ public class ModNetwork {
 
         INSTANCE = net;
 
-        net.messageBuilder(IncreaseConstitutionC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(IncreaseConstitutionC2SPacket::new)
-                .encoder(IncreaseConstitutionC2SPacket::toBytes)
-                .consumerMainThread(IncreaseConstitutionC2SPacket::handle)
+        net.messageBuilder(IncreaseStatC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(IncreaseStatC2SPacket::new)
+                .encoder(IncreaseStatC2SPacket::toBytes)
+                .consumerMainThread(IncreaseStatC2SPacket::handle)
+                .add();
+
+        net.messageBuilder(StatDataSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(StatDataSyncS2CPacket::new)
+                .encoder(StatDataSyncS2CPacket::toBytes)
+                .consumerMainThread(StatDataSyncS2CPacket::handle)
                 .add();
     }
 

@@ -12,7 +12,7 @@ import net.minecraft.server.level.ServerPlayer;
 
 public class SetIntCommand {
 
-    public static final String INTELLIGENCE =       "levelup.stat.int";
+    public static final String INTELLIGENCE =       "stat.levelup.int";
 
     public SetIntCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("levelup")

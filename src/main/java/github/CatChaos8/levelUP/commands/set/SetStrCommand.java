@@ -12,7 +12,7 @@ import net.minecraft.server.level.ServerPlayer;
 
 public class SetStrCommand {
 
-    public static final String STRENGTH =       "levelup.stat.str";
+    public static final String STRENGTH =       "stat.levelup.str";
 
     public SetStrCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("levelup")

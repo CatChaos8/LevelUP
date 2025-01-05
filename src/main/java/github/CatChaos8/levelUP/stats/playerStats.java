@@ -20,6 +20,10 @@ public class PlayerStats {
             0  //Class Level
     };
 
+    public int[] getStatArr() {
+        return this.stats;
+    }
+
     public int getStat(int type) {
         return stats[type];
     }

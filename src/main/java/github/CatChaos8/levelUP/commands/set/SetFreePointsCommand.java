@@ -12,7 +12,7 @@ import net.minecraft.server.level.ServerPlayer;
 
 public class SetFreePointsCommand {
 
-    public static final String FREEPOINTS =       "levelup.stat.fp";
+    public static final String FREEPOINTS =       "stat.levelup.fp";
 
     public SetFreePointsCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("levelup")

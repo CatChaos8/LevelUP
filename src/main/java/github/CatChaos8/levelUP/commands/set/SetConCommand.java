@@ -11,7 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
 public class SetConCommand {
-    public static final String CONSTITUTION =       "levelup.stat.con";
+    public static final String CONSTITUTION =       "stat.levelup.con";
     public SetConCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("levelup")
                 .then(Commands.literal("stats")

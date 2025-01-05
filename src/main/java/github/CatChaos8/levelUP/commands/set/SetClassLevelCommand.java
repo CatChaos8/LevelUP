@@ -11,7 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
 public class SetClassLevelCommand {
-    public static final String CLASSLVL =       "levelup.stat.clvl";
+    public static final String CLASSLVL =       "stat.levelup.clvl";
 
     public SetClassLevelCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("levelup")

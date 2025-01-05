@@ -11,7 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 
 public class GetEndCommand {
 
-    public static final String ENDURANCE =       "levelup.stat.end";
+    public static final String ENDURANCE =       "stat.levelup.end";
 
     public GetEndCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("levelup")

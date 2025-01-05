@@ -1,7 +1,7 @@
 package github.catchaos8.levelup.event;
 import github.catchaos8.levelup.LevelUP;
 import github.catchaos8.levelup.networking.ModNetwork;
-import github.catchaos8.levelup.networking.packet.IncreaseConstitutionC2SPacket;
+import github.catchaos8.levelup.networking.packet.IncreaseStatC2SPacket;
 import github.catchaos8.levelup.utility.KeyBinding;
 
 import net.minecraft.client.Minecraft;
@@ -22,23 +22,23 @@ public class ClientEvents {
 
             if(KeyBinding.OPEN_KEY.consumeClick()) {
                 Minecraft.getInstance().player.sendSystemMessage(Component.literal("Pressed open GUI key"));
-                //To send a packet to the serv:
-                ModNetwork.sendToServer(new IncreaseConstitutionC2SPacket());
+
             }
+
             if(KeyBinding.UPGRADE_CON.consumeClick()) {
-                ModNetwork.sendToServer(new IncreaseConstitutionC2SPacket());
+                ModNetwork.sendToServer(new IncreaseStatC2SPacket(0, 1));
             }
             if(KeyBinding.UPGRADE_DEX.consumeClick()) {
-                Minecraft.getInstance().player.sendSystemMessage(Component.literal("Pressed Upgrade Dex key"));
-            }
-            if(KeyBinding.UPGRADE_END.consumeClick()) {
-                Minecraft.getInstance().player.sendSystemMessage(Component.literal("Pressed Upgrade End key"));
+                ModNetwork.sendToServer(new IncreaseStatC2SPacket(1, 1));
             }
             if(KeyBinding.UPGRADE_STR.consumeClick()) {
-                Minecraft.getInstance().player.sendSystemMessage(Component.literal("Pressed Upgrade Str key"));
+                ModNetwork.sendToServer(new IncreaseStatC2SPacket(2, 1));
             }
             if(KeyBinding.UPGRADE_INT.consumeClick()) {
-                Minecraft.getInstance().player.sendSystemMessage(Component.literal("Pressed Upgrade Int key"));
+                ModNetwork.sendToServer(new IncreaseStatC2SPacket(3, 1));
+            }
+            if(KeyBinding.UPGRADE_END.consumeClick()) {
+                ModNetwork.sendToServer(new IncreaseStatC2SPacket(4, 1));
             }
 
         }

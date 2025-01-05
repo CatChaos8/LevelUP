@@ -11,7 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
 public class SetClassXPCommand {
-    public static final String CLASSXP =       "levelup.stat.cxp";
+    public static final String CLASSXP =       "stat.levelup.cxp";
 
     public SetClassXPCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("levelup")

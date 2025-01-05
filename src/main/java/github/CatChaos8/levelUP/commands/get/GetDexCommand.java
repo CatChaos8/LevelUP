@@ -11,7 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 
 public class GetDexCommand {
 
-    public static final String DEXTERITY =       "levelup.stat.dex";
+    public static final String DEXTERITY =       "stat.levelup.dex";
 
     public GetDexCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("levelup")

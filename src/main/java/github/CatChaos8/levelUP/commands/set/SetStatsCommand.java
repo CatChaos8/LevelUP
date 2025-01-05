@@ -12,14 +12,14 @@ import net.minecraft.server.level.ServerPlayer;
 
 public class SetStatsCommand {
 
-    public static final String CONSTITUTION =   "levelup.stat.con";
-    public static final String DEXTERITY =      "levelup.stat.dex";
-    public static final String STRENGTH =       "levelup.stat.str";
-    public static final String INTELLIGENCE =   "levelup.stat.int";
-    public static final String ENDURANCE =      "levelup.stat.end";
-    public static final String FREEPOINTS =     "levelup.stat.fp";
-    public static final String CLASSXP =        "levelup.stat.cxp";
-    public static final String CLASSLVL =       "levelup.stat.clvl";
+    public static final String CONSTITUTION =   "stat.levelup.con";
+    public static final String DEXTERITY =      "stat.levelup.dex";
+    public static final String STRENGTH =       "stat.levelup.str";
+    public static final String INTELLIGENCE =   "stat.levelup.int";
+    public static final String ENDURANCE =      "stat.levelup.end";
+    public static final String FREEPOINTS =     "stat.levelup.fp";
+    public static final String CLASSXP =        "stat.levelup.cxp";
+    public static final String CLASSLVL =       "stat.levelup.clvl";
 
 
     public SetStatsCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
