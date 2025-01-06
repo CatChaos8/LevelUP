@@ -16,10 +16,10 @@ public class LevelUPCommonConfig {
 
         //Config
         FREEPOINTS_PER_LEVEL = BUILDER.comment("How many stat points per level!")
-                        .define("Points Per Level", 5);
+                        .define("Points Per Level", 3);
 
         LEVEL_CAP = BUILDER.comment("Max Level a player can reach without commands")
-                .define("Max Level", 9999999);
+                .define("Max Level", 999999);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

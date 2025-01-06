@@ -9,15 +9,15 @@ import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
-public class GetIntCommand {
+public class GetVitCommand {
 
-    public static final String INTELLIGENCE =       "stat.levelup.int";
+    public static final String VITALITY =       "stat.levelup.vit";
 
-    public GetIntCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
+    public GetVitCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("levelup")
                 .then(Commands.literal("stats")
                 .then(Commands.literal("get")
-                        .then(Commands.literal("intelligence")
+                        .then(Commands.literal("vitality")
                 .executes((this::execute))))));
 
     }
@@ -26,7 +26,7 @@ public class GetIntCommand {
         ServerPlayer player = context.getSource().getPlayer();
 
         player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(getStats -> {
-            player.sendSystemMessage(Component.translatable(INTELLIGENCE).append(Component.literal("" + getStats.getStat(3))));
+            player.sendSystemMessage(Component.translatable(VITALITY).append(Component.literal("" + getStats.getStat(3))));
         });
 
         return 1;

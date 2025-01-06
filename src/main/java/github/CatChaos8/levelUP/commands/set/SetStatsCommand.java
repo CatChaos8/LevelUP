@@ -15,7 +15,7 @@ public class SetStatsCommand {
     public static final String CONSTITUTION =   "stat.levelup.con";
     public static final String DEXTERITY =      "stat.levelup.dex";
     public static final String STRENGTH =       "stat.levelup.str";
-    public static final String INTELLIGENCE =   "stat.levelup.int";
+    public static final String VITALITY =   "stat.levelup.vit";
     public static final String ENDURANCE =      "stat.levelup.end";
     public static final String FREEPOINTS =     "stat.levelup.fp";
     public static final String CLASSXP =        "stat.levelup.cxp";
@@ -49,7 +49,7 @@ public class SetStatsCommand {
             } else if(stat == 2) {
                 player.sendSystemMessage(Component.translatable(STRENGTH).append(Component.literal("" + stats.getStat(2))));
             } else if(stat == 3) {
-                player.sendSystemMessage(Component.translatable(INTELLIGENCE).append(Component.literal("" + stats.getStat(3))));
+                player.sendSystemMessage(Component.translatable(VITALITY).append(Component.literal("" + stats.getStat(3))));
             } else if(stat == 4) {
                 player.sendSystemMessage(Component.translatable(ENDURANCE).append(Component.literal("" + stats.getStat(4))));
             } else if(stat == 5) {

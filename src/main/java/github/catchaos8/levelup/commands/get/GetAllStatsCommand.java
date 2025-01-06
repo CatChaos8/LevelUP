@@ -14,7 +14,7 @@ public class GetAllStatsCommand {
     public static final String CONSTITUTION =   "stat.levelup.con";
     public static final String DEXTERITY =      "stat.levelup.dex";
     public static final String STRENGTH =       "stat.levelup.str";
-    public static final String INTELLIGENCE =   "stat.levelup.int";
+    public static final String VITALITY  =      "stat.levelup.vit";
     public static final String ENDURANCE =      "stat.levelup.end";
     public static final String FREEPOINTS =     "stat.levelup.fp";
     public static final String CLASSXP =        "stat.levelup.cxp";
@@ -39,7 +39,7 @@ public class GetAllStatsCommand {
             player.sendSystemMessage(Component.translatable(CONSTITUTION).append(Component.literal("" + getStats.getStat(0))));
             player.sendSystemMessage(Component.translatable(DEXTERITY).append(Component.literal("" + getStats.getStat(1))));
             player.sendSystemMessage(Component.translatable(STRENGTH).append(Component.literal("" + getStats.getStat(2))));
-            player.sendSystemMessage(Component.translatable(INTELLIGENCE).append(Component.literal("" + getStats.getStat(3))));
+            player.sendSystemMessage(Component.translatable(VITALITY).append(Component.literal("" + getStats.getStat(3))));
             player.sendSystemMessage(Component.translatable(ENDURANCE).append(Component.literal("" + getStats.getStat(4))));
             player.sendSystemMessage(Component.translatable(FREEPOINTS).append(Component.literal("" + getStats.getStat(5))));
             player.sendSystemMessage(Component.translatable(CLASSXP).append(Component.literal("" + getStats.getStat(6))));

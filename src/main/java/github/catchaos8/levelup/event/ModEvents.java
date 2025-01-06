@@ -8,7 +8,6 @@ import github.catchaos8.levelup.networking.packet.IncreaseStatC2SPacket;
 import github.catchaos8.levelup.networking.packet.StatDataSyncS2CPacket;
 import github.catchaos8.levelup.stats.PlayerStats;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -33,7 +32,7 @@ public class ModEvents {
         new GetConCommand(event.getDispatcher());
         new GetDexCommand(event.getDispatcher());
         new GetStrCommand(event.getDispatcher());
-        new GetIntCommand(event.getDispatcher());
+        new GetVitCommand(event.getDispatcher());
         new GetEndCommand(event.getDispatcher());
 
         new GetAllStatsCommand(event.getDispatcher());
@@ -46,7 +45,7 @@ public class ModEvents {
         new SetConCommand(event.getDispatcher());
         new SetDexCommand(event.getDispatcher());
         new SetStrCommand(event.getDispatcher());
-        new SetIntCommand(event.getDispatcher());
+        new SetVitCommand(event.getDispatcher());
         new SetEndCommand(event.getDispatcher());
 
         new SetAllStatsCommand(event.getDispatcher());

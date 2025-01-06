@@ -1,8 +1,11 @@
 package github.catchaos8.levelup.networking.packet;
 
+import github.catchaos8.levelup.LevelUP;
+import github.catchaos8.levelup.config.LevelUPCommonConfig;
 import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -42,35 +45,71 @@ public class IncreaseStatC2SPacket {
             //This is the server side part I think
             ServerPlayer player = context.getSender();
 
-            //Check if freestats is > 0
-            if(hasEnoughPoints(player)) {
-                //Increase Stats
+            if(type <= 4) {
+                //Check if freestats is > 0
                 player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
 
-                    stats.addStat(type, amount);
+                    if (stats.getStat(5) > 0) {
+                        //Increase Stats
 
-                    //Sync
-                    ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
+                        stats.addStat(type, amount);
+
+                        stats.subStat(5, 1);
+                        //Sync
+                        ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
+
+                        //Set Modifier to attributes based on stats
+
+                    } else {
+                        //say not enough points
+
+                        //Sync
+                        ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
+                    }
                 });
-                //Set Modifier to attributes based on stats
-
             } else {
-                //say not enough points
+                //Get the equation from the config here
 
-
-
-                //Sync
                 player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
-                    ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
+
+                    if (type == 6) {
+                        stats.addStat(type, amount);
+
+                        int level = stats.getStat(7);
+                        int xp = stats.getStat(6);
+
+                        int xpNeeded = (int) (0.2*(level*level) + 0.25*level + 10);
+                        int freepointsGiven = LevelUPCommonConfig.FREEPOINTS_PER_LEVEL.get();
+
+                        int maxLevel = LevelUPCommonConfig.LEVEL_CAP.get();
+
+                        if (xp >= xpNeeded && level < maxLevel) {
+                            //Level
+                            stats.addStat(7, 1);
+                            player.sendSystemMessage(Component.literal("" + xpNeeded));
+
+                            //XP
+                            stats.subStat(6, xpNeeded);
+                            //FreePoints
+                            stats.addStat(5, freepointsGiven);
+
+                            player.sendSystemMessage(Component.literal("LevelUP! You are now level " + stats.getStat(7) + "!"));
+
+                        }
+
+                        //Sync
+                        ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
+                    } else {
+                        stats.addStat(type, amount);
+
+                        //Sync
+                        ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
+                    }
                 });
+
             }
 
         });
         return true;
     }
-
-    private boolean hasEnoughPoints(ServerPlayer player) {
-        return true;
-    }
-
 }

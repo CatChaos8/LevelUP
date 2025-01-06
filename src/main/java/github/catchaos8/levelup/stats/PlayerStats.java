@@ -13,7 +13,7 @@ public class PlayerStats {
             0, //Con
             0, //Dex
             0, //Str
-            0, //Int
+            0, //Vit
             0, //End
             0, //Freepoints
             0, //Class XP
@@ -49,7 +49,7 @@ public class PlayerStats {
         nbt.putInt("constitution", stats[0]);
         nbt.putInt("dexterity", stats[1]);
         nbt.putInt("strength", stats[2]);
-        nbt.putInt("intelligence", stats[3]);
+        nbt.putInt("vitality", stats[3]);
         nbt.putInt("endurance", stats[4]);
 
 
@@ -61,7 +61,7 @@ public class PlayerStats {
         stats[0] = nbt.getInt("constitution");
         stats[1] = nbt.getInt("dexterity");
         stats[2] = nbt.getInt("strength");
-        stats[3] = nbt.getInt("intelligence");
+        stats[3] = nbt.getInt("vitality");
         stats[4] = nbt.getInt("endurance");
 
         stats[5] = nbt.getInt("freepoints");

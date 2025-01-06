@@ -10,15 +10,15 @@ import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
-public class SetIntCommand {
+public class SetVitCommand {
 
-    public static final String INTELLIGENCE =       "stat.levelup.int";
+    public static final String VITALITY =       "stat.levelup.vit";
 
-    public SetIntCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
+    public SetVitCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("levelup")
                 .then(Commands.literal("stats")
                 .then(Commands.literal("set")
-                        .then(Commands.literal("intelligence")
+                        .then(Commands.literal("vitality")
                                 .then(Commands.argument("amount", IntegerArgumentType.integer(0))
                 .executes((this::execute)))))));
 
@@ -32,7 +32,7 @@ public class SetIntCommand {
         player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
             stats.setStat(3, amount);
 
-            player.sendSystemMessage(Component.translatable(INTELLIGENCE).append(Component.literal("" + stats.getStat(3))));
+            player.sendSystemMessage(Component.translatable(VITALITY).append(Component.literal("" + stats.getStat(3))));
         });
 
         return 1;
