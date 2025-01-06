@@ -34,7 +34,7 @@ public class ClientEvents {
             if(KeyBinding.UPGRADE_STR.consumeClick()) {
                 ModNetwork.sendToServer(new IncreaseStatC2SPacket(2, 1));
             }
-            if(KeyBinding.UPGRADE_INT.consumeClick()) {
+            if(KeyBinding.UPGRADE_VIT.consumeClick()) {
                 ModNetwork.sendToServer(new IncreaseStatC2SPacket(3, 1));
             }
             if(KeyBinding.UPGRADE_END.consumeClick()) {
@@ -54,7 +54,7 @@ public class ClientEvents {
 
             event.register(KeyBinding.UPGRADE_CON);
             event.register(KeyBinding.UPGRADE_DEX);
-            event.register(KeyBinding.UPGRADE_INT);
+            event.register(KeyBinding.UPGRADE_VIT);
             event.register(KeyBinding.UPGRADE_STR);
             event.register(KeyBinding.UPGRADE_END);
         }

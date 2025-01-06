@@ -13,7 +13,7 @@ public class KeyBinding {
     public static final String KEY_CON = "key.levelup.upgrade_con";
     public static final String KEY_STR = "key.levelup.upgrade_str";
     public static final String KEY_DEX = "key.levelup.upgrade_dex";
-    public static final String KEY_INT = "key.levelup.upgrade_int";
+    public static final String KEY_VIT = "key.levelup.upgrade_int";
     public static final String KEY_END = "key.levelup.upgrade_end";
 
     public static final KeyMapping OPEN_KEY = new KeyMapping(KEY_OPEN_GUI, KeyConflictContext.IN_GAME,
@@ -25,7 +25,7 @@ public class KeyBinding {
             InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_X, KEY_CATEGORY_LEVELUP);
     public static final KeyMapping UPGRADE_STR = new KeyMapping(KEY_STR, KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_C, KEY_CATEGORY_LEVELUP);
-    public static final KeyMapping UPGRADE_INT = new KeyMapping(KEY_INT, KeyConflictContext.IN_GAME,
+    public static final KeyMapping UPGRADE_VIT = new KeyMapping(KEY_VIT, KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_V, KEY_CATEGORY_LEVELUP);
     public static final KeyMapping UPGRADE_END = new KeyMapping(KEY_END, KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_B, KEY_CATEGORY_LEVELUP);
