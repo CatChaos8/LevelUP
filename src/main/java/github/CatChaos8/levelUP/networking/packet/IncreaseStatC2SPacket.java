@@ -1,6 +1,5 @@
 package github.catchaos8.levelup.networking.packet;
 
-import github.catchaos8.levelup.LevelUP;
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
 import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
