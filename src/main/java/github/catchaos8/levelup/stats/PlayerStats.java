@@ -1,6 +1,9 @@
 package github.catchaos8.levelup.stats;
 
 
+import github.catchaos8.levelup.networking.ModNetwork;
+import github.catchaos8.levelup.networking.packet.IncreaseStatC2SPacket;
+import github.catchaos8.levelup.networking.packet.StatDataSyncS2CPacket;
 import net.minecraft.nbt.CompoundTag;
 
 import java.util.Arrays;
@@ -57,6 +60,7 @@ public class PlayerStats {
         nbt.putInt("classxp", stats[6]);
         nbt.putInt("classLevel", stats[7]);
     }
+
     public void loadNBTData(CompoundTag nbt) {
         stats[0] = nbt.getInt("constitution");
         stats[1] = nbt.getInt("dexterity");
