@@ -67,7 +67,7 @@ public class IncreaseStatC2SPacket {
                         //Set Modifier to attributes based on stats
                         if(type == 0) { //Constitution
                             //HP Increase
-                            makeAttributeMod(0,"Health", (float) 0.01,
+                            makeAttributeMod(0,"Health", (float) 0.025,
                                     AttributeModifier.Operation.MULTIPLY_BASE, player,
                                     STATS_MOD_UUID, Attributes.MAX_HEALTH);
                             //Max fall before fall dmg is in mod events
@@ -90,13 +90,17 @@ public class IncreaseStatC2SPacket {
                                     AttributeModifier.Operation.MULTIPLY_BASE, player,
                                     STATS_MOD_UUID, Attributes.ATTACK_DAMAGE);
 
-                            //Jump height somewhere else
+                            //Mining speed somewhere else
 
                         } else if(type == 3) { //Vitality
 
                             //Regen somewhere else
 
-                            //Break speed somewhere else
+                            //Armor
+                            makeAttributeMod(2, "Armour", (float) 0.01,
+                                    AttributeModifier.Operation.MULTIPLY_BASE, player,
+                                    STATS_MOD_UUID, Attributes.ARMOR);
+
 
                         } else if(type == 4) { //Endurance
 
@@ -139,8 +143,6 @@ public class IncreaseStatC2SPacket {
                         if (xp >= xpNeeded && level < maxLevel) {
                             //Level
                             stats.addStat(7, 1);
-                            player.sendSystemMessage(Component.literal("" + xpNeeded));
-
                             //XP
                             stats.subStat(6, xpNeeded);
                             //FreePoints

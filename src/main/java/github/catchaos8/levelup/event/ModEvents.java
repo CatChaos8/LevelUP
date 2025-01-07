@@ -14,10 +14,14 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.common.extensions.IForgePotion;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.living.LivingBreatheEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -113,12 +117,29 @@ public class ModEvents {
         }
     }
 
-    //Vitality Regen/s
+    //Strength mining speed
+    @SubscribeEvent
+    public static void onMiningSpeed(PlayerEvent.BreakSpeed event) {
+        Player player = event.getEntity();
+        if (!player.level().isClientSide) {
+            player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
+                int strength = stats.getStat(2);
+                float multiplier = strength*LevelUPCommonConfig.STRENGTH_MINING_SPEED.get();
+
+                if(strength > 0) {
+                    event.setNewSpeed(event.getNewSpeed()*multiplier);
+                }
+            });
+        }
+    }
+
+    //Vitality
     @SubscribeEvent
     public static void onLivingUpdate(LivingEvent.LivingTickEvent event) {
         if (event.getEntity() instanceof Player player) {
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
                 int vitality = stats.getStat(3);
+                //Regen
                 float regenMulti = LevelUPCommonConfig.VITALITY_HP_REGEN.get();
                 if (vitality > 0) {
                     player.heal(vitality*regenMulti);
@@ -127,6 +148,7 @@ public class ModEvents {
         }
     }
 
+    //Constitution max height before fall
     @SubscribeEvent
     public static void onLivingFall(LivingFallEvent event) {
         if (event.getEntity() instanceof Player player) {
@@ -148,5 +170,4 @@ public class ModEvents {
             });
         }
     }
-
 }

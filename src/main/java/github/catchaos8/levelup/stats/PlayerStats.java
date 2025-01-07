@@ -51,7 +51,6 @@ public class PlayerStats {
         nbt.putInt("vitality", stats[3]);
         nbt.putInt("endurance", stats[4]);
 
-
         nbt.putInt("freepoints", stats[5]);
         nbt.putInt("classxp", stats[6]);
         nbt.putInt("classLevel", stats[7]);
