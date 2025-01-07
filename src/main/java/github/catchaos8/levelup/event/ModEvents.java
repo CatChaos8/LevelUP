@@ -19,6 +19,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -125,4 +126,27 @@ public class ModEvents {
             });
         }
     }
+
+    @SubscribeEvent
+    public static void onLivingFall(LivingFallEvent event) {
+        if (event.getEntity() instanceof Player player) {
+            player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
+                if(event.getDistance() > 0) {
+                    int constitution = stats.getStat(0);
+                    float fallDMGReduction = LevelUPCommonConfig.CONSTITUTION_FALL_DAMAGE_REDUCTION.get();
+
+                    float currentDamage = event.getDamageMultiplier() * event.getDistance();
+
+                    // Apply flat reduction
+                    float newDamage = Math.max(0, currentDamage - fallDMGReduction * constitution);
+                    if (!player.level().isClientSide) {
+                        if (constitution > 0) {
+                            event.setDamageMultiplier(newDamage / event.getDistance());
+                        }
+                    }
+                }
+            });
+        }
+    }
+
 }
