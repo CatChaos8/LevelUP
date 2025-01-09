@@ -3,7 +3,6 @@ package github.catchaos8.levelup.commands.set;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -26,11 +25,12 @@ public class SetEndCommand {
 
     }
 
-    private int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+    private int execute(CommandContext<CommandSourceStack> context) {
         ServerPlayer player = context.getSource().getPlayer();
 
         int amount = IntegerArgumentType.getInteger(context, "amount");
 
+        assert player != null;
         player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
             stats.setStat(4, amount);
 

@@ -29,15 +29,7 @@ public class StatDataSyncS2CPacket {
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
 
-        context.enqueueWork(() -> {
-            ClientStatData.set(stat);
-
-        });
+        context.enqueueWork(() -> ClientStatData.set(stat));
         return true;
     }
-
-    private boolean hasEnoughPoints(ServerPlayer player) {
-        return true;
-    }
-
 }

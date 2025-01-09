@@ -1,7 +1,7 @@
 package github.catchaos8.levelup.client;
 
 public class ClientStatData {
-    private static int playerStats[];
+    private static int[] playerStats;
 
     public static void set(int[] stats) {
         ClientStatData.playerStats = stats;
@@ -11,4 +11,7 @@ public class ClientStatData {
         return playerStats;
     }
 
+    public int getStat(int type) {
+        return playerStats[type];
+    }
 }
