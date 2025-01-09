@@ -23,6 +23,7 @@ public class ClientEvents {
         public static void onKeyInput(InputEvent.Key event){
 
             if(KeyBinding.OPEN_KEY.consumeClick()) {
+                assert Minecraft.getInstance().player != null;
                 Minecraft.getInstance().player.sendSystemMessage(Component.literal("Pressed open GUI key"));
 
                 DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> ClientHooks::openLevelUPGui);

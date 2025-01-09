@@ -3,7 +3,6 @@ package github.catchaos8.levelup.commands.set;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;

@@ -11,6 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class LevelUPScreen extends Screen {
 
@@ -56,14 +57,19 @@ public class LevelUPScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+    public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         renderBackground(graphics);
         graphics.blit(GUI_LOCATION, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
         super.render(graphics, mouseX, mouseY, partialTicks);
+        assert this.minecraft != null;
         graphics.drawString(this.minecraft.font, TITLE, this.leftPos + 8, this.topPos + 8, 0x404040, false);
 
 
-        graphics.drawString(this.font, "Constitution: %d".formatted(this.getStat(0)), this.leftPos + 40, this.topPos + 20, 0x404040, false);
+        graphics.drawString(this.font, "Constitution: %d".formatted(this.getStat(0)),
+                this.leftPos + 20, this.topPos + 20, 0x404040, false);
+
+        graphics.drawString(this.font, "Dexterity: %d".formatted(this.getStat(1)),
+                this.leftPos + 20, this.topPos + 40, 0x404040, false);
     }
     private void handleConstitutionButton(Button increase) {
 
