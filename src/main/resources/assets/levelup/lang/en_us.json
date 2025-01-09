@@ -17,5 +17,6 @@
   "stat.levelup.cxp" : "Class XP: ",
   "stat.levelup.clvl": "Class LVL: ",
 
-  "message.levelup.increase_con": "Constitution Increased"
+  "gui.levelup.level_gui": "LevelUP",
+  "gui.levelup.constitution": "Constitution: "
 }

@@ -1,5 +1,6 @@
 package github.catchaos8.levelup.event;
 import github.catchaos8.levelup.LevelUP;
+import github.catchaos8.levelup.client.screen.ClientHooks;
 import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.networking.packet.IncreaseStatC2SPacket;
 import github.catchaos8.levelup.utility.KeyBinding;
@@ -10,6 +11,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 
 public class ClientEvents {
@@ -23,6 +25,7 @@ public class ClientEvents {
             if(KeyBinding.OPEN_KEY.consumeClick()) {
                 Minecraft.getInstance().player.sendSystemMessage(Component.literal("Pressed open GUI key"));
 
+                DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> ClientHooks::openLevelUPGui);
             }
 
             if(KeyBinding.UPGRADE_CON.consumeClick()) {

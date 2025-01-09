@@ -11,7 +11,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.network.NetworkEvent;
-import org.w3c.dom.Attr;
 
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -21,8 +20,8 @@ public class IncreaseStatC2SPacket {
 
     private static final UUID STATS_MOD_UUID = UUID.fromString("d7663cf7-09d3-48a9-9e22-bc0f495a96b8");
 
-    private int type;
-    private int amount;
+    private final int type;
+    private final int amount;
 
 
     public IncreaseStatC2SPacket(int type, int amount) {
@@ -44,7 +43,7 @@ public class IncreaseStatC2SPacket {
         buf.writeInt(amount);
     }
 
-    public boolean handle(Supplier<NetworkEvent.Context> supplier) {
+    public void handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
 
         context.enqueueWork(() -> {
@@ -55,6 +54,7 @@ public class IncreaseStatC2SPacket {
 
             if(type <= 4) {
                 //Check if freestats is > 0
+                assert player != null;
                 player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
 
                     if (stats.getStat(5) > 0) {
@@ -67,7 +67,8 @@ public class IncreaseStatC2SPacket {
                         //Set Modifier to attributes based on stats
                         if(type == 0) { //Constitution
                             //HP Increase
-                            makeAttributeMod(0,"Health", (float) 0.025,
+                            makeAttributeMod(0,"Health",
+                                    LevelUPCommonConfig.CONSTITUTION_HP.get(),
                                     AttributeModifier.Operation.MULTIPLY_BASE, player,
                                     STATS_MOD_UUID, Attributes.MAX_HEALTH);
                             //Max fall before fall dmg is in mod events
@@ -90,7 +91,11 @@ public class IncreaseStatC2SPacket {
                                     AttributeModifier.Operation.MULTIPLY_BASE, player,
                                     STATS_MOD_UUID, Attributes.ATTACK_DAMAGE);
 
-                            //Mining speed somewhere else
+                            //Knockback
+                            makeAttributeMod(2, "Knockback", (float) 0.01,
+                                    AttributeModifier.Operation.MULTIPLY_BASE, player,
+                                    STATS_MOD_UUID, Attributes.ATTACK_KNOCKBACK);
+
 
                         } else if(type == 3) { //Vitality
 
@@ -127,6 +132,7 @@ public class IncreaseStatC2SPacket {
             } else {
                 //Get the equation from the config here
 
+                assert player != null;
                 player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
 
                     if (type == 6) {
@@ -165,7 +171,6 @@ public class IncreaseStatC2SPacket {
             }
 
         });
-        return true;
     }
 
 

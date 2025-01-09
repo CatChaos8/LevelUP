@@ -25,6 +25,7 @@ public class SetAllStatsCommand {
 
     public SetAllStatsCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("levelup")
+                        .requires(commandSource -> commandSource.hasPermission(4))
                 .then(Commands.literal("stats")
                 .then(Commands.literal("set")
                         .then(Commands.literal("all")
@@ -33,11 +34,12 @@ public class SetAllStatsCommand {
 
     }
 
-    private int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+    private int execute(CommandContext<CommandSourceStack> context) {
         ServerPlayer player = context.getSource().getPlayer();
 
         int amount = IntegerArgumentType.getInteger(context, "amount");
 
+        assert player != null;
         player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stat -> {
 
             for (int i = 0; i <= 7; i++) {
