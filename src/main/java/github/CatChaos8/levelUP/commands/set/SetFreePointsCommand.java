@@ -3,6 +3,8 @@ package github.catchaos8.levelup.commands.set;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import github.catchaos8.levelup.networking.ModNetwork;
+import github.catchaos8.levelup.networking.packet.IncreaseStatC2SPacket;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -34,6 +36,7 @@ public class SetFreePointsCommand {
 
             stats.setStat(5, amount);
             player.sendSystemMessage(Component.translatable(FREEPOINTS).append(Component.literal("" + stats.getStat(5))));
+            ModNetwork.sendToServer(new IncreaseStatC2SPacket(5, 0));
         });
 
         return 1;

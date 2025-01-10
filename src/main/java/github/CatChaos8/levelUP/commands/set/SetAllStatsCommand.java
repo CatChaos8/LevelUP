@@ -3,6 +3,8 @@ package github.catchaos8.levelup.commands.set;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import github.catchaos8.levelup.networking.ModNetwork;
+import github.catchaos8.levelup.networking.packet.IncreaseStatC2SPacket;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -43,6 +45,7 @@ public class SetAllStatsCommand {
 
             for (int i = 0; i <= 7; i++) {
                 stat.setStat(i, amount);
+                ModNetwork.sendToServer(new IncreaseStatC2SPacket(i, 0));
             }
 
             player.sendSystemMessage(Component.literal(("Your stats are: ")));

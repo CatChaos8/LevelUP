@@ -18,5 +18,6 @@
   "stat.levelup.clvl": "Class LVL: ",
 
   "gui.levelup.level_gui": "LevelUP",
+  "gui.levelup.level_gui_limit": "Stat Limiter",
   "gui.levelup.plus": "+"
 }

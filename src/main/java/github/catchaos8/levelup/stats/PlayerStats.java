@@ -19,6 +19,14 @@ public class PlayerStats {
             0  //Class Level
     };
 
+    private int[] limitedStats = {
+            0,
+            0,
+            0,
+            0,
+            0
+    };
+
     public int[] getStatArr() {
         return this.stats;
     }
@@ -39,6 +47,21 @@ public class PlayerStats {
         this.stats[statType] = Math.max(amount, min_stat);
     }
 
+    public int[] getLimitedStatsArr() {
+        return this.stats;
+    }
+
+    public void addLimitedStats(int statType, int add) {
+        this.limitedStats[statType] = Math.min(limitedStats[statType] + add, stats[statType]);
+    }
+    public void subLimitedStats(int statType, int sub) {
+        this.limitedStats[statType] = Math.max(limitedStats[statType] - sub, stats[statType]);
+    }
+    public void setLimitedStats(int statType, int amount) {
+        this.limitedStats[statType] = Math.max(amount, min_stat);
+    }
+
+
     public void copyFrom(PlayerStats source){
         this.stats = Arrays.copyOf(source.stats, source.stats.length);
     }
@@ -54,7 +77,10 @@ public class PlayerStats {
         nbt.putInt("freepoints", stats[5]);
         nbt.putInt("classxp", stats[6]);
         nbt.putInt("classLevel", stats[7]);
+
+        nbt.putIntArray("limited_stats", limitedStats);
     }
+
 
     public void loadNBTData(CompoundTag nbt) {
         stats[0] = nbt.getInt("constitution");
@@ -66,6 +92,8 @@ public class PlayerStats {
         stats[5] = nbt.getInt("freepoints");
         stats[6] = nbt.getInt("classxp");
         stats[7] = nbt.getInt("classLevel");
+
+        limitedStats = nbt.getIntArray("limited_stats");
     }
 
 }
