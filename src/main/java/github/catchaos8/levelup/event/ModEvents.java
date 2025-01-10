@@ -92,7 +92,7 @@ public class ModEvents {
         if(!event.getLevel().isClientSide()) {
             if(event.getEntity() instanceof ServerPlayer player) {
                 player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats ->
-                        ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr(), stats.getLimitedStatsArr()), player));
+                        ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player));
             }
         }
     }
@@ -130,7 +130,7 @@ public class ModEvents {
                     }
 
                     //Sync
-                    ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr(), stats.getLimitedStatsArr()), serverPlayer);
+                    ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), serverPlayer);
                 });
             }
         }

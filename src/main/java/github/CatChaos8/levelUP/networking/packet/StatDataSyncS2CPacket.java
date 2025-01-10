@@ -9,29 +9,23 @@ import java.util.function.Supplier;
 public class StatDataSyncS2CPacket {
 
     private int[] stat;
-    private int[] limitedStat;
 
-    public StatDataSyncS2CPacket(int[] stat, int[] limitedStat) {
+    public StatDataSyncS2CPacket(int[] stat) {
         this.stat = stat;
-        this.limitedStat = limitedStat;
     }
 
     public StatDataSyncS2CPacket(FriendlyByteBuf buf) {
         this.stat = buf.readVarIntArray();
-
-        this.limitedStat = buf.readVarIntArray();
     }
 
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeVarIntArray(stat);
-
-        buf.writeVarIntArray(limitedStat);
     }
 
     public boolean handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
 
-        context.enqueueWork(() -> ClientStatData.set(stat, limitedStat));
+        context.enqueueWork(() -> ClientStatData.set(stat));
         return true;
     }
 }

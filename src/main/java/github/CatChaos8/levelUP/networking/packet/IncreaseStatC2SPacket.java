@@ -63,7 +63,7 @@ public class IncreaseStatC2SPacket {
                         //Sub freepoints
                         stats.subStat(5, amount);
                         //Sync
-                        ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr(), stats.getLimitedStatsArr()), player);
+                        ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
                         //Set Modifier to attributes based on stats
                         if(type == 0) { //Constitution
                             //HP Increase
@@ -133,7 +133,7 @@ public class IncreaseStatC2SPacket {
                         //say not enough points
 
                         //Sync
-                        ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr(), stats.getLimitedStatsArr()), player);
+                        ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
                     }
                 });
             } else {
@@ -166,12 +166,12 @@ public class IncreaseStatC2SPacket {
                         }
 
                         //Sync
-                        ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr(), stats.getLimitedStatsArr()), player);
+                        ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
                     } else {
                         stats.addStat(type, amount);
 
                         //Sync
-                        ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr(), stats.getLimitedStatsArr()), player);
+                        ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
                     }
                 });
 

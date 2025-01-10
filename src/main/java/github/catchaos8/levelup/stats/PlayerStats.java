@@ -51,6 +51,11 @@ public class PlayerStats {
         return this.stats;
     }
 
+
+    public int getLimitedStats(int type) {
+        return limitedStats[type];
+    }
+
     public void addLimitedStats(int statType, int add) {
         this.limitedStats[statType] = Math.min(limitedStats[statType] + add, stats[statType]);
     }

@@ -11,6 +11,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import org.jetbrains.annotations.NotNull;
 
 public class LevelUPScreen extends Screen {
@@ -24,6 +26,9 @@ public class LevelUPScreen extends Screen {
     private static final Component FREEPOINTS = Component.translatable("stat.levelup.fp");
 
     private static final Component PLUS = Component.translatable("gui.levelup.plus");
+
+    private static final Component LIMIT = Component.translatable("gui.levelup.limit");
+
     private static final ResourceLocation GUI_LOCATION = new ResourceLocation(LevelUP.MOD_ID, "textures/gui/container/levelup_gui.png");
     private static final ResourceLocation XP_BAR_BG = new ResourceLocation(LevelUP.MOD_ID, "textures/gui/sprites/levelup/experience_bar_background.png");
     private static final ResourceLocation XP_BAR_FULL = new ResourceLocation(LevelUP.MOD_ID, "textures/gui/sprites/levelup/experience_bar_progress.png");
@@ -83,7 +88,15 @@ public class LevelUPScreen extends Screen {
                         .bounds(this.leftPos + 158, this.topPos + 118, 10, 10)
                         .build());
 
+        Button limitStats = addRenderableWidget(
+                ImageButton.builder(
+                                LIMIT,
+                                this::handleLimitButton)
+                        .bounds(this.leftPos + 108, this.topPos + 137, 60, 12)
+                        .build());
+
     }
+
 
     @Override
     public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
@@ -124,6 +137,10 @@ public class LevelUPScreen extends Screen {
     private void handleEndButton(Button increase) {
         ModNetwork.sendToServer(new IncreaseStatC2SPacket(4, 1));
     }
+    private void handleLimitButton(Button button) {
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> ClientHooks::openLevelUPLimitGUI);
+    }
+
 
     private int getStat(int type) {
         int[] stats = ClientStatData.getPlayerStats();

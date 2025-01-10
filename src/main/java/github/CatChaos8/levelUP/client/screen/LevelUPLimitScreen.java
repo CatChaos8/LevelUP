@@ -1,6 +1,7 @@
 package github.catchaos8.levelup.client.screen;
 
 import github.catchaos8.levelup.LevelUP;
+import github.catchaos8.levelup.client.ClientLimitedStatData;
 import github.catchaos8.levelup.client.ClientStatData;
 import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.networking.packet.IncreaseStatC2SPacket;
@@ -13,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.gui.widget.ForgeSlider;
 import org.jetbrains.annotations.NotNull;
+import org.stringtemplate.v4.ST;
 
 public class LevelUPLimitScreen extends Screen {
 
@@ -51,14 +53,63 @@ public class LevelUPLimitScreen extends Screen {
 
         ForgeSlider increaseCon = addRenderableWidget(new ForgeSlider(
                 leftPos + 8,
-                topPos +20,
-                168,
-                158,
+                topPos + 8,
+                160,
+                20,
                 CONSTITUTION,
                 Component.empty(),
                 0.0,
                 getStat(0),
-                getStat(0),
+                getLimitedStat(0),
+                true
+        ));
+        increaseCon.setValue(getLimitedStat(0));
+        ForgeSlider increaseDex = addRenderableWidget(new ForgeSlider(
+                leftPos + 8,
+                topPos + 36,
+                160,
+                20,
+                DEXTERITY,
+                Component.empty(),
+                0.0,
+                getStat(1),
+                getLimitedStat(1),
+                true
+        ));
+        ForgeSlider increaseStr = addRenderableWidget(new ForgeSlider(
+                leftPos + 8,
+                topPos + 62,
+                160,
+                20,
+                STRENGTH,
+                Component.empty(),
+                0.0,
+                getStat(2),
+                getLimitedStat(2),
+                true
+        ));
+        ForgeSlider increaseVit = addRenderableWidget(new ForgeSlider(
+                leftPos + 8,
+                topPos + 90,
+                160,
+                20,
+                VITALITY,
+                Component.empty(),
+                0.0,
+                getStat(3),
+                getLimitedStat(3),
+                true
+        ));
+        ForgeSlider increaseEnd = addRenderableWidget(new ForgeSlider(
+                leftPos + 8,
+                topPos + 118,
+                160,
+                20,
+                ENDURANCE,
+                Component.empty(),
+                0.0,
+                getStat(4),
+                getLimitedStat(4),
                 true
         ));
     }
@@ -68,31 +119,23 @@ public class LevelUPLimitScreen extends Screen {
         renderBackground(graphics);
         graphics.blit(GUI_LOCATION, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
         super.render(graphics, mouseX, mouseY, partialTicks);
-        assert this.minecraft != null;
-
-        graphics.drawString(this.font, CONSTITUTION.getString() + "%d" .formatted(this.getStat(0)),
-                this.leftPos + 8, this.topPos + 40, 0x404040, false);
-        graphics.drawString(this.font, DEXTERITY.getString() + "%d".formatted(this.getStat(1)),
-                this.leftPos + 8, this.topPos + 60, 0x404040, false);
-        graphics.drawString(this.font, STRENGTH.getString() + "%d".formatted(this.getStat(2)),
-                this.leftPos + 8, this.topPos + 80, 0x404040, false);
-        graphics.drawString(this.font, VITALITY.getString() + "%d".formatted(this.getStat(3)),
-                this.leftPos + 8, this.topPos + 100, 0x404040, false);
-        graphics.drawString(this.font, ENDURANCE.getString() + "%d".formatted(this.getStat(4)),
-                this.leftPos + 8, this.topPos + 120, 0x404040, false);
-        graphics.drawString(this.font, FREEPOINTS.getString() + "%d".formatted(this.getStat(5)),
-                this.leftPos + 8, this.topPos + 140, 0x404040, false);
-
-
     }
 
     private int getStat(int type) {
-        int[] stats = ClientStatData.getLimitedPlayerStats();
+        int[] stats = ClientStatData.getPlayerStats();
         if(this.minecraft != null && this.minecraft.player != null) {
             return stats[type];
         }
         return 0;
     }
+    private int getLimitedStat(int type) {
+        int[] stats = ClientLimitedStatData.getLimitedPlayerStats();
+        if(this.minecraft != null && this.minecraft.player != null) {
+            return stats[type];
+        }
+        return 0;
+    }
+
     @Override
     public boolean isPauseScreen() {
         return false;
