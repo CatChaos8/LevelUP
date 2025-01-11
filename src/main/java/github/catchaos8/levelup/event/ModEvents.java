@@ -141,7 +141,7 @@ public class ModEvents {
     public static void onLivingUpdate(LivingEvent.LivingTickEvent event) {
         if (event.getEntity() instanceof Player player) {
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
-                int vitality = stats.getStat(3);
+                int vitality = stats.getStat(11);
                 //Regen
                 float regenMulti = LevelUPCommonConfig.VITALITY_HP_REGEN.get();
                 if (vitality > 0) {
@@ -157,7 +157,7 @@ public class ModEvents {
         if (event.getEntity() instanceof Player player) {
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
                 if(event.getDistance() > 0) {
-                    int constitution = stats.getStat(0);
+                    int constitution = stats.getStat(8);
                     float fallDMGReduction = LevelUPCommonConfig.CONSTITUTION_FALL_DAMAGE_REDUCTION.get();
 
                     float currentDamage = event.getDamageMultiplier() * event.getDistance();
