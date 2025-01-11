@@ -164,16 +164,16 @@ public class LevelUPScreen extends Screen {
 
         // Draw the XP bar background using the XP_BAR_BG texture (142x5)
         // The background needs to be scaled properly to match the XP bar size
-        graphics.blit(XP_BAR_BG, adjustedX, adjustedY, 0, 0, width, height, 162, 5); // Background texture
+        graphics.blit(XP_BAR_BG, adjustedX, adjustedY-10, 0, 0, width, height, 162, 5); // Background texture
 
         // Draw the XP progress using the XP_BAR_FULL texture (142x5)
         // Scale the progress width based on the current XP
-        graphics.blit(XP_BAR_FULL, adjustedX, adjustedY, 0, 0, filledWidth, height, 162, 5); // Progress texture
+        graphics.blit(XP_BAR_FULL, adjustedX, adjustedY-10, 0, 0, filledWidth, height, 162, 5); // Progress texture
 
         // Optionally, draw the XP value as text
         graphics.drawString(this.font, "Level %d - XP: %d / %d".formatted(level, currentXp, maxXp),
                 adjustedX + width / 2 - this.font.width("Level %d - XP: %d / %d".formatted(level, currentXp, maxXp)) / 2,
-                adjustedY - 10, 0x404040, false); // White text above the bar
+                adjustedY, 0x404040, false); // White text above the bar
     }
 
 

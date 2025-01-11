@@ -1,20 +1,16 @@
 package github.catchaos8.levelup.client.screen;
 
 import github.catchaos8.levelup.LevelUP;
-import github.catchaos8.levelup.client.ClientLimitedStatData;
 import github.catchaos8.levelup.client.ClientStatData;
 import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.networking.packet.IncreaseStatC2SPacket;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.gui.widget.ForgeSlider;
 import org.jetbrains.annotations.NotNull;
-import org.stringtemplate.v4.ST;
 
 public class LevelUPLimitScreen extends Screen {
 
@@ -51,7 +47,7 @@ public class LevelUPLimitScreen extends Screen {
         Level level = this.minecraft.level;
         if(level == null) return;
 
-        ForgeSlider increaseCon = addRenderableWidget(new ForgeSlider(
+        ForgeSlider con = addRenderableWidget(new ForgeSlider(
                 leftPos + 8,
                 topPos + 8,
                 160,
@@ -60,11 +56,23 @@ public class LevelUPLimitScreen extends Screen {
                 Component.empty(),
                 0.0,
                 getStat(0),
-                getLimitedStat(0),
+                getStat(8),
                 true
-        ));
-        increaseCon.setValue(getLimitedStat(0));
-        ForgeSlider increaseDex = addRenderableWidget(new ForgeSlider(
+        ) {
+            @Override
+            public void onRelease(double mouseX, double mouseY) {
+                super.onRelease(mouseX, mouseY);
+
+                setLimitedStat(8, (int) this.getValue());
+            }
+            @Override
+            public void onDrag(double mouseX, double mouseY, double deltaX, double deltaY) {
+                super.onDrag(mouseX, mouseY, deltaX, deltaY);
+                setLimitedStat(8, (int) this.getValue());
+            }
+        });
+
+        ForgeSlider dex = addRenderableWidget(new ForgeSlider(
                 leftPos + 8,
                 topPos + 36,
                 160,
@@ -73,10 +81,23 @@ public class LevelUPLimitScreen extends Screen {
                 Component.empty(),
                 0.0,
                 getStat(1),
-                getLimitedStat(1),
+                getStat(9),
                 true
-        ));
-        ForgeSlider increaseStr = addRenderableWidget(new ForgeSlider(
+        ){
+            @Override
+            public void onRelease(double mouseX, double mouseY) {
+                super.onRelease(mouseX, mouseY);
+
+                setLimitedStat(9, (int) this.getValue());
+            }
+            @Override
+            public void onDrag(double mouseX, double mouseY, double deltaX, double deltaY) {
+                super.onDrag(mouseX, mouseY, deltaX, deltaY);
+                setLimitedStat(9, (int) this.getValue());
+            }
+        });
+
+        ForgeSlider str = addRenderableWidget(new ForgeSlider(
                 leftPos + 8,
                 topPos + 62,
                 160,
@@ -85,10 +106,23 @@ public class LevelUPLimitScreen extends Screen {
                 Component.empty(),
                 0.0,
                 getStat(2),
-                getLimitedStat(2),
+                getStat(10),
                 true
-        ));
-        ForgeSlider increaseVit = addRenderableWidget(new ForgeSlider(
+        ){
+            @Override
+            public void onRelease(double mouseX, double mouseY) {
+                super.onRelease(mouseX, mouseY);
+
+                setLimitedStat(10, (int) this.getValue());
+            }
+            @Override
+            public void onDrag(double mouseX, double mouseY, double deltaX, double deltaY) {
+                super.onDrag(mouseX, mouseY, deltaX, deltaY);
+                setLimitedStat(10, (int) this.getValue());
+            }
+        });
+
+        ForgeSlider vit = addRenderableWidget(new ForgeSlider(
                 leftPos + 8,
                 topPos + 90,
                 160,
@@ -97,10 +131,23 @@ public class LevelUPLimitScreen extends Screen {
                 Component.empty(),
                 0.0,
                 getStat(3),
-                getLimitedStat(3),
+                getStat(11),
                 true
-        ));
-        ForgeSlider increaseEnd = addRenderableWidget(new ForgeSlider(
+        ){
+            @Override
+            public void onRelease(double mouseX, double mouseY) {
+                super.onRelease(mouseX, mouseY);
+
+                setLimitedStat(11, (int) this.getValue());
+            }
+            @Override
+            public void onDrag(double mouseX, double mouseY, double deltaX, double deltaY) {
+                super.onDrag(mouseX, mouseY, deltaX, deltaY);
+                setLimitedStat(11, (int) this.getValue());
+            }
+        });
+
+        ForgeSlider end = addRenderableWidget(new ForgeSlider(
                 leftPos + 8,
                 topPos + 118,
                 160,
@@ -109,9 +156,21 @@ public class LevelUPLimitScreen extends Screen {
                 Component.empty(),
                 0.0,
                 getStat(4),
-                getLimitedStat(4),
+                getStat(12),
                 true
-        ));
+        ){
+            @Override
+            public void onRelease(double mouseX, double mouseY) {
+                super.onRelease(mouseX, mouseY);
+
+                setLimitedStat(12, (int) this.getValue());
+            }
+            @Override
+            public void onDrag(double mouseX, double mouseY, double deltaX, double deltaY) {
+                super.onDrag(mouseX, mouseY, deltaX, deltaY);
+                setLimitedStat(12, (int) this.getValue());
+            }
+        });
     }
 
     @Override
@@ -128,12 +187,9 @@ public class LevelUPLimitScreen extends Screen {
         }
         return 0;
     }
-    private int getLimitedStat(int type) {
-        int[] stats = ClientLimitedStatData.getLimitedPlayerStats();
-        if(this.minecraft != null && this.minecraft.player != null) {
-            return stats[type];
-        }
-        return 0;
+
+    private void setLimitedStat(int type, int amount) {
+        ModNetwork.sendToServer(new IncreaseStatC2SPacket(type, amount));
     }
 
     @Override
