@@ -24,9 +24,9 @@ public class GetAllStatsCommand {
     public GetAllStatsCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("levelup")
                 .then(Commands.literal("stats")
-                .then(Commands.literal("get")
-                        .then(Commands.literal("all")
-                .executes((this::execute))))));
+                        .then(Commands.literal("get")
+                                .then(Commands.literal("all")
+                                        .executes((this::execute))))));
 
     }
 
