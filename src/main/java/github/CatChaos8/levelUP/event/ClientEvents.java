@@ -1,10 +1,10 @@
-package github.fixinggithub.levelup.event;
+package github.catchaos8.levelup.event;
 
-import github.fixinggithub.levelup.LevelUP;
-import github.fixinggithub.levelup.client.screen.ClientHooks;
-import github.fixinggithub.levelup.networking.ModNetwork;
-import github.fixinggithub.levelup.networking.packet.IncreaseStatC2SPacket;
-import github.fixinggithub.levelup.utility.KeyBinding;
+import github.catchaos8.levelup.LevelUP;
+import github.catchaos8.levelup.client.screen.ClientHooks;
+import github.catchaos8.levelup.networking.ModNetwork;
+import github.catchaos8.levelup.networking.packet.IncreaseStatC2SPacket;
+import github.catchaos8.levelup.utility.KeyBinding;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;

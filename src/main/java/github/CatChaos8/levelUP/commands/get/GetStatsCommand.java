@@ -1,9 +1,9 @@
-package github.fixinggithub.levelup.commands.get;
+package github.catchaos8.levelup.commands.get;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import github.fixinggithub.levelup.stats.PlayerStatsProvider;
+import github.catchaos8.levelup.stats.PlayerStatsProvider;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;

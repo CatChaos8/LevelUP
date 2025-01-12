@@ -1,13 +1,13 @@
-package github.fixinggithub.levelup.event;
+package github.catchaos8.levelup.event;
 
-import github.fixinggithub.levelup.LevelUP;
-import github.fixinggithub.levelup.commands.get.*;
-import github.fixinggithub.levelup.commands.set.*;
-import github.fixinggithub.levelup.config.LevelUPCommonConfig;
-import github.fixinggithub.levelup.networking.ModNetwork;
-import github.fixinggithub.levelup.networking.packet.StatDataSyncS2CPacket;
-import github.fixinggithub.levelup.stats.PlayerStats;
-import github.fixinggithub.levelup.stats.PlayerStatsProvider;
+import github.catchaos8.levelup.LevelUP;
+import github.catchaos8.levelup.commands.get.*;
+import github.catchaos8.levelup.commands.set.*;
+import github.catchaos8.levelup.config.LevelUPCommonConfig;
+import github.catchaos8.levelup.networking.ModNetwork;
+import github.catchaos8.levelup.networking.packet.StatDataSyncS2CPacket;
+import github.catchaos8.levelup.stats.PlayerStats;
+import github.catchaos8.levelup.stats.PlayerStatsProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;

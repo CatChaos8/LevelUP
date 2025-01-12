@@ -1,4 +1,4 @@
-package github.fixinggithub.levelup.utility;
+package github.catchaos8.levelup.utility;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
