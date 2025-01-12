@@ -23,9 +23,9 @@ public class GetStatsCommand {
     public GetStatsCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("levelup")
                 .then(Commands.literal("stats")
-                .then(Commands.literal("get")
-                        .then(Commands.argument("stat", IntegerArgumentType.integer(0,7))
-                .executes((this::execute))))));
+                        .then(Commands.literal("get")
+                                .then(Commands.argument("stat", IntegerArgumentType.integer(0,7))
+                                        .executes((this::execute))))));
 
     }
 
