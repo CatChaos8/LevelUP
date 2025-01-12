@@ -145,7 +145,11 @@ public class ModEvents {
                 //Regen
                 float regenMulti = LevelUPCommonConfig.VITALITY_HP_REGEN.get();
                 if (vitality > 0) {
-                    player.heal(vitality*regenMulti);
+                    if(!player.level().getLevelData().isHardcore()) {
+                        player.heal(vitality * regenMulti);
+                    } else {
+                        player.heal(vitality*regenMulti/5);
+                    }
                 }
             });
         }
