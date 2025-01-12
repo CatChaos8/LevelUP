@@ -2,7 +2,6 @@ package github.catchaos8.levelup.commands.get;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -31,9 +30,10 @@ public class GetAllStatsCommand {
 
     }
 
-    private int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+    private int execute(CommandContext<CommandSourceStack> context) {
         ServerPlayer player = context.getSource().getPlayer();
 
+        assert player != null;
         player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(getStats -> {
             player.sendSystemMessage(Component.literal(("Your stats are: ")));
             player.sendSystemMessage(Component.translatable(CONSTITUTION).append(Component.literal("" + getStats.getStat(0))));
