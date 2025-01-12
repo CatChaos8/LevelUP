@@ -49,7 +49,7 @@ public class LevelUPLimitScreen extends Screen {
 
         ForgeSlider con = addRenderableWidget(new ForgeSlider(
                 leftPos + 8,
-                topPos + 8,
+                topPos + 18,
                 160,
                 20,
                 CONSTITUTION,
@@ -74,7 +74,7 @@ public class LevelUPLimitScreen extends Screen {
 
         ForgeSlider dex = addRenderableWidget(new ForgeSlider(
                 leftPos + 8,
-                topPos + 36,
+                topPos + 46,
                 160,
                 20,
                 DEXTERITY,
@@ -99,7 +99,7 @@ public class LevelUPLimitScreen extends Screen {
 
         ForgeSlider str = addRenderableWidget(new ForgeSlider(
                 leftPos + 8,
-                topPos + 62,
+                topPos + 72,
                 160,
                 20,
                 STRENGTH,
@@ -124,7 +124,7 @@ public class LevelUPLimitScreen extends Screen {
 
         ForgeSlider vit = addRenderableWidget(new ForgeSlider(
                 leftPos + 8,
-                topPos + 90,
+                topPos + 100,
                 160,
                 20,
                 VITALITY,
@@ -149,7 +149,7 @@ public class LevelUPLimitScreen extends Screen {
 
         ForgeSlider end = addRenderableWidget(new ForgeSlider(
                 leftPos + 8,
-                topPos + 118,
+                topPos + 128,
                 160,
                 20,
                 ENDURANCE,
@@ -177,6 +177,8 @@ public class LevelUPLimitScreen extends Screen {
     public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         renderBackground(graphics);
         graphics.blit(GUI_LOCATION, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+        graphics.drawString(this.font, TITLE,
+                this.leftPos + 8, this.topPos + 8, 0x404040, false);
         super.render(graphics, mouseX, mouseY, partialTicks);
     }
 
