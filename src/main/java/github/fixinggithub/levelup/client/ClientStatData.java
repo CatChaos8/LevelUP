@@ -1,0 +1,17 @@
+package github.fixinggithub.levelup.client;
+
+public class ClientStatData {
+    private static int[] playerStats;
+
+    public static void set(int[] stats) {
+        ClientStatData.playerStats = stats;
+    }
+
+    public static int[] getPlayerStats() {
+        return playerStats;
+    }
+
+    public int getStat(int type) {
+        return playerStats[type];
+    }
+}
