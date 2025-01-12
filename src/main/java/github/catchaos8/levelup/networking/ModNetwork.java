@@ -1,7 +1,8 @@
 package github.catchaos8.levelup.networking;
 
 import github.catchaos8.levelup.LevelUP;
-import github.catchaos8.levelup.networking.packet.*;
+import github.catchaos8.levelup.networking.packet.IncreaseStatC2SPacket;
+import github.catchaos8.levelup.networking.packet.StatDataSyncS2CPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;

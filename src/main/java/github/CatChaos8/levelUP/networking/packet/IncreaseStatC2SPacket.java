@@ -130,8 +130,6 @@ public class IncreaseStatC2SPacket {
                                     LevelUPCommonConfig.ENDURANCE_KNOCKBACK_RESISTANCE.get(),
                                     AttributeModifier.Operation.MULTIPLY_BASE, player,
                                     STATS_MOD_UUID, Attributes.KNOCKBACK_RESISTANCE);
-
-
                         }
 
                     } else {
