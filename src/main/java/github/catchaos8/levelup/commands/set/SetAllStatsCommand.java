@@ -26,7 +26,10 @@ public class SetAllStatsCommand {
 
     public SetAllStatsCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("levelup")
-                        .requires(commandSource -> commandSource.hasPermission(4))
+                        .requires(source -> {
+                            System.out.println(source.hasPermission(2));
+                            return source.hasPermission(2);
+                        })
                 .then(Commands.literal("stats")
                 .then(Commands.literal("set")
                         .then(Commands.literal("all")

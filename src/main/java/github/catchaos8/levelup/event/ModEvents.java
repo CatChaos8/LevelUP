@@ -63,6 +63,7 @@ public class ModEvents {
     public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player) {
             if(!event.getObject().getCapability(PlayerStatsProvider.PLAYER_STATS).isPresent()) {
+                System.out.println("LevelUP Capabilities Attached");
                 event.addCapability(new ResourceLocation(LevelUP.MOD_ID, "properties"), new PlayerStatsProvider());
             }
 
@@ -72,10 +73,15 @@ public class ModEvents {
     @SubscribeEvent
     public static void onPlayerCloned(PlayerEvent.Clone event) {
         if(event.isWasDeath()) {
-            event.getOriginal().getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(oldStore ->
-                    event.getEntity().getCapability(PlayerStatsProvider.PLAYER_STATS)
-                            .ifPresent(newStore -> newStore
-                                    .copyFrom(oldStore)));
+            Player original = event.getOriginal();
+            original.revive();
+
+            event.getOriginal().getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(oldStore -> {
+                    event.getEntity().getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(newStore -> {
+                        newStore.copyFrom(oldStore);
+                        newStore.setStat(6, 0);
+                    });
+             });
 
 
 
@@ -83,9 +89,12 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void onRegisterCapabilites(RegisterCapabilitiesEvent event) {
+    public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
+        System.out.println("Attempting to register capabilities...");
         event.register(PlayerStats.class);
+        System.out.println("LevelUP Capabilities Registered");
     }
+
 
     @SubscribeEvent
     public static void onPlayerJoinWorld(EntityJoinLevelEvent event) {
