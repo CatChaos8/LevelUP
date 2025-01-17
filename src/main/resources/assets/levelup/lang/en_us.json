@@ -20,5 +20,10 @@
   "gui.levelup.level_gui": "LevelUP",
   "gui.levelup.level_gui_limit": "Stat Limiter",
   "gui.levelup.plus": "+",
-  "gui.levelup.limit": "Limit Stats"
+  "gui.levelup.limit": "Limit Stats",
+
+  "gui.levelup.info": "i",
+  "gui.levelup.percent_hp": "% health\n",
+  "gui.levelup.max_fall_height": " max fall height",
+  "gui.levelup.con_description": "Constitution \n"
 }

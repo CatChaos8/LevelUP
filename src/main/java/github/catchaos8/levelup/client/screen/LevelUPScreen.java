@@ -2,11 +2,13 @@ package github.catchaos8.levelup.client.screen;
 
 import github.catchaos8.levelup.LevelUP;
 import github.catchaos8.levelup.client.ClientStatData;
+import github.catchaos8.levelup.config.LevelUPCommonConfig;
 import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.networking.packet.IncreaseStatC2SPacket;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -27,12 +29,21 @@ public class LevelUPScreen extends Screen {
 
     private static final Component PLUS = Component.translatable("gui.levelup.plus");
 
+    private static final Component INFO = Component.translatable("gui.levelup.info");
+
+    private final Component CON_INFO = Component.translatable("gui.levelup.con_description")
+            .append(PLUS.getString() + LevelUPCommonConfig.CONSTITUTION_HP.get()*100 + Component.translatable("gui.levelup.percent_hp").getString())
+            .append(PLUS.getString() + LevelUPCommonConfig.CONSTITUTION_FALL_DAMAGE_REDUCTION.get() + Component.translatable("gui.levelup.max_fall_height").getString());
+
     private static final Component LIMIT = Component.translatable("gui.levelup.limit");
 
     private static final ResourceLocation GUI_LOCATION = new ResourceLocation(LevelUP.MOD_ID, "textures/gui/container/levelup_gui.png");
     private static final ResourceLocation XP_BAR_BG = new ResourceLocation(LevelUP.MOD_ID, "textures/gui/sprites/levelup/experience_bar_background.png");
     private static final ResourceLocation XP_BAR_FULL = new ResourceLocation(LevelUP.MOD_ID, "textures/gui/sprites/levelup/experience_bar_progress.png");
 
+    private static final int increase_button_x = 158;
+    private static final int info_button_x = 8;
+    private static final int text_x = 28;
 
     private final int imageWidth, imageHeight;
 
@@ -61,31 +72,31 @@ public class LevelUPScreen extends Screen {
                 ImageButton.builder(
                                 PLUS,
                                 this::handleConButton)
-                        .bounds(this.leftPos + 158, this.topPos + 38, 10, 10)
+                        .bounds(this.leftPos + increase_button_x, this.topPos + 38, 10, 10)
                         .build());
         Button increaseDex = addRenderableWidget(
                 ImageButton.builder(
                                 PLUS,
                                 this::handleDexButton)
-                        .bounds(this.leftPos + 158, this.topPos + 58, 10, 10)
+                        .bounds(this.leftPos + increase_button_x, this.topPos + 58, 10, 10)
                         .build());
         Button increaseStr = addRenderableWidget(
                 ImageButton.builder(
                                 PLUS,
                                 this::handleStrButton)
-                        .bounds(this.leftPos + 158, this.topPos + 78, 10, 10)
+                        .bounds(this.leftPos + increase_button_x, this.topPos + 78, 10, 10)
                         .build());
         Button increaseVit = addRenderableWidget(
                 ImageButton.builder(
                                 PLUS,
                                 this::handleVitButton)
-                        .bounds(this.leftPos + 158, this.topPos + 98, 10, 10)
+                        .bounds(this.leftPos + increase_button_x, this.topPos + 98, 10, 10)
                         .build());
         Button increaseEnd = addRenderableWidget(
                 ImageButton.builder(
                                 PLUS,
                                 this::handleEndButton)
-                        .bounds(this.leftPos + 158, this.topPos + 118, 10, 10)
+                        .bounds(this.leftPos + increase_button_x, this.topPos + 118, 10, 10)
                         .build());
 
         Button limitStats = addRenderableWidget(
@@ -94,6 +105,15 @@ public class LevelUPScreen extends Screen {
                                 this::handleLimitButton)
                         .bounds(this.leftPos + 108, this.topPos + 137, 60, 12)
                         .build());
+
+        Button constitutionInfo = addRenderableOnly(
+                ImageButton.builder(
+                        INFO, this::handleInfoButton)
+                        .bounds(this.leftPos + info_button_x, this.topPos + 38, 12, 12)
+                        .tooltip(Tooltip.create(CON_INFO))
+                        .build()
+                );
+
 
     }
 
@@ -108,17 +128,17 @@ public class LevelUPScreen extends Screen {
         drawXpBar(graphics, 7,20, this.imageWidth - 14, 5);
 
         graphics.drawString(this.font, CONSTITUTION.getString() + "%d" .formatted(this.getStat(0)),
-                this.leftPos + 8, this.topPos + 40, 0x404040, false);
+                this.leftPos + text_x, this.topPos + 40, 0x404040, false);
         graphics.drawString(this.font, DEXTERITY.getString() + "%d".formatted(this.getStat(1)),
-                this.leftPos + 8, this.topPos + 60, 0x404040, false);
+                this.leftPos + text_x, this.topPos + 60, 0x404040, false);
         graphics.drawString(this.font, STRENGTH.getString() + "%d".formatted(this.getStat(2)),
-                this.leftPos + 8, this.topPos + 80, 0x404040, false);
+                this.leftPos + text_x, this.topPos + 80, 0x404040, false);
         graphics.drawString(this.font, VITALITY.getString() + "%d".formatted(this.getStat(3)),
-                this.leftPos + 8, this.topPos + 100, 0x404040, false);
+                this.leftPos + text_x, this.topPos + 100, 0x404040, false);
         graphics.drawString(this.font, ENDURANCE.getString() + "%d".formatted(this.getStat(4)),
-                this.leftPos + 8, this.topPos + 120, 0x404040, false);
+                this.leftPos + text_x, this.topPos + 120, 0x404040, false);
         graphics.drawString(this.font, FREEPOINTS.getString() + "%d".formatted(this.getStat(5)),
-                this.leftPos + 8, this.topPos + 140, 0x404040, false);
+                this.leftPos + text_x, this.topPos + 140, 0x404040, false);
 
 
     }
@@ -139,6 +159,9 @@ public class LevelUPScreen extends Screen {
     }
     private void handleLimitButton(Button button) {
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> ClientHooks::openLevelUPLimitGUI);
+    }
+    private void handleInfoButton(Button info) {
+
     }
 
 
