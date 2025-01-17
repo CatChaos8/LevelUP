@@ -18,10 +18,10 @@ public class SetClassLevelCommand {
         dispatcher.register(Commands.literal("levelup")
                 .requires(commandSource -> commandSource.hasPermission(4))
                 .then(Commands.literal("stats")
-                .then(Commands.literal("set")
-                        .then(Commands.literal("classlvl")
-                                .then(Commands.argument("amount", IntegerArgumentType.integer(0))
-                .executes((this::execute)))))));
+                        .then(Commands.literal("set")
+                                .then(Commands.literal("classlvl")
+                                        .then(Commands.argument("amount", IntegerArgumentType.integer(0))
+                                                .executes((this::execute)))))));
 
     }
 

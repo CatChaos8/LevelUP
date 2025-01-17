@@ -30,7 +30,7 @@ import net.minecraftforge.fml.common.Mod;
 public class ModEvents {
 
     @SubscribeEvent
-    public static void onCommandsRegister(RegisterCommandsEvent event) {
+    public static void commandsRegister(RegisterCommandsEvent event) {
         new GetStatsCommand(event.getDispatcher());
         new GetConCommand(event.getDispatcher());
         new GetDexCommand(event.getDispatcher());
@@ -51,7 +51,8 @@ public class ModEvents {
         new SetVitCommand(event.getDispatcher());
         new SetEndCommand(event.getDispatcher());
 
-        new SetAllStatsCommand(event.getDispatcher());
+        SetAllStatsCommand.register(event.getDispatcher());
+
 
         new SetFreePointsCommand(event.getDispatcher());
         new SetClassXPCommand(event.getDispatcher());

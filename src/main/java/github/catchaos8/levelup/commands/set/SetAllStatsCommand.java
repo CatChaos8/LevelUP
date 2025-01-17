@@ -24,21 +24,18 @@ public class SetAllStatsCommand {
 
 
 
-    public SetAllStatsCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("levelup")
-                        .requires(source -> {
-                            System.out.println(source.hasPermission(2));
-                            return source.hasPermission(2);
-                        })
+                        .requires(commandSource -> commandSource.hasPermission(2))
                 .then(Commands.literal("stats")
-                .then(Commands.literal("set")
-                        .then(Commands.literal("all")
-                                .then(Commands.argument("amount", IntegerArgumentType.integer(0))
-                .executes((this::execute)))))));
+                        .then(Commands.literal("set")
+                                .then(Commands.literal("all")
+                                        .then(Commands.argument("amount", IntegerArgumentType.integer(0))
+                                                .executes((SetAllStatsCommand::execute)))))));
 
     }
 
-    private int execute(CommandContext<CommandSourceStack> context) {
+    private static int execute(CommandContext<CommandSourceStack> context) {
         ServerPlayer player = context.getSource().getPlayer();
 
         int amount = IntegerArgumentType.getInteger(context, "amount");
@@ -63,7 +60,7 @@ public class SetAllStatsCommand {
             ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stat.getStatArr()), player);
         });
 
-        return 1;
+        return amount;
     }
 
 }

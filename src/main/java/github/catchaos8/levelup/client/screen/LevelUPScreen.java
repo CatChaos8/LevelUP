@@ -138,7 +138,7 @@ public class LevelUPScreen extends Screen {
         graphics.drawString(this.font, ENDURANCE.getString() + "%d".formatted(this.getStat(4)),
                 this.leftPos + text_x, this.topPos + 120, 0x404040, false);
         graphics.drawString(this.font, FREEPOINTS.getString() + "%d".formatted(this.getStat(5)),
-                this.leftPos + text_x, this.topPos + 140, 0x404040, false);
+                this.leftPos + 8, this.topPos + 140, 0x404040, false);
 
 
     }
