@@ -50,7 +50,7 @@ public class LevelUPCommonConfig {
 
         VITALITY_ARMOR = BUILDER.comment("Armor Increase per stat").define("Armor Increase", (float) 0.01);
 
-        ENDURANCE_ARMOR_TOUGHNESS = BUILDER.comment("Armor Toughness Increase per stat").define("Armor Toughness Increase", (float) 0.005);
+        ENDURANCE_ARMOR_TOUGHNESS = BUILDER.comment("Armor Toughness Increase per stat").define("Armor Toughness Increase", (float) 0.1);
         ENDURANCE_KNOCKBACK_RESISTANCE = BUILDER.comment("Knockback Resistance per stat").define("KB Res Increase", (float) 0.01);
 
         LEVEL_CAP = BUILDER.comment("Max Level a player can reach without commands")

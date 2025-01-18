@@ -39,5 +39,9 @@
 
   "gui.levelup.vit_description": "Vitality\n",
   "gui.levelup.heal": " passive regeneration\n",
-  "gui.levelup.armor": "% armor"
+  "gui.levelup.armor": "% armor",
+
+  "gui.levelup.end_description": "Endurance\n",
+  "gui.levelup.toughness": " armour toughness\n",
+  "gui.levelup.knockback_resistance": "% armor"
 }

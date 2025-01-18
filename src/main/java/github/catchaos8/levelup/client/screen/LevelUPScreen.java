@@ -157,6 +157,18 @@ public class LevelUPScreen extends Screen {
                         .build()
         );
 
+        Component END_INFO = Component.translatable("gui.levelup.end_description")
+                .append(PLUS.getString() + Math.round(LevelUPCommonConfig.ENDURANCE_ARMOR_TOUGHNESS.get()*10*getStat(12)*1000)/1000 + Component.translatable("gui.levelup.toughness").getString())
+                .append(PLUS.getString() + LevelUPCommonConfig.ENDURANCE_KNOCKBACK_RESISTANCE.get()*100*getStat(12) + Component.translatable("gui.levelup.knockback_resistance").getString());
+
+        enduranceInfo = addRenderableOnly(
+                ImageButton.builder(
+                                INFO, this::handleInfoButton)
+                        .bounds(this.leftPos + info_button_x, this.topPos + 118, 12, 12)
+                        .tooltip(Tooltip.create(END_INFO))
+                        .build()
+        );
+
 
     }
 
@@ -202,10 +214,16 @@ public class LevelUPScreen extends Screen {
         strengthInfo.setTooltip(Tooltip.create(STR_INFO));
 
         Component VIT_INFO = Component.translatable("gui.levelup.vit_description")
-                .append(PLUS.getString() + LevelUPCommonConfig.VITALITY_HP_REGEN.get()*getStat(11) + Component.translatable("gui.levelup.heal").getString())
+                .append(PLUS.getString() + LevelUPCommonConfig.VITALITY_HP_REGEN.get()*getStat(11)*20 + Component.translatable("gui.levelup.heal").getString())
                 .append(PLUS.getString() + LevelUPCommonConfig.VITALITY_ARMOR.get()*100*getStat(11) + Component.translatable("gui.levelup.armor").getString());
 
         vitalityInfo.setTooltip(Tooltip.create(VIT_INFO));
+
+        Component END_INFO = Component.translatable("gui.levelup.end_description")
+                .append(PLUS.getString() + LevelUPCommonConfig.ENDURANCE_ARMOR_TOUGHNESS.get()*getStat(12) + Component.translatable("gui.levelup.toughness").getString())
+                .append(PLUS.getString() + LevelUPCommonConfig.ENDURANCE_KNOCKBACK_RESISTANCE.get()*100*getStat(12) + Component.translatable("gui.levelup.knockback_resistance").getString());
+
+        enduranceInfo.setTooltip(Tooltip.create(END_INFO));
 
     }
     private void handleConButton(Button increase) {
