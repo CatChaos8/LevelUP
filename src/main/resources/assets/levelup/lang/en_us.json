@@ -25,5 +25,19 @@
   "gui.levelup.info": "i",
   "gui.levelup.percent_hp": "% health\n",
   "gui.levelup.max_fall_height": " max fall height",
-  "gui.levelup.con_description": "Constitution \n"
+  "gui.levelup.con_description": "Constitution \n",
+
+  "gui.levelup.dex_description": "Dexterity \n",
+  "gui.levelup.speed": "% movement speed\n",
+  "gui.levelup.swim_speed": "% swim speed",
+
+
+  "gui.levelup.str_description": "Strength \n",
+  "gui.levelup.damage": "% damage\n",
+  "gui.levelup.knockback": "% knockback",
+
+
+  "gui.levelup.vit_description": "Vitality\n",
+  "gui.levelup.heal": " passive regeneration\n",
+  "gui.levelup.armor": "% armor"
 }

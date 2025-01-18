@@ -24,6 +24,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.server.command.ConfigCommand;
 
 
 @Mod.EventBusSubscriber(modid = LevelUP.MOD_ID)
@@ -51,12 +52,15 @@ public class ModEvents {
         new SetVitCommand(event.getDispatcher());
         new SetEndCommand(event.getDispatcher());
 
-        SetAllStatsCommand.register(event.getDispatcher());
+        new SetAllStatsCommand(event.getDispatcher());
 
 
         new SetFreePointsCommand(event.getDispatcher());
         new SetClassXPCommand(event.getDispatcher());
         new SetClassLevelCommand(event.getDispatcher());
+
+
+        ConfigCommand.register(event.getDispatcher());
     }
 
 
