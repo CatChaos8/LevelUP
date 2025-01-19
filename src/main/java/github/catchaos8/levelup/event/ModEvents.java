@@ -162,7 +162,7 @@ public class ModEvents {
                     if(!player.level().getLevelData().isHardcore()) {
                         player.heal(vitality * regenMulti);
                     } else {
-                        player.heal(vitality*regenMulti/5);
+                        player.heal(vitality*regenMulti/3);
                     }
                 }
             });

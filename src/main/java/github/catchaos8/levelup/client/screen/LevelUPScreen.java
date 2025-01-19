@@ -12,6 +12,7 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
@@ -51,6 +52,9 @@ public class LevelUPScreen extends Screen {
     private Button strengthInfo;
     private Button vitalityInfo;
     private Button enduranceInfo;
+
+    private Component VIT_INFO;
+
 
     public LevelUPScreen() {
         super(TITLE);
@@ -145,10 +149,16 @@ public class LevelUPScreen extends Screen {
                         .build()
         );
 
-        Component VIT_INFO = Component.translatable("gui.levelup.vit_description")
-                .append(PLUS.getString() + LevelUPCommonConfig.VITALITY_HP_REGEN.get()*getStat(11) + Component.translatable("gui.levelup.heal").getString())
-                .append(PLUS.getString() + LevelUPCommonConfig.VITALITY_ARMOR.get()*100*getStat(11) + Component.translatable("gui.levelup.armor").getString());
+        if(level.getLevelData().isHardcore()) {
+            VIT_INFO = Component.translatable("gui.levelup.vit_description")
+                    .append(PLUS.getString() + (LevelUPCommonConfig.VITALITY_HP_REGEN.get() * getStat(11))/3 + Component.translatable("gui.levelup.heal").getString())
+                    .append(PLUS.getString() + LevelUPCommonConfig.VITALITY_ARMOR.get() * 100 * getStat(11) + Component.translatable("gui.levelup.armor").getString());
 
+        } else {
+            VIT_INFO = Component.translatable("gui.levelup.vit_description")
+                    .append(PLUS.getString() + LevelUPCommonConfig.VITALITY_HP_REGEN.get() * getStat(11) + Component.translatable("gui.levelup.heal").getString())
+                    .append(PLUS.getString() + LevelUPCommonConfig.VITALITY_ARMOR.get() * 100 * getStat(11) + Component.translatable("gui.levelup.armor").getString());
+        }
         vitalityInfo = addRenderableOnly(
                 ImageButton.builder(
                                 INFO, this::handleInfoButton)
@@ -213,10 +223,20 @@ public class LevelUPScreen extends Screen {
 
         strengthInfo.setTooltip(Tooltip.create(STR_INFO));
 
-        Component VIT_INFO = Component.translatable("gui.levelup.vit_description")
-                .append(PLUS.getString() + LevelUPCommonConfig.VITALITY_HP_REGEN.get()*getStat(11)*20 + Component.translatable("gui.levelup.heal").getString())
-                .append(PLUS.getString() + LevelUPCommonConfig.VITALITY_ARMOR.get()*100*getStat(11) + Component.translatable("gui.levelup.armor").getString());
+        if(this.minecraft == null) return;
+        Level level = this.minecraft.level;
+        if(level == null) return;
 
+        if(level.getLevelData().isHardcore()) {
+            VIT_INFO = Component.translatable("gui.levelup.vit_description")
+                    .append(PLUS.getString() + (LevelUPCommonConfig.VITALITY_HP_REGEN.get()*getStat(11)*20)/3 + Component.translatable("gui.levelup.heal").getString())
+                    .append(PLUS.getString() + LevelUPCommonConfig.VITALITY_ARMOR.get()*100*getStat(11) + Component.translatable("gui.levelup.armor").getString());
+        } else {
+            VIT_INFO = Component.translatable("gui.levelup.vit_description")
+                    .append(PLUS.getString() + LevelUPCommonConfig.VITALITY_HP_REGEN.get()*getStat(11)*20 + Component.translatable("gui.levelup.heal").getString())
+                    .append(PLUS.getString() + LevelUPCommonConfig.VITALITY_ARMOR.get()*100*getStat(11) + Component.translatable("gui.levelup.armor").getString());
+
+        }
         vitalityInfo.setTooltip(Tooltip.create(VIT_INFO));
 
         Component END_INFO = Component.translatable("gui.levelup.end_description")
