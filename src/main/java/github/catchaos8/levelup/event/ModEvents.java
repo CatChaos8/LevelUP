@@ -13,7 +13,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -25,6 +29,8 @@ import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.command.ConfigCommand;
+
+import java.util.UUID;
 
 
 @Mod.EventBusSubscriber(modid = LevelUP.MOD_ID)
@@ -68,7 +74,6 @@ public class ModEvents {
     public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player) {
             if(!event.getObject().getCapability(PlayerStatsProvider.PLAYER_STATS).isPresent()) {
-                System.out.println("LevelUP Capabilities Attached");
                 event.addCapability(new ResourceLocation(LevelUP.MOD_ID, "properties"), new PlayerStatsProvider());
             }
 
@@ -80,6 +85,9 @@ public class ModEvents {
         if(event.isWasDeath()) {
             Player original = event.getOriginal();
             original.revive();
+            Player player = event.getEntity();
+
+            final UUID STATS_MOD_UUID = UUID.fromString("d7663cf7-09d3-48a9-9e22-bc0f495a96b8");
 
             event.getOriginal().getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(oldStore -> {
                     event.getEntity().getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(newStore -> {
@@ -88,16 +96,80 @@ public class ModEvents {
                     });
              });
 
+            if(event.getEntity() instanceof ServerPlayer playera) {
+                player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
+                    //Set Modifier to attributes based on stats
+                    //Constitution
+                    //HP Increase
+                    makeAttributeMod(8, "Health",
+                            LevelUPCommonConfig.CONSTITUTION_HP.get(),
+                            AttributeModifier.Operation.MULTIPLY_BASE, playera,
+                            STATS_MOD_UUID, Attributes.MAX_HEALTH);
+                    //Max fall before fall dmg is in mod events
+
+                    //Dexterity
+
+                    makeAttributeMod(9, "Speed",
+                            LevelUPCommonConfig.DEXTERITY_SPEED.get(),
+                            AttributeModifier.Operation.MULTIPLY_BASE, playera,
+                            STATS_MOD_UUID, Attributes.MOVEMENT_SPEED);
+
+                    makeAttributeMod(9, "Swim Speed",
+                            LevelUPCommonConfig.DEXTERITY_SWIM_SPEED.get(),
+                            AttributeModifier.Operation.MULTIPLY_BASE, playera,
+                            STATS_MOD_UUID, ForgeMod.SWIM_SPEED.get());
 
 
+                    //Strength
+
+                    //Damage
+                    makeAttributeMod(10, "Damage",
+                            LevelUPCommonConfig.STRENGTH_DAMAGE.get(),
+                            AttributeModifier.Operation.MULTIPLY_BASE, playera,
+                            STATS_MOD_UUID, Attributes.ATTACK_DAMAGE);
+
+                    //Knockback
+                    makeAttributeMod(10, "Knockback",
+                            LevelUPCommonConfig.STRENGTH_KNOCKBACK.get(),
+                            AttributeModifier.Operation.MULTIPLY_BASE, playera,
+                            STATS_MOD_UUID, Attributes.ATTACK_KNOCKBACK);
+
+
+                    //Vitality
+
+                    //Regen somewhere else
+
+                    //Armor
+                    makeAttributeMod(11, "Armour",
+                            LevelUPCommonConfig.VITALITY_ARMOR.get(),
+                            AttributeModifier.Operation.MULTIPLY_BASE, playera,
+                            STATS_MOD_UUID, Attributes.ARMOR);
+
+
+                    //Endurance
+
+                    //Armour toughness
+                    makeAttributeMod(12, "Armour Toughness",
+                            LevelUPCommonConfig.ENDURANCE_ARMOR_TOUGHNESS.get(),
+                            AttributeModifier.Operation.ADDITION, playera,
+                            STATS_MOD_UUID, Attributes.ARMOR_TOUGHNESS);
+
+                    //Knockback resistance
+                    makeAttributeMod(12, "Knockback Resistance",
+                            LevelUPCommonConfig.ENDURANCE_KNOCKBACK_RESISTANCE.get(),
+                            AttributeModifier.Operation.MULTIPLY_BASE, playera,
+                            STATS_MOD_UUID, Attributes.KNOCKBACK_RESISTANCE);
+
+                    ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), playera);
+                    playera.heal(99999);
+                });
+            }
         }
     }
 
     @SubscribeEvent
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
-        System.out.println("Attempting to register capabilities...");
         event.register(PlayerStats.class);
-        System.out.println("LevelUP Capabilities Registered");
     }
 
 
@@ -190,5 +262,29 @@ public class ModEvents {
                 }
             });
         }
+    }
+
+    public static void makeAttributeMod(int baseStat, String attributeItModifies,
+                                 float modifierPerStat, AttributeModifier.Operation attributeModOperation,
+                                 ServerPlayer player, UUID uuid,
+                                 Attribute attributeName) {
+        player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
+
+
+            AttributeModifier modifier = new AttributeModifier(
+                    uuid,
+                    attributeItModifies + " boost",
+                    modifierPerStat * stats.getStat(baseStat),
+                    attributeModOperation
+            );
+            var attribute = player.getAttribute(attributeName);
+            if (attribute != null) {
+                // Remove any existing modifier with the same UUID to avoid stacking
+                attribute.removeModifier(uuid);
+                // Add the new modifier
+                attribute.addPermanentModifier(modifier);
+            }
+
+        });
     }
 }
