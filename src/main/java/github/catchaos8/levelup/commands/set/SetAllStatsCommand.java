@@ -41,25 +41,31 @@ public class SetAllStatsCommand {
         int amount = IntegerArgumentType.getInteger(context, "amount");
 
         assert player != null;
-        player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stat -> {
 
-            for (int i = 0; i <= 7; i++) {
-                stat.setStat(i, amount);
-            }
+        if(player.hasPermissions(2)) {
 
-            player.sendSystemMessage(Component.literal(("Your stats are: ")));
-            player.sendSystemMessage(Component.translatable(CONSTITUTION).append(Component.literal("" + stat.getStat(0))));
-            player.sendSystemMessage(Component.translatable(DEXTERITY).append(Component.literal("" + stat.getStat(1))));
-            player.sendSystemMessage(Component.translatable(STRENGTH).append(Component.literal("" + stat.getStat(2))));
-            player.sendSystemMessage(Component.translatable(VITALITY).append(Component.literal("" + stat.getStat(3))));
-            player.sendSystemMessage(Component.translatable(ENDURANCE).append(Component.literal("" + stat.getStat(4))));
-            player.sendSystemMessage(Component.translatable(FREEPOINTS).append(Component.literal("" + stat.getStat(5))));
-            player.sendSystemMessage(Component.translatable(CLASSXP).append(Component.literal("" + stat.getStat(6))));
-            player.sendSystemMessage(Component.translatable(CLASSLVL).append(Component.literal("" + stat.getStat(7))));
+            player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stat -> {
 
-            ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stat.getStatArr()), player);
-        });
+                for (int i = 0; i <= 7; i++) {
+                    stat.setStat(i, amount);
+                }
 
+                player.sendSystemMessage(Component.literal(("Your stats are: ")));
+                player.sendSystemMessage(Component.translatable(CONSTITUTION).append(Component.literal("" + stat.getStat(0))));
+                player.sendSystemMessage(Component.translatable(DEXTERITY).append(Component.literal("" + stat.getStat(1))));
+                player.sendSystemMessage(Component.translatable(STRENGTH).append(Component.literal("" + stat.getStat(2))));
+                player.sendSystemMessage(Component.translatable(VITALITY).append(Component.literal("" + stat.getStat(3))));
+                player.sendSystemMessage(Component.translatable(ENDURANCE).append(Component.literal("" + stat.getStat(4))));
+                player.sendSystemMessage(Component.translatable(FREEPOINTS).append(Component.literal("" + stat.getStat(5))));
+                player.sendSystemMessage(Component.translatable(CLASSXP).append(Component.literal("" + stat.getStat(6))));
+                player.sendSystemMessage(Component.translatable(CLASSLVL).append(Component.literal("" + stat.getStat(7))));
+
+                ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stat.getStatArr()), player);
+            });
+
+        } else {
+            player.sendSystemMessage(Component.translatable("cmd.levelup.noperms"));
+        }
         return 1;
     }
 

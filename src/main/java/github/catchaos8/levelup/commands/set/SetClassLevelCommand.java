@@ -30,12 +30,16 @@ public class SetClassLevelCommand {
         int amount = IntegerArgumentType.getInteger(context, "amount");
 
         assert player != null;
-        player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
-            stats.setStat( 7, amount);
-            ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
+        if(player.hasPermissions(2)) {
+            player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
+                stats.setStat( 7, amount);
+                ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
 
-            player.sendSystemMessage(Component.translatable(CLASSLVL).append(Component.literal("" + stats.getStat(7))));
-        });
+                player.sendSystemMessage(Component.translatable(CLASSLVL).append(Component.literal("" + stats.getStat(7))));
+            });
+        } else {
+            player.sendSystemMessage(Component.translatable("cmd.levelup.noperms"));
+        }
 
         return 1;
     }

@@ -43,5 +43,7 @@
 
   "gui.levelup.end_description": "Endurance\n",
   "gui.levelup.toughness": " armour toughness\n",
-  "gui.levelup.knockback_resistance": "% armor"
+  "gui.levelup.knockback_resistance": "% armor",
+
+  "cmd.levelup.noperms": "You don't have the required permission to use this command"
 }

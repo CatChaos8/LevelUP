@@ -33,12 +33,16 @@ public class SetEndCommand {
         int amount = IntegerArgumentType.getInteger(context, "amount");
 
         assert player != null;
+        if(player.hasPermissions(2)) {
         player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
             stats.setStat(4, amount);
             ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
 
             player.sendSystemMessage(Component.translatable(ENDURANCE).append(Component.literal("" + stats.getStat(4))));
         });
+        } else {
+            player.sendSystemMessage(Component.translatable("cmd.levelup.noperms"));
+        }
 
         return 1;
     }

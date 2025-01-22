@@ -41,7 +41,9 @@ public class SetStatsCommand {
 
 
         assert player != null;
-        player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
+
+        if(player.hasPermissions(2)) {
+            player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
 
             stats.setStat(stat, amount);
 
@@ -65,6 +67,9 @@ public class SetStatsCommand {
             ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
 
         });
+    } else {
+        player.sendSystemMessage(Component.translatable("cmd.levelup.noperms"));
+    }
 
         return 1;
     }

@@ -29,14 +29,18 @@ public class SetClassXPCommand {
         ServerPlayer player = context.getSource().getPlayer();
 
         int amount = IntegerArgumentType.getInteger(context, "amount");
-
         assert player != null;
-        player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
-            stats.setStat(6, amount);
-            ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
+        if(player.hasPermissions(2)) {
 
-            player.sendSystemMessage(Component.translatable(CLASSXP).append(Component.literal("" + stats.getStat(6))));
-        });
+            player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
+                stats.setStat(6, amount);
+                ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
+
+                player.sendSystemMessage(Component.translatable(CLASSXP).append(Component.literal("" + stats.getStat(6))));
+            });
+        } else {
+            player.sendSystemMessage(Component.translatable("cmd.levelup.noperms"));
+        }
 
         return 1;
     }
