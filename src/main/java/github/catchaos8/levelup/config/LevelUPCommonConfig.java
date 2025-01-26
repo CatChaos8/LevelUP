@@ -27,6 +27,11 @@ public class LevelUPCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> FREEPOINTS_PER_LEVEL;
     public static final ForgeConfigSpec.ConfigValue<Integer> LEVEL_CAP;
 
+
+    public static final ForgeConfigSpec.ConfigValue<Boolean> DISPLAY_LEVEL_UNDER_NAME;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> DISPLAY_LEVEL_UNDER_NAME_IN_PLAYER_LIST;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> DISPLAY_LEVEL_UNDER_NAME_IN_SIDEBAR;
+
     static {
         BUILDER.push("Client Configs for LevelUP");
 
@@ -55,6 +60,13 @@ public class LevelUPCommonConfig {
 
         LEVEL_CAP = BUILDER.comment("Max Level a player can reach without commands")
                 .define("Max Level", 999999);
+
+        DISPLAY_LEVEL_UNDER_NAME = BUILDER.comment("Display the level under your nametag")
+                        .define("Display under name", true);
+        DISPLAY_LEVEL_UNDER_NAME_IN_PLAYER_LIST = BUILDER.comment("Display the level under your name in playerlist")
+                .define("Display in list", false);
+        DISPLAY_LEVEL_UNDER_NAME_IN_SIDEBAR = BUILDER.comment("Display the level on the side of your screen")
+                .define("Display in sidebar", false);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

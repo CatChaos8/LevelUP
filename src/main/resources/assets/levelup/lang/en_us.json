@@ -47,5 +47,5 @@
 
   "cmd.levelup.noperms": "You don't have the required permission to use this command",
 
-  "scoreboard.levelup.lvl": "level"
+  "scoreboard.levelup.lvl": "Level"
 }

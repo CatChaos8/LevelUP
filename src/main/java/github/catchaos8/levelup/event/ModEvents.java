@@ -222,6 +222,9 @@ public class ModEvents {
                         //FreePoints
                         stats.addStat(5, freepointsGiven);
 
+                        //Update scoreboard
+                        DisplayLevelScoreboard.updateLevel(serverPlayer, level);
+
                         player.sendSystemMessage(Component.literal("LevelUP! You are now level " + stats.getStat(7) + "!"));
 
                     }
