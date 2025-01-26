@@ -5,6 +5,7 @@ import github.catchaos8.levelup.commands.get.*;
 import github.catchaos8.levelup.commands.set.*;
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
 import github.catchaos8.levelup.networking.ModNetwork;
+import github.catchaos8.levelup.networking.DisplayLevelScoreboard;
 import github.catchaos8.levelup.networking.packet.StatDataSyncS2CPacket;
 import github.catchaos8.levelup.stats.PlayerStats;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
@@ -26,6 +27,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.command.ConfigCommand;
@@ -74,7 +76,7 @@ public class ModEvents {
     public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player) {
             if(!event.getObject().getCapability(PlayerStatsProvider.PLAYER_STATS).isPresent()) {
-                event.addCapability(new ResourceLocation(LevelUP.MOD_ID, "properties"), new PlayerStatsProvider());
+                event.addCapability(new ResourceLocation(LevelUP.MOD_ID, "levelup"), new PlayerStatsProvider());
             }
 
         }
@@ -266,6 +268,12 @@ public class ModEvents {
                 }
             });
         }
+    }
+
+
+    @SubscribeEvent
+    public static void onServerStart(ServerStartingEvent event) {
+        DisplayLevelScoreboard.initializeScoreboard(event.getServer().getScoreboard());
     }
 
     public static void makeAttributeMod(int baseStat, String attributeItModifies,

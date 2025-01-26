@@ -2,6 +2,7 @@ package github.catchaos8.levelup.networking.packet;
 
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
 import github.catchaos8.levelup.networking.ModNetwork;
+import github.catchaos8.levelup.networking.DisplayLevelScoreboard;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -171,7 +172,6 @@ public class IncreaseStatC2SPacket {
                         ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
                     } else {
                         stats.addStat(type, amount);
-
                         //Sync
                         ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
                     }
@@ -247,6 +247,10 @@ public class IncreaseStatC2SPacket {
                 });
             }
 
+            player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
+                int level = stats.getStat(7);
+                DisplayLevelScoreboard.updateLevel(player, level);
+            });
         });
     }
 
