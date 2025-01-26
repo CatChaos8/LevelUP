@@ -82,88 +82,92 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void onPlayerCloned(PlayerEvent.Clone event) {
-        if(event.isWasDeath()) {
-            Player original = event.getOriginal();
-            original.revive();
-            Player player = event.getEntity();
 
-            final UUID STATS_MOD_UUID = UUID.fromString("d7663cf7-09d3-48a9-9e22-bc0f495a96b8");
+        Player original = event.getOriginal();
+        original.revive();
+        Player player = event.getEntity();
 
-            event.getOriginal().getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(oldStore -> {
-                    event.getEntity().getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(newStore -> {
-                        newStore.copyFrom(oldStore);
+        final UUID STATS_MOD_UUID = UUID.fromString("d7663cf7-09d3-48a9-9e22-bc0f495a96b8");
+
+        event.getOriginal().getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(oldStore -> {
+                event.getEntity().getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(newStore -> {
+
+                    //Reset XP if it was death,
+
+                    newStore.copyFrom(oldStore);if(event.isWasDeath()) {
                         newStore.setStat(6, 0);
-                    });
-             });
+                    }
 
-            if(event.getEntity() instanceof ServerPlayer playera) {
-                player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
-                    //Set Modifier to attributes based on stats
-                    //Constitution
-                    //HP Increase
-                    makeAttributeMod(8, "Health",
-                            LevelUPCommonConfig.CONSTITUTION_HP.get(),
-                            AttributeModifier.Operation.MULTIPLY_BASE, playera,
-                            STATS_MOD_UUID, Attributes.MAX_HEALTH);
-                    //Max fall before fall dmg is in mod events
-
-                    //Dexterity
-
-                    makeAttributeMod(9, "Speed",
-                            LevelUPCommonConfig.DEXTERITY_SPEED.get(),
-                            AttributeModifier.Operation.MULTIPLY_BASE, playera,
-                            STATS_MOD_UUID, Attributes.MOVEMENT_SPEED);
-
-                    makeAttributeMod(9, "Swim Speed",
-                            LevelUPCommonConfig.DEXTERITY_SWIM_SPEED.get(),
-                            AttributeModifier.Operation.MULTIPLY_BASE, playera,
-                            STATS_MOD_UUID, ForgeMod.SWIM_SPEED.get());
-
-
-                    //Strength
-
-                    //Damage
-                    makeAttributeMod(10, "Damage",
-                            LevelUPCommonConfig.STRENGTH_DAMAGE.get(),
-                            AttributeModifier.Operation.MULTIPLY_BASE, playera,
-                            STATS_MOD_UUID, Attributes.ATTACK_DAMAGE);
-
-                    //Knockback
-                    makeAttributeMod(10, "Knockback",
-                            LevelUPCommonConfig.STRENGTH_KNOCKBACK.get(),
-                            AttributeModifier.Operation.MULTIPLY_BASE, playera,
-                            STATS_MOD_UUID, Attributes.ATTACK_KNOCKBACK);
-
-
-                    //Vitality
-
-                    //Regen somewhere else
-
-                    //Armor
-                    makeAttributeMod(11, "Armour",
-                            LevelUPCommonConfig.VITALITY_ARMOR.get(),
-                            AttributeModifier.Operation.MULTIPLY_BASE, playera,
-                            STATS_MOD_UUID, Attributes.ARMOR);
-
-
-                    //Endurance
-
-                    //Armour toughness
-                    makeAttributeMod(12, "Armour Toughness",
-                            LevelUPCommonConfig.ENDURANCE_ARMOR_TOUGHNESS.get(),
-                            AttributeModifier.Operation.ADDITION, playera,
-                            STATS_MOD_UUID, Attributes.ARMOR_TOUGHNESS);
-
-                    //Knockback resistance
-                    makeAttributeMod(12, "Knockback Resistance",
-                            LevelUPCommonConfig.ENDURANCE_KNOCKBACK_RESISTANCE.get(),
-                            AttributeModifier.Operation.MULTIPLY_BASE, playera,
-                            STATS_MOD_UUID, Attributes.KNOCKBACK_RESISTANCE);
-
-                    ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), playera);
-                    playera.heal(99999);
                 });
-            }
+         });
+
+        if(event.getEntity() instanceof ServerPlayer playera) {
+            player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
+                //Set Modifier to attributes based on stats
+                //Constitution
+                //HP Increase
+                makeAttributeMod(8, "Health",
+                        LevelUPCommonConfig.CONSTITUTION_HP.get(),
+                        AttributeModifier.Operation.MULTIPLY_BASE, playera,
+                        STATS_MOD_UUID, Attributes.MAX_HEALTH);
+                //Max fall before fall dmg is in mod events
+
+                //Dexterity
+
+                makeAttributeMod(9, "Speed",
+                        LevelUPCommonConfig.DEXTERITY_SPEED.get(),
+                        AttributeModifier.Operation.MULTIPLY_BASE, playera,
+                        STATS_MOD_UUID, Attributes.MOVEMENT_SPEED);
+
+                makeAttributeMod(9, "Swim Speed",
+                        LevelUPCommonConfig.DEXTERITY_SWIM_SPEED.get(),
+                        AttributeModifier.Operation.MULTIPLY_BASE, playera,
+                        STATS_MOD_UUID, ForgeMod.SWIM_SPEED.get());
+
+
+                //Strength
+
+                //Damage
+                makeAttributeMod(10, "Damage",
+                        LevelUPCommonConfig.STRENGTH_DAMAGE.get(),
+                        AttributeModifier.Operation.MULTIPLY_BASE, playera,
+                        STATS_MOD_UUID, Attributes.ATTACK_DAMAGE);
+
+                //Knockback
+                makeAttributeMod(10, "Knockback",
+                        LevelUPCommonConfig.STRENGTH_KNOCKBACK.get(),
+                        AttributeModifier.Operation.MULTIPLY_BASE, playera,
+                        STATS_MOD_UUID, Attributes.ATTACK_KNOCKBACK);
+
+
+                //Vitality
+
+                //Regen somewhere else
+
+                //Armor
+                makeAttributeMod(11, "Armour",
+                        LevelUPCommonConfig.VITALITY_ARMOR.get(),
+                        AttributeModifier.Operation.MULTIPLY_BASE, playera,
+                        STATS_MOD_UUID, Attributes.ARMOR);
+
+
+                //Endurance
+
+                //Armour toughness
+                makeAttributeMod(12, "Armour Toughness",
+                        LevelUPCommonConfig.ENDURANCE_ARMOR_TOUGHNESS.get(),
+                        AttributeModifier.Operation.ADDITION, playera,
+                        STATS_MOD_UUID, Attributes.ARMOR_TOUGHNESS);
+
+                //Knockback resistance
+                makeAttributeMod(12, "Knockback Resistance",
+                        LevelUPCommonConfig.ENDURANCE_KNOCKBACK_RESISTANCE.get(),
+                        AttributeModifier.Operation.MULTIPLY_BASE, playera,
+                        STATS_MOD_UUID, Attributes.KNOCKBACK_RESISTANCE);
+
+                ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), playera);
+                playera.heal(99999);
+            });
         }
     }
 
