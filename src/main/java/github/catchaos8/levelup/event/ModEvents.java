@@ -183,8 +183,13 @@ public class ModEvents {
     public static void onPlayerJoinWorld(EntityJoinLevelEvent event) {
         if(!event.getLevel().isClientSide()) {
             if(event.getEntity() instanceof ServerPlayer player) {
-                player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats ->
-                        ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player));
+                player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
+
+                    int level = stats.getStat(7);
+                    DisplayLevelScoreboard.updateLevel(player, level);
+                    ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
+
+                });
             }
         }
     }

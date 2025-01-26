@@ -18,6 +18,8 @@ public class DisplayLevelScoreboard {
                     Component.translatable("scoreboard.levelup.lvl"),
                     ObjectiveCriteria.RenderType.INTEGER
             );
+
+            scoreboard.setDisplayObjective(ServerScoreboard.DISPLAY_SLOT_BELOW_NAME, scoreboard.getObjective(LEVEL_OBJECTIVE));
         }
     }
 

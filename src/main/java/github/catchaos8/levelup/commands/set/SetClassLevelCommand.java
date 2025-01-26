@@ -3,6 +3,7 @@ package github.catchaos8.levelup.commands.set;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import github.catchaos8.levelup.networking.DisplayLevelScoreboard;
 import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.networking.packet.StatDataSyncS2CPacket;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
@@ -34,9 +35,11 @@ public class SetClassLevelCommand {
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
                 stats.setStat( 7, amount);
                 ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
-
+                int level = stats.getStat(7);
+                DisplayLevelScoreboard.updateLevel(player, level);
                 player.sendSystemMessage(Component.translatable(CLASSLVL).append(Component.literal("" + stats.getStat(7))));
             });
+
         } else {
             player.sendSystemMessage(Component.translatable("cmd.levelup.noperms"));
         }
