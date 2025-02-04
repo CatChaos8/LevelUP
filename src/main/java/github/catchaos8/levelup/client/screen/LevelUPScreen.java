@@ -1,6 +1,7 @@
 package github.catchaos8.levelup.client.screen;
 
 import github.catchaos8.levelup.LevelUP;
+import github.catchaos8.levelup.attributes.ModAttributes;
 import github.catchaos8.levelup.client.ClientStatData;
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
 import github.catchaos8.levelup.networking.ModNetwork;
@@ -113,6 +114,9 @@ public class LevelUPScreen extends Screen {
                         .bounds(this.leftPos + 108, this.topPos + 137, 60, 12)
                         .build());
 
+        var player = this.minecraft.player;
+        assert player != null;
+
         Component CON_INFO = Component.translatable("gui.levelup.con_description")
                 .append(PLUS.getString() + LevelUPCommonConfig.CONSTITUTION_HP.get()*100*getStat(8) + Component.translatable("gui.levelup.percent_hp").getString())
                 .append(PLUS.getString() + LevelUPCommonConfig.CONSTITUTION_FALL_DAMAGE_REDUCTION.get()*getStat(8) + Component.translatable("gui.levelup.max_fall_height").getString());
@@ -125,7 +129,16 @@ public class LevelUPScreen extends Screen {
                         .build()
         );
 
-        Component DEX_INFO = Component.translatable("gui.levelup.dex_description")
+        Component DEX_INFO = Component.translatable("gui.levelup.dex_description").append(String.valueOf((int) player.getAttributeValue(ModAttributes.DEXTERITY.get()))).append(Component.translatable("gui.levelup.newline"))
+                .append(Component.translatable("gui.levelup.base")).append(String.valueOf(getStat(1)))
+                .append(Component.translatable("gui.levelup.newline"))
+
+                .append(Component.translatable("gui.levelup.items"))
+                .append(String.valueOf((int) player.getAttributeValue(ModAttributes.DEXTERITY.get()) - getStat(1)))
+                .append(Component.translatable("gui.levelup.newline"))
+
+                .append(Component.translatable("gui.levelup.line"))
+
                 .append(PLUS.getString() + LevelUPCommonConfig.DEXTERITY_SPEED.get()*100*getStat(9) + Component.translatable("gui.levelup.speed").getString())
                 .append(PLUS.getString() + LevelUPCommonConfig.DEXTERITY_SWIM_SPEED.get()*100*getStat(9) + Component.translatable("gui.levelup.swim_speed").getString());
 
@@ -151,7 +164,7 @@ public class LevelUPScreen extends Screen {
 
         if(level.getLevelData().isHardcore()) {
             VIT_INFO = Component.translatable("gui.levelup.vit_description")
-                    .append(PLUS.getString() + (LevelUPCommonConfig.VITALITY_HP_REGEN.get() * getStat(11))/3 + Component.translatable("gui.levelup.heal").getString())
+                    .append(PLUS.getString() + (LevelUPCommonConfig.VITALITY_HP_REGEN.get() * getStat(11))/LevelUPCommonConfig.VITALITY_HARDCORE_NERF.get() + Component.translatable("gui.levelup.heal").getString())
                     .append(PLUS.getString() + LevelUPCommonConfig.VITALITY_ARMOR.get() * 100 * getStat(11) + Component.translatable("gui.levelup.armor").getString());
 
         } else {
@@ -190,11 +203,15 @@ public class LevelUPScreen extends Screen {
         super.render(graphics, mouseX, mouseY, partialTicks);
         assert this.minecraft != null;
 
+        var player = this.minecraft.player;
+        assert player != null;
+
+
         drawXpBar(graphics, 7,20, this.imageWidth - 14, 5);
 
         graphics.drawString(this.font, CONSTITUTION.getString() + "%d" .formatted(this.getStat(0)),
                 this.leftPos + text_x, this.topPos + 40, 0x404040, false);
-        graphics.drawString(this.font, DEXTERITY.getString() + "%d".formatted(this.getStat(1)),
+        graphics.drawString(this.font, DEXTERITY.getString() + "%d".formatted((int) player.getAttributeValue(ModAttributes.DEXTERITY.get())),
                 this.leftPos + text_x, this.topPos + 60, 0x404040, false);
         graphics.drawString(this.font, STRENGTH.getString() + "%d".formatted(this.getStat(2)),
                 this.leftPos + text_x, this.topPos + 80, 0x404040, false);
@@ -205,13 +222,23 @@ public class LevelUPScreen extends Screen {
         graphics.drawString(this.font, FREEPOINTS.getString() + "%d".formatted(this.getStat(5)),
                 this.leftPos + 8, this.topPos + 140, 0x404040, false);
 
+
         Component CON_INFO = Component.translatable("gui.levelup.con_description")
                 .append(PLUS.getString() + LevelUPCommonConfig.CONSTITUTION_HP.get()*100*getStat(8) + Component.translatable("gui.levelup.percent_hp").getString())
                 .append(PLUS.getString() + LevelUPCommonConfig.CONSTITUTION_FALL_DAMAGE_REDUCTION.get()*getStat(8) + Component.translatable("gui.levelup.max_fall_height").getString());
 
         constitutionInfo.setTooltip(Tooltip.create(CON_INFO));
 
-        Component DEX_INFO = Component.translatable("gui.levelup.dex_description")
+        Component DEX_INFO = Component.translatable("gui.levelup.dex_description").append(String.valueOf((int) player.getAttributeValue(ModAttributes.DEXTERITY.get()))).append(Component.translatable("gui.levelup.newline"))
+                .append(Component.translatable("gui.levelup.base")).append(String.valueOf(getStat(1)))
+                .append(Component.translatable("gui.levelup.newline"))
+
+                .append(Component.translatable("gui.levelup.items"))
+                .append(String.valueOf((int) player.getAttributeValue(ModAttributes.DEXTERITY.get()) - getStat(1)))
+                .append(Component.translatable("gui.levelup.newline"))
+
+                .append(Component.translatable("gui.levelup.line"))
+
                 .append(PLUS.getString() + LevelUPCommonConfig.DEXTERITY_SPEED.get()*100*getStat(9) + Component.translatable("gui.levelup.speed").getString())
                 .append(PLUS.getString() + LevelUPCommonConfig.DEXTERITY_SWIM_SPEED.get()*100*getStat(9) + Component.translatable("gui.levelup.swim_speed").getString());
 

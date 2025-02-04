@@ -1,13 +1,16 @@
 package github.catchaos8.levelup.client.screen;
 
 import github.catchaos8.levelup.LevelUP;
+import github.catchaos8.levelup.attributes.ModAttributes;
 import github.catchaos8.levelup.client.ClientStatData;
 import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.networking.packet.IncreaseStatC2SPacket;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.gui.widget.ForgeSlider;
 import org.jetbrains.annotations.NotNull;
@@ -17,10 +20,13 @@ public class LevelUPLimitScreen extends Screen {
     private static final Component TITLE = Component.translatable("gui.levelup.level_gui_limit");
     private static final Component CONSTITUTION = Component.translatable("stat.levelup.con");
     private static final Component DEXTERITY = Component.translatable("stat.levelup.dex");
+    private static final Component DEXTERITY_SUF = Component.translatable("gui.levelup.open_bracket");
     private static final Component STRENGTH = Component.translatable("stat.levelup.str");
+    private static final Component STRENGTH_SUF = Component.translatable("gui.levelup.open_bracket");
     private static final Component VITALITY = Component.translatable("stat.levelup.vit");
+    private static final Component VITALITY_SUF = Component.translatable("gui.levelup.open_bracket");
     private static final Component ENDURANCE = Component.translatable("stat.levelup.end");
-    private static final Component FREEPOINTS = Component.translatable("stat.levelup.fp");
+    private static final Component ENDURANCE_SUF = Component.translatable("gui.levelup.open_bracket");
 
     private static final ResourceLocation GUI_LOCATION = new ResourceLocation(LevelUP.MOD_ID, "textures/gui/container/levelup_gui.png");
 
@@ -55,7 +61,7 @@ public class LevelUPLimitScreen extends Screen {
                 CONSTITUTION,
                 Component.empty(),
                 0.0,
-                getStat(0),
+                getStat(95),
                 getStat(8),
                 true
         ) {
@@ -80,7 +86,7 @@ public class LevelUPLimitScreen extends Screen {
                 DEXTERITY,
                 Component.empty(),
                 0.0,
-                getStat(1),
+                getStat(96),
                 getStat(9),
                 true
         ){
@@ -105,7 +111,7 @@ public class LevelUPLimitScreen extends Screen {
                 STRENGTH,
                 Component.empty(),
                 0.0,
-                getStat(2),
+                getStat(97),
                 getStat(10),
                 true
         ){
@@ -130,7 +136,7 @@ public class LevelUPLimitScreen extends Screen {
                 VITALITY,
                 Component.empty(),
                 0.0,
-                getStat(3),
+                getStat(98),
                 getStat(11),
                 true
         ){
@@ -155,7 +161,7 @@ public class LevelUPLimitScreen extends Screen {
                 ENDURANCE,
                 Component.empty(),
                 0.0,
-                getStat(4),
+                getStat(99),
                 getStat(12),
                 true
         ){
@@ -185,6 +191,19 @@ public class LevelUPLimitScreen extends Screen {
     private int getStat(int type) {
         int[] stats = ClientStatData.getPlayerStats();
         if(this.minecraft != null && this.minecraft.player != null) {
+            var player = this.minecraft.player;
+            //The high type nums are for getting Attribute. They do not replace low numbers so that u can still display the low numbers
+            if (type == 95) {
+                return (int) player.getAttributeValue(ModAttributes.CONSTITUTION.get());
+            } else if(type == 96) {
+                return (int) player.getAttributeValue(ModAttributes.DEXTERITY.get());
+            } else if(type == 97) {
+                return (int) player.getAttributeValue(ModAttributes.STRENGTH.get());
+            } else if(type == 98) {
+                return (int) player.getAttributeValue(ModAttributes.VITALITY.get());
+            } else if(type == 99) {
+                return (int) player.getAttributeValue(ModAttributes.ENDURANCE.get());
+            }
             return stats[type];
         }
         return 0;

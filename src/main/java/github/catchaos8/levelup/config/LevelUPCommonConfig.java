@@ -19,6 +19,7 @@ public class LevelUPCommonConfig {
 
     public static final ForgeConfigSpec.ConfigValue<Float> VITALITY_ARMOR;
     public static final ForgeConfigSpec.ConfigValue<Float> VITALITY_HP_REGEN;
+    public static final ForgeConfigSpec.ConfigValue<Float> VITALITY_HARDCORE_NERF;
 
     public static final ForgeConfigSpec.ConfigValue<Float> ENDURANCE_ARMOR_TOUGHNESS;
     public static final ForgeConfigSpec.ConfigValue<Float> ENDURANCE_KNOCKBACK_RESISTANCE;
@@ -26,6 +27,7 @@ public class LevelUPCommonConfig {
 
     public static final ForgeConfigSpec.ConfigValue<Integer> FREEPOINTS_PER_LEVEL;
     public static final ForgeConfigSpec.ConfigValue<Integer> LEVEL_CAP;
+    public static final ForgeConfigSpec.ConfigValue<Integer> STAT_CAP;
 
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> DISPLAY_LEVEL_UNDER_NAME;
@@ -40,9 +42,6 @@ public class LevelUPCommonConfig {
         FREEPOINTS_PER_LEVEL = BUILDER.comment("How many stat points per level!")
                         .define("Points Per Level", 3);
 
-        VITALITY_HP_REGEN = BUILDER.comment("HP Regen/tick per stat lvl")
-                .define("HP Regen/tick per stat lvl", (float) 0.00025);
-
         CONSTITUTION_FALL_DAMAGE_REDUCTION = BUILDER.comment("height before fall damage per stat")
                 .define("Fall dmg mitigation", (float) 0.25);
 
@@ -54,13 +53,18 @@ public class LevelUPCommonConfig {
         STRENGTH_DAMAGE = BUILDER.comment("Damage Increase per stat").define("Dmg Increase", (float) 0.01);
         STRENGTH_KNOCKBACK = BUILDER.comment("Knockback Increase per stat").define("Kb Increase", (float) 0.01);
 
+        VITALITY_HP_REGEN = BUILDER.comment("HP Regen/tick per stat lvl")
+                .define("HP Regen/tick per stat lvl", (float) 0.00025);
         VITALITY_ARMOR = BUILDER.comment("Armor Increase per stat").define("Armor Increase", (float) 0.01);
+        VITALITY_HARDCORE_NERF = BUILDER.comment("The amount regen is divided by. Divide by 1 to disable, use a number lower than one to buff vitality in hardcore. DO NOT USE 0.").define("Vitality regen nerf in hardcore", (float) 3);
 
         ENDURANCE_ARMOR_TOUGHNESS = BUILDER.comment("Armor Toughness Increase per stat").define("Armor Toughness Increase", (float) 0.1);
         ENDURANCE_KNOCKBACK_RESISTANCE = BUILDER.comment("Knockback Resistance per stat").define("KB Res Increase", (float) 0.01);
 
         LEVEL_CAP = BUILDER.comment("Max Level a player can reach without commands")
                 .define("Max Level", 999999);
+        STAT_CAP = BUILDER.comment("Max Level a player can reach without commands")
+                .define("Max Stat", 1073741824);
 
         DISPLAY_LEVEL_UNDER_NAME = BUILDER.comment("Display the level under your nametag")
                         .define("Display under name", false);

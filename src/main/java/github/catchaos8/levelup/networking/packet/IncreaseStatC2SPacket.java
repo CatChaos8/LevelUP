@@ -1,5 +1,6 @@
 package github.catchaos8.levelup.networking.packet;
 
+import github.catchaos8.levelup.attributes.ModAttributes;
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
 import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.networking.DisplayLevelScoreboard;
@@ -58,20 +59,42 @@ public class IncreaseStatC2SPacket {
                 assert player != null;
                 player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
 
-                    if (stats.getStat(5) >= amount) {
+                    if (stats.getStat(5) >= amount && stats.getStat(type) < LevelUPCommonConfig.STAT_CAP.get()) {
                         //Increase Stats
-                        if(stats.getStat(type) == stats.getStat(type + 8)) {
-                            stats.addStat(type + 8, amount);
-                        }
-
                         stats.addStat(type, amount);
+
+                        //Increase limited stats
+                        if(type == 0) {
+                            if(player.getAttributeValue(ModAttributes.CONSTITUTION.get()) == stats.getStat(type + 8)) {
+                                stats.addStat(type + 8, amount);
+                            }
+                        } else if(type == 1) {
+                            if(player.getAttributeValue(ModAttributes.DEXTERITY.get()) == stats.getStat(type+8)) {
+                                stats.addStat(type+8, amount);
+                            }
+                        }else if(type == 2) {
+                            if(player.getAttributeValue(ModAttributes.STRENGTH.get()) == stats.getStat(type+8)) {
+                                stats.addStat(type+8, amount);
+                            }
+                        }else if(type == 3) {
+                            if(player.getAttributeValue(ModAttributes.VITALITY.get()) == stats.getStat(type+8)) {
+                                stats.addStat(type+8, amount);
+                            }
+                        }else if(type == 4) {
+                            if(player.getAttributeValue(ModAttributes.ENDURANCE.get()) == stats.getStat(type+8)) {
+                                stats.addStat(type+8, amount);
+                            }
+                        }
 
                         //Sub freepoints
                         stats.subStat(5, amount);
                         //Sync
                         ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
+
                         //Set Modifier to attributes based on stats
                         if(type == 0) { //Constitution
+                            //For increasing the limited thing
+
                             //HP Increase
                             makeAttributeMod(8,"Health",
                                     LevelUPCommonConfig.CONSTITUTION_HP.get(),
@@ -79,6 +102,9 @@ public class IncreaseStatC2SPacket {
                                     STATS_MOD_UUID, Attributes.MAX_HEALTH);
                             //Max fall before fall dmg is in mod events
 
+                            //Set attribute
+                            setAttribute(ModAttributes.CONSTITUTION.get(), stats.getStat(0),
+                                    player, STATS_MOD_UUID, "constitution");
                         } else if(type == 1) { //Dexterity
 
                             makeAttributeMod(9, "Speed",
@@ -91,6 +117,10 @@ public class IncreaseStatC2SPacket {
                                     AttributeModifier.Operation.MULTIPLY_BASE, player,
                                     STATS_MOD_UUID, ForgeMod.SWIM_SPEED.get());
 
+                            //Set attribute ver
+
+                            setAttribute(ModAttributes.DEXTERITY.get(), stats.getStat(1),
+                                    player, STATS_MOD_UUID, "dexterity");
 
                         } else if(type == 2) { //Strength
 
@@ -107,6 +137,8 @@ public class IncreaseStatC2SPacket {
                                     STATS_MOD_UUID, Attributes.ATTACK_KNOCKBACK);
 
 
+                            setAttribute(ModAttributes.STRENGTH.get(), stats.getStat(2),
+                                    player, STATS_MOD_UUID, "strength");
                         } else if(type == 3) { //Vitality
 
                             //Regen somewhere else
@@ -118,6 +150,8 @@ public class IncreaseStatC2SPacket {
                                     STATS_MOD_UUID, Attributes.ARMOR);
 
 
+                            setAttribute(ModAttributes.VITALITY.get(), stats.getStat(3),
+                                    player, STATS_MOD_UUID, "vitality");
                         } else if(type == 4) { //Endurance
 
                             //Armour toughness
@@ -131,6 +165,10 @@ public class IncreaseStatC2SPacket {
                                     LevelUPCommonConfig.ENDURANCE_KNOCKBACK_RESISTANCE.get(),
                                     AttributeModifier.Operation.MULTIPLY_BASE, player,
                                     STATS_MOD_UUID, Attributes.KNOCKBACK_RESISTANCE);
+
+
+                            setAttribute(ModAttributes.ENDURANCE.get(), stats.getStat(4),
+                                    player, STATS_MOD_UUID, "endurance");
                         }
 
                     } else {
@@ -276,6 +314,26 @@ public class IncreaseStatC2SPacket {
                 attribute.addPermanentModifier(modifier);
             }
 
+        });
+    }
+    public void setAttribute(Attribute attributeItModifies,
+                             int amount, ServerPlayer player,
+                             UUID uuid, String name) {
+        player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
+            AttributeModifier modifier = new AttributeModifier(
+                    uuid,
+                    name + " base",
+                    amount,
+                    AttributeModifier.Operation.ADDITION
+            );
+
+            var attribute = player.getAttribute(attributeItModifies);
+            if (attribute != null) {
+                // Remove any existing modifier with the same UUID to avoid stacking
+                attribute.removeModifier(uuid);
+                // Add the new modifier
+                attribute.addPermanentModifier(modifier);
+            }
         });
     }
 }

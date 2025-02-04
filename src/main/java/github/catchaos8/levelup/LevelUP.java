@@ -1,6 +1,7 @@
 package github.catchaos8.levelup;
 
 import com.mojang.logging.LogUtils;
+import github.catchaos8.levelup.attributes.ModAttributes;
 import github.catchaos8.levelup.config.LevelUPClientConfig;
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
 import github.catchaos8.levelup.networking.ModNetwork;
@@ -21,14 +22,18 @@ public class LevelUP {
 
 
     public LevelUP() {
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, LevelUPClientConfig.SPEC, "levelup-client.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, LevelUPCommonConfig.SPEC, "levelup-common.toml");
+
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         modEventBus.addListener(this::commonSetup);
 
+        ModAttributes.register(modEventBus);
+
         MinecraftForge.EVENT_BUS.register(this);
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, LevelUPClientConfig.SPEC, "levelup-client.toml");
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, LevelUPCommonConfig.SPEC, "levelup-common.toml");
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

@@ -27,7 +27,7 @@
   "gui.levelup.max_fall_height": " max fall height",
   "gui.levelup.con_description": "Constitution \n",
 
-  "gui.levelup.dex_description": "Dexterity \n",
+  "gui.levelup.dex_description": "Dexterity: ",
   "gui.levelup.speed": "% movement speed\n",
   "gui.levelup.swim_speed": "% swim speed",
 
@@ -43,10 +43,20 @@
 
   "gui.levelup.end_description": "Endurance\n",
   "gui.levelup.toughness": " armour toughness\n",
-  "gui.levelup.knockback_resistance": "% armor",
+  "gui.levelup.knockback_resistance": " knockback resistance",
+
+  "gui.levelup.line": "----------------------------",
+  "gui.levelup.newline": "\n",
+  "gui.levelup.open_bracket": "(",
+  "gui.levelup.base": "Base: ",
+  "gui.levelup.items": "Items: ",
+  "gui.levelup.closed_bracket": ")",
 
   "cmd.levelup.noperms": "You don't have the required permission to use this command",
 
-  "scoreboard.levelup.lvl": "Level",
-  "name.levelup.lvl": " - Level "
+  "scoreboard.levelup.lvl": "LevelUP Levels",
+  "name.levelup.lvl": " - Level ",
+
+  "attribute.levelup.con": "Constitution",
+  "attribute.levelup.dex": "Dexterity"
 }
