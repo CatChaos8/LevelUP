@@ -180,15 +180,15 @@ public class LevelUPScreen extends Screen {
 
         drawXpBar(graphics, 7,20, this.imageWidth - 14, 5);
 
-        graphics.drawString(this.font, CONSTITUTION.getString() + "%d" .formatted(this.getStat(0)),
+        graphics.drawString(this.font, CONSTITUTION.getString() + "%d" .formatted((int) player.getAttributeValue(ModAttributes.CONSTITUTION.get())),
                 this.leftPos + text_x, this.topPos + 40, 0x404040, false);
         graphics.drawString(this.font, DEXTERITY.getString() + "%d".formatted((int) player.getAttributeValue(ModAttributes.DEXTERITY.get())),
                 this.leftPos + text_x, this.topPos + 60, 0x404040, false);
-        graphics.drawString(this.font, STRENGTH.getString() + "%d".formatted(this.getStat(2)),
+        graphics.drawString(this.font, STRENGTH.getString() + "%d".formatted((int) player.getAttributeValue(ModAttributes.STRENGTH.get())),
                 this.leftPos + text_x, this.topPos + 80, 0x404040, false);
-        graphics.drawString(this.font, VITALITY.getString() + "%d".formatted(this.getStat(3)),
+        graphics.drawString(this.font, VITALITY.getString() + "%d".formatted((int) player.getAttributeValue(ModAttributes.VITALITY.get())),
                 this.leftPos + text_x, this.topPos + 100, 0x404040, false);
-        graphics.drawString(this.font, ENDURANCE.getString() + "%d".formatted(this.getStat(4)),
+        graphics.drawString(this.font, ENDURANCE.getString() + "%d".formatted((int) player.getAttributeValue(ModAttributes.ENDURANCE.get())),
                 this.leftPos + text_x, this.topPos + 120, 0x404040, false);
         graphics.drawString(this.font, FREEPOINTS.getString() + "%d".formatted(this.getStat(5)),
                 this.leftPos + 8, this.topPos + 140, 0x404040, false);

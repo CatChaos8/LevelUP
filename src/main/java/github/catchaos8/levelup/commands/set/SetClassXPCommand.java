@@ -31,7 +31,6 @@ public class SetClassXPCommand {
         int amount = IntegerArgumentType.getInteger(context, "amount");
         assert player != null;
         if(player.hasPermissions(2)) {
-
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
                 stats.setStat(6, amount);
                 ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);

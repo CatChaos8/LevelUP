@@ -2,6 +2,7 @@ package github.catchaos8.levelup.networking.packet;
 
 import github.catchaos8.levelup.attributes.ModAttributes;
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
+import github.catchaos8.levelup.lib.SetStats;
 import github.catchaos8.levelup.networking.DisplayLevelScoreboard;
 import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
@@ -96,79 +97,71 @@ public class IncreaseStatC2SPacket {
                             //For increasing the limited thing
 
                             //HP Increase
-                            makeAttributeMod(8,"Health",
+                            makeAttributeMod(8,
                                     LevelUPCommonConfig.CONSTITUTION_HP.get(),
                                     AttributeModifier.Operation.MULTIPLY_BASE, player,
                                     STATS_MOD_UUID, Attributes.MAX_HEALTH);
                             //Max fall before fall dmg is in mod events
 
                             //Set attribute
-                            setAttribute(ModAttributes.CONSTITUTION.get(), stats.getStat(0),
-                                    player, STATS_MOD_UUID, "constitution");
+                            SetStats.setAttributeStat(stats.getStat(0), 0, player);
                         } else if(type == 1) { //Dexterity
 
-                            makeAttributeMod(9, "Speed",
+                            makeAttributeMod(9,
                                     LevelUPCommonConfig.DEXTERITY_SPEED.get(),
                                     AttributeModifier.Operation.MULTIPLY_BASE, player,
                                     STATS_MOD_UUID, Attributes.MOVEMENT_SPEED);
 
-                            makeAttributeMod(9, "Swim Speed",
+                            makeAttributeMod(9,
                                     LevelUPCommonConfig.DEXTERITY_SWIM_SPEED.get(),
                                     AttributeModifier.Operation.MULTIPLY_BASE, player,
                                     STATS_MOD_UUID, ForgeMod.SWIM_SPEED.get());
 
                             //Set attribute ver
-
-                            setAttribute(ModAttributes.DEXTERITY.get(), stats.getStat(1),
-                                    player, STATS_MOD_UUID, "dexterity");
+                            SetStats.setAttributeStat(stats.getStat(1), 1, player);
 
                         } else if(type == 2) { //Strength
 
                             //Damage
-                            makeAttributeMod(10, "Damage",
+                            makeAttributeMod(10,
                                     LevelUPCommonConfig.STRENGTH_DAMAGE.get(),
                                     AttributeModifier.Operation.MULTIPLY_BASE, player,
                                     STATS_MOD_UUID, Attributes.ATTACK_DAMAGE);
 
                             //Knockback
-                            makeAttributeMod(10, "Knockback",
+                            makeAttributeMod(10,
                                     LevelUPCommonConfig.STRENGTH_KNOCKBACK.get(),
                                     AttributeModifier.Operation.MULTIPLY_BASE, player,
                                     STATS_MOD_UUID, Attributes.ATTACK_KNOCKBACK);
 
+                            SetStats.setAttributeStat(stats.getStat(2), 2, player);
 
-                            setAttribute(ModAttributes.STRENGTH.get(), stats.getStat(2),
-                                    player, STATS_MOD_UUID, "strength");
                         } else if(type == 3) { //Vitality
 
                             //Regen somewhere else
 
                             //Armor
-                            makeAttributeMod(11, "Armour",
+                            makeAttributeMod(11,
                                     LevelUPCommonConfig.VITALITY_ARMOR.get(),
                                     AttributeModifier.Operation.MULTIPLY_BASE, player,
                                     STATS_MOD_UUID, Attributes.ARMOR);
 
-
-                            setAttribute(ModAttributes.VITALITY.get(), stats.getStat(3),
-                                    player, STATS_MOD_UUID, "vitality");
+                            SetStats.setAttributeStat(stats.getStat(3), 3, player);
                         } else if(type == 4) { //Endurance
 
                             //Armour toughness
-                            makeAttributeMod(12, "Armour Toughness",
+                            makeAttributeMod(12,
                                     LevelUPCommonConfig.ENDURANCE_ARMOR_TOUGHNESS.get(),
                                     AttributeModifier.Operation.ADDITION, player,
                                     STATS_MOD_UUID, Attributes.ARMOR_TOUGHNESS);
 
                             //Knockback resistance
-                            makeAttributeMod(12, "Knockback Resistance",
+                            makeAttributeMod(12,
                                     LevelUPCommonConfig.ENDURANCE_KNOCKBACK_RESISTANCE.get(),
                                     AttributeModifier.Operation.MULTIPLY_BASE, player,
                                     STATS_MOD_UUID, Attributes.KNOCKBACK_RESISTANCE);
 
-
-                            setAttribute(ModAttributes.ENDURANCE.get(), stats.getStat(4),
-                                    player, STATS_MOD_UUID, "endurance");
+                            SetStats.setAttributeStat(stats.getStat(4), 4, player);
                         }
 
                     } else {
@@ -223,7 +216,7 @@ public class IncreaseStatC2SPacket {
 
                     if(type == 8) { //Constitution
                         //HP Increase
-                        makeAttributeMod(8,"Health",
+                        makeAttributeMod(8,
                                 LevelUPCommonConfig.CONSTITUTION_HP.get(),
                                 AttributeModifier.Operation.MULTIPLY_BASE, player,
                                 STATS_MOD_UUID, Attributes.MAX_HEALTH);
@@ -231,12 +224,12 @@ public class IncreaseStatC2SPacket {
 
                     } else if(type == 9) { //Dexterity
 
-                        makeAttributeMod(9, "Speed",
+                        makeAttributeMod(9,
                                 LevelUPCommonConfig.DEXTERITY_SPEED.get(),
                                 AttributeModifier.Operation.MULTIPLY_BASE, player,
                                 STATS_MOD_UUID, Attributes.MOVEMENT_SPEED);
 
-                        makeAttributeMod(9, "Swim Speed",
+                        makeAttributeMod(9,
                                 LevelUPCommonConfig.DEXTERITY_SWIM_SPEED.get(),
                                 AttributeModifier.Operation.MULTIPLY_BASE, player,
                                 STATS_MOD_UUID, ForgeMod.SWIM_SPEED.get());
@@ -245,13 +238,13 @@ public class IncreaseStatC2SPacket {
                     } else if(type == 10) { //Strength
 
                         //Damage
-                        makeAttributeMod(10, "Damage",
+                        makeAttributeMod(10,
                                 LevelUPCommonConfig.STRENGTH_DAMAGE.get(),
                                 AttributeModifier.Operation.MULTIPLY_BASE, player,
                                 STATS_MOD_UUID, Attributes.ATTACK_DAMAGE);
 
                         //Knockback
-                        makeAttributeMod(10, "Knockback",
+                        makeAttributeMod(10,
                                 LevelUPCommonConfig.STRENGTH_KNOCKBACK.get(),
                                 AttributeModifier.Operation.MULTIPLY_BASE, player,
                                 STATS_MOD_UUID, Attributes.ATTACK_KNOCKBACK);
@@ -262,7 +255,7 @@ public class IncreaseStatC2SPacket {
                         //Regen somewhere else
 
                         //Armor
-                        makeAttributeMod(11, "Armour",
+                        makeAttributeMod(11,
                                 LevelUPCommonConfig.VITALITY_ARMOR.get(),
                                 AttributeModifier.Operation.MULTIPLY_BASE, player,
                                 STATS_MOD_UUID, Attributes.ARMOR);
@@ -271,13 +264,13 @@ public class IncreaseStatC2SPacket {
                     } else if(type == 12) { //Endurance
 
                         //Armour toughness
-                        makeAttributeMod(12, "Armour Toughness",
+                        makeAttributeMod(12,
                                 LevelUPCommonConfig.ENDURANCE_ARMOR_TOUGHNESS.get(),
                                 AttributeModifier.Operation.ADDITION, player,
                                 STATS_MOD_UUID, Attributes.ARMOR_TOUGHNESS);
 
                         //Knockback resistance
-                        makeAttributeMod(12, "Knockback Resistance",
+                        makeAttributeMod(12,
                                 LevelUPCommonConfig.ENDURANCE_KNOCKBACK_RESISTANCE.get(),
                                 AttributeModifier.Operation.MULTIPLY_BASE, player,
                                 STATS_MOD_UUID, Attributes.KNOCKBACK_RESISTANCE);
@@ -293,7 +286,7 @@ public class IncreaseStatC2SPacket {
     }
 
 
-    public void makeAttributeMod(int baseStat, String attributeItModifies,
+    public void makeAttributeMod(int baseStat,
                                  float modifierPerStat, AttributeModifier.Operation attributeModOperation,
                                  ServerPlayer player, UUID uuid,
                                  Attribute attributeName) {
@@ -302,7 +295,7 @@ public class IncreaseStatC2SPacket {
 
             AttributeModifier modifier = new AttributeModifier(
                     uuid,
-                    attributeItModifies + " boost",
+                    "boost from player stats",
                     modifierPerStat * stats.getStat(baseStat),
                     attributeModOperation
             );
@@ -314,26 +307,6 @@ public class IncreaseStatC2SPacket {
                 attribute.addPermanentModifier(modifier);
             }
 
-        });
-    }
-    public void setAttribute(Attribute attributeItModifies,
-                             int amount, ServerPlayer player,
-                             UUID uuid, String name) {
-        player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
-            AttributeModifier modifier = new AttributeModifier(
-                    uuid,
-                    name + " base",
-                    amount,
-                    AttributeModifier.Operation.ADDITION
-            );
-
-            var attribute = player.getAttribute(attributeItModifies);
-            if (attribute != null) {
-                // Remove any existing modifier with the same UUID to avoid stacking
-                attribute.removeModifier(uuid);
-                // Add the new modifier
-                attribute.addPermanentModifier(modifier);
-            }
         });
     }
 }

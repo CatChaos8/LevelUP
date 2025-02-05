@@ -3,6 +3,7 @@ package github.catchaos8.levelup.commands.set;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import github.catchaos8.levelup.lib.SetStats;
 import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.networking.packet.StatDataSyncS2CPacket;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
@@ -35,6 +36,7 @@ public class SetStrCommand {
         if(player.hasPermissions(2)) {
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
             stats.setStat(2, amount);
+            SetStats.setAttributeStat(amount, 2,player);
             ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
 
             player.sendSystemMessage(Component.translatable(STRENGTH).append(Component.literal("" + stats.getStat(2))));

@@ -3,6 +3,7 @@ package github.catchaos8.levelup.commands.set;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import github.catchaos8.levelup.lib.SetStats;
 import github.catchaos8.levelup.networking.DisplayLevelScoreboard;
 import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.networking.packet.StatDataSyncS2CPacket;
@@ -49,6 +50,7 @@ public class SetAllStatsCommand {
 
                 for (int i = 0; i <= 7; i++) {
                     stat.setStat(i, amount);
+                    SetStats.setAttributeStat(amount, i,player);
                 }
                 player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
                     int level = stats.getStat(7);
