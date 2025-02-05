@@ -5,8 +5,8 @@ import github.catchaos8.levelup.attributes.ModAttributes;
 import github.catchaos8.levelup.commands.get.*;
 import github.catchaos8.levelup.commands.set.*;
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
-import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.networking.DisplayLevelScoreboard;
+import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.networking.packet.StatDataSyncS2CPacket;
 import github.catchaos8.levelup.stats.PlayerStats;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
@@ -96,6 +96,7 @@ public class ModEvents {
             final UUID STATS_MOD_UUID = UUID.fromString("d7663cf7-09d3-48a9-9e22-bc0f495a96b8");
 
             event.getOriginal().getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(oldStore -> {
+                //>:(
                 event.getEntity().getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(newStore -> {
 
                     //Reset XP if it was death,

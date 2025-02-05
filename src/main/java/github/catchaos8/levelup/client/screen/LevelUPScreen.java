@@ -13,7 +13,6 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
@@ -54,8 +53,6 @@ public class LevelUPScreen extends Screen {
     private Button vitalityInfo;
     private Button enduranceInfo;
 
-    private Component VIT_INFO;
-
 
     public LevelUPScreen() {
         super(TITLE);
@@ -76,38 +73,47 @@ public class LevelUPScreen extends Screen {
         Level level = this.minecraft.level;
         if(level == null) return;
 
-        Button increaseCon = addRenderableWidget(
+
+        //Con
+        addRenderableWidget(
                 ImageButton.builder(
                                 PLUS,
                                 this::handleConButton)
                         .bounds(this.leftPos + increase_button_x, this.topPos + 38, 10, 10)
                         .build());
-        Button increaseDex = addRenderableWidget(
+        //Dex
+        addRenderableWidget(
                 ImageButton.builder(
                                 PLUS,
                                 this::handleDexButton)
                         .bounds(this.leftPos + increase_button_x, this.topPos + 58, 10, 10)
                         .build());
-        Button increaseStr = addRenderableWidget(
+
+        //Str
+        addRenderableWidget(
                 ImageButton.builder(
                                 PLUS,
                                 this::handleStrButton)
                         .bounds(this.leftPos + increase_button_x, this.topPos + 78, 10, 10)
                         .build());
-        Button increaseVit = addRenderableWidget(
+
+        //Vit
+        addRenderableWidget(
                 ImageButton.builder(
                                 PLUS,
                                 this::handleVitButton)
                         .bounds(this.leftPos + increase_button_x, this.topPos + 98, 10, 10)
                         .build());
-        Button increaseEnd = addRenderableWidget(
+
+        //Endurance
+        addRenderableWidget(
                 ImageButton.builder(
                                 PLUS,
                                 this::handleEndButton)
                         .bounds(this.leftPos + increase_button_x, this.topPos + 118, 10, 10)
                         .build());
 
-        Button limitStats = addRenderableWidget(
+        addRenderableWidget(
                 ImageButton.builder(
                                 LIMIT,
                                 this::handleLimitButton)
@@ -117,78 +123,43 @@ public class LevelUPScreen extends Screen {
         var player = this.minecraft.player;
         assert player != null;
 
-        Component CON_INFO = Component.translatable("gui.levelup.con_description")
-                .append(PLUS.getString() + LevelUPCommonConfig.CONSTITUTION_HP.get()*100*getStat(8) + Component.translatable("gui.levelup.percent_hp").getString())
-                .append(PLUS.getString() + LevelUPCommonConfig.CONSTITUTION_FALL_DAMAGE_REDUCTION.get()*getStat(8) + Component.translatable("gui.levelup.max_fall_height").getString());
-
         constitutionInfo = addRenderableOnly(
                 ImageButton.builder(
                                 INFO, this::handleInfoButton)
                         .bounds(this.leftPos + info_button_x, this.topPos + 38, 12, 12)
-                        .tooltip(Tooltip.create(CON_INFO))
+                        .tooltip(Tooltip.create(Component.empty()))
                         .build()
         );
-
-        Component DEX_INFO = Component.translatable("gui.levelup.dex_description").append(String.valueOf((int) player.getAttributeValue(ModAttributes.DEXTERITY.get()))).append(Component.translatable("gui.levelup.newline"))
-                .append(Component.translatable("gui.levelup.base")).append(String.valueOf(getStat(1)))
-                .append(Component.translatable("gui.levelup.newline"))
-
-                .append(Component.translatable("gui.levelup.items"))
-                .append(String.valueOf((int) player.getAttributeValue(ModAttributes.DEXTERITY.get()) - getStat(1)))
-                .append(Component.translatable("gui.levelup.newline"))
-
-                .append(Component.translatable("gui.levelup.line"))
-
-                .append(PLUS.getString() + LevelUPCommonConfig.DEXTERITY_SPEED.get()*100*getStat(9) + Component.translatable("gui.levelup.speed").getString())
-                .append(PLUS.getString() + LevelUPCommonConfig.DEXTERITY_SWIM_SPEED.get()*100*getStat(9) + Component.translatable("gui.levelup.swim_speed").getString());
 
         dexterityInfo = addRenderableOnly(
                 ImageButton.builder(
                                 INFO, this::handleInfoButton)
                         .bounds(this.leftPos + info_button_x, this.topPos + 58, 12, 12)
-                        .tooltip(Tooltip.create(DEX_INFO))
+                        .tooltip(Tooltip.create(Component.empty()))
                         .build()
         );
-
-        Component STR_INFO = Component.translatable("gui.levelup.str_description")
-                .append(PLUS.getString() + LevelUPCommonConfig.STRENGTH_DAMAGE.get()*100*getStat(10) + Component.translatable("gui.levelup.damage").getString())
-                .append(PLUS.getString() + LevelUPCommonConfig.STRENGTH_KNOCKBACK.get()*100*getStat(10) + Component.translatable("gui.levelup.knockback").getString());
 
         strengthInfo = addRenderableOnly(
                 ImageButton.builder(
                                 INFO, this::handleInfoButton)
                         .bounds(this.leftPos + info_button_x, this.topPos + 78, 12, 12)
-                        .tooltip(Tooltip.create(STR_INFO))
+                        .tooltip(Tooltip.create(Component.empty()))
                         .build()
         );
 
-        if(level.getLevelData().isHardcore()) {
-            VIT_INFO = Component.translatable("gui.levelup.vit_description")
-                    .append(PLUS.getString() + (LevelUPCommonConfig.VITALITY_HP_REGEN.get() * getStat(11))/LevelUPCommonConfig.VITALITY_HARDCORE_NERF.get() + Component.translatable("gui.levelup.heal").getString())
-                    .append(PLUS.getString() + LevelUPCommonConfig.VITALITY_ARMOR.get() * 100 * getStat(11) + Component.translatable("gui.levelup.armor").getString());
-
-        } else {
-            VIT_INFO = Component.translatable("gui.levelup.vit_description")
-                    .append(PLUS.getString() + LevelUPCommonConfig.VITALITY_HP_REGEN.get() * getStat(11) + Component.translatable("gui.levelup.heal").getString())
-                    .append(PLUS.getString() + LevelUPCommonConfig.VITALITY_ARMOR.get() * 100 * getStat(11) + Component.translatable("gui.levelup.armor").getString());
-        }
         vitalityInfo = addRenderableOnly(
                 ImageButton.builder(
                                 INFO, this::handleInfoButton)
                         .bounds(this.leftPos + info_button_x, this.topPos + 98, 12, 12)
-                        .tooltip(Tooltip.create(VIT_INFO))
+                        .tooltip(Tooltip.create(Component.empty()))
                         .build()
         );
-
-        Component END_INFO = Component.translatable("gui.levelup.end_description")
-                .append(PLUS.getString() + Math.round(LevelUPCommonConfig.ENDURANCE_ARMOR_TOUGHNESS.get()*10*getStat(12)*1000)/1000 + Component.translatable("gui.levelup.toughness").getString())
-                .append(PLUS.getString() + LevelUPCommonConfig.ENDURANCE_KNOCKBACK_RESISTANCE.get()*100*getStat(12) + Component.translatable("gui.levelup.knockback_resistance").getString());
 
         enduranceInfo = addRenderableOnly(
                 ImageButton.builder(
                                 INFO, this::handleInfoButton)
                         .bounds(this.leftPos + info_button_x, this.topPos + 118, 12, 12)
-                        .tooltip(Tooltip.create(END_INFO))
+                        .tooltip(Tooltip.create(Component.empty()))
                         .build()
         );
 
@@ -223,7 +194,16 @@ public class LevelUPScreen extends Screen {
                 this.leftPos + 8, this.topPos + 140, 0x404040, false);
 
 
-        Component CON_INFO = Component.translatable("gui.levelup.con_description")
+        Component CON_INFO = Component.translatable("gui.levelup.con_description").append(String.valueOf((int) player.getAttributeValue(ModAttributes.CONSTITUTION.get()))).append(Component.translatable("gui.levelup.newline"))
+                .append(Component.translatable("gui.levelup.base")).append(String.valueOf(getStat(0)))
+                .append(Component.translatable("gui.levelup.newline"))
+
+                .append(Component.translatable("gui.levelup.items"))
+                .append(String.valueOf((int) player.getAttributeValue(ModAttributes.CONSTITUTION.get()) - getStat(0)))
+                .append(Component.translatable("gui.levelup.newline"))
+
+                .append(Component.translatable("gui.levelup.line"))
+
                 .append(PLUS.getString() + LevelUPCommonConfig.CONSTITUTION_HP.get()*100*getStat(8) + Component.translatable("gui.levelup.percent_hp").getString())
                 .append(PLUS.getString() + LevelUPCommonConfig.CONSTITUTION_FALL_DAMAGE_REDUCTION.get()*getStat(8) + Component.translatable("gui.levelup.max_fall_height").getString());
 
@@ -244,7 +224,16 @@ public class LevelUPScreen extends Screen {
 
         dexterityInfo.setTooltip(Tooltip.create(DEX_INFO));
 
-        Component STR_INFO = Component.translatable("gui.levelup.str_description")
+        Component STR_INFO = Component.translatable("gui.levelup.str_description").append(String.valueOf((int) player.getAttributeValue(ModAttributes.STRENGTH.get()))).append(Component.translatable("gui.levelup.newline"))
+                .append(Component.translatable("gui.levelup.base")).append(String.valueOf(getStat(2)))
+                .append(Component.translatable("gui.levelup.newline"))
+
+                .append(Component.translatable("gui.levelup.items"))
+                .append(String.valueOf((int) player.getAttributeValue(ModAttributes.STRENGTH.get()) - getStat(2)))
+                .append(Component.translatable("gui.levelup.newline"))
+
+                .append(Component.translatable("gui.levelup.line"))
+
                 .append(PLUS.getString() + LevelUPCommonConfig.STRENGTH_DAMAGE.get()*100*getStat(10) + Component.translatable("gui.levelup.damage").getString())
                 .append(PLUS.getString() + LevelUPCommonConfig.STRENGTH_KNOCKBACK.get()*100*getStat(10) + Component.translatable("gui.levelup.knockback").getString());
 
@@ -254,19 +243,48 @@ public class LevelUPScreen extends Screen {
         Level level = this.minecraft.level;
         if(level == null) return;
 
+        Component VIT_INFO;
+
         if(level.getLevelData().isHardcore()) {
-            VIT_INFO = Component.translatable("gui.levelup.vit_description")
+            VIT_INFO = Component.translatable("gui.levelup.vit_description").append(String.valueOf((int) player.getAttributeValue(ModAttributes.VITALITY.get()))).append(Component.translatable("gui.levelup.newline"))
+                    .append(Component.translatable("gui.levelup.base")).append(String.valueOf(getStat(3)))
+                    .append(Component.translatable("gui.levelup.newline"))
+
+                    .append(Component.translatable("gui.levelup.items"))
+                    .append(String.valueOf((int) player.getAttributeValue(ModAttributes.VITALITY.get()) - getStat(3)))
+                    .append(Component.translatable("gui.levelup.newline"))
+
+                    .append(Component.translatable("gui.levelup.line"))
+
                     .append(PLUS.getString() + (LevelUPCommonConfig.VITALITY_HP_REGEN.get()*getStat(11)*20)/3 + Component.translatable("gui.levelup.heal").getString())
                     .append(PLUS.getString() + LevelUPCommonConfig.VITALITY_ARMOR.get()*100*getStat(11) + Component.translatable("gui.levelup.armor").getString());
         } else {
-            VIT_INFO = Component.translatable("gui.levelup.vit_description")
+            VIT_INFO = Component.translatable("gui.levelup.vit_description").append(String.valueOf((int) player.getAttributeValue(ModAttributes.VITALITY.get()))).append(Component.translatable("gui.levelup.newline"))
+                    .append(Component.translatable("gui.levelup.base")).append(String.valueOf(getStat(3)))
+                    .append(Component.translatable("gui.levelup.newline"))
+
+                    .append(Component.translatable("gui.levelup.items"))
+                    .append(String.valueOf((int) player.getAttributeValue(ModAttributes.VITALITY.get()) - getStat(3)))
+                    .append(Component.translatable("gui.levelup.newline"))
+
+                    .append(Component.translatable("gui.levelup.line"))
+
                     .append(PLUS.getString() + LevelUPCommonConfig.VITALITY_HP_REGEN.get()*getStat(11)*20 + Component.translatable("gui.levelup.heal").getString())
                     .append(PLUS.getString() + LevelUPCommonConfig.VITALITY_ARMOR.get()*100*getStat(11) + Component.translatable("gui.levelup.armor").getString());
 
         }
         vitalityInfo.setTooltip(Tooltip.create(VIT_INFO));
 
-        Component END_INFO = Component.translatable("gui.levelup.end_description")
+        Component END_INFO = Component.translatable("gui.levelup.end_description").append(String.valueOf((int) player.getAttributeValue(ModAttributes.ENDURANCE.get()))).append(Component.translatable("gui.levelup.newline"))
+                .append(Component.translatable("gui.levelup.base")).append(String.valueOf(getStat(4)))
+                .append(Component.translatable("gui.levelup.newline"))
+
+                .append(Component.translatable("gui.levelup.items"))
+                .append(String.valueOf((int) player.getAttributeValue(ModAttributes.ENDURANCE.get()) - getStat(4)))
+                .append(Component.translatable("gui.levelup.newline"))
+
+                .append(Component.translatable("gui.levelup.line"))
+
                 .append(PLUS.getString() + LevelUPCommonConfig.ENDURANCE_ARMOR_TOUGHNESS.get()*getStat(12) + Component.translatable("gui.levelup.toughness").getString())
                 .append(PLUS.getString() + LevelUPCommonConfig.ENDURANCE_KNOCKBACK_RESISTANCE.get()*100*getStat(12) + Component.translatable("gui.levelup.knockback_resistance").getString());
 

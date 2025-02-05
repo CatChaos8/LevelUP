@@ -47,8 +47,8 @@ public class LevelUPCommonConfig {
 
         CONSTITUTION_HP = BUILDER.comment("HP Increase per stat").define("HP Increase", (float) 0.025);
 
-        DEXTERITY_SPEED = BUILDER.comment("Speed Increase per stat").define("Speed Increase", (float) 0.005);
-        DEXTERITY_SWIM_SPEED = BUILDER.comment("Swim Speed Increase per stat").define("Swim speed Increase", (float) 0.005);
+        DEXTERITY_SPEED = BUILDER.comment("Speed Increase per stat").define("Speed Increase", (float) 0.01);
+        DEXTERITY_SWIM_SPEED = BUILDER.comment("Swim Speed Increase per stat").define("Swim speed Increase", (float) 0.01);
 
         STRENGTH_DAMAGE = BUILDER.comment("Damage Increase per stat").define("Dmg Increase", (float) 0.01);
         STRENGTH_KNOCKBACK = BUILDER.comment("Knockback Increase per stat").define("Kb Increase", (float) 0.01);

@@ -7,10 +7,8 @@ import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.networking.packet.IncreaseStatC2SPacket;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.gui.widget.ForgeSlider;
 import org.jetbrains.annotations.NotNull;
@@ -20,13 +18,9 @@ public class LevelUPLimitScreen extends Screen {
     private static final Component TITLE = Component.translatable("gui.levelup.level_gui_limit");
     private static final Component CONSTITUTION = Component.translatable("stat.levelup.con");
     private static final Component DEXTERITY = Component.translatable("stat.levelup.dex");
-    private static final Component DEXTERITY_SUF = Component.translatable("gui.levelup.open_bracket");
     private static final Component STRENGTH = Component.translatable("stat.levelup.str");
-    private static final Component STRENGTH_SUF = Component.translatable("gui.levelup.open_bracket");
     private static final Component VITALITY = Component.translatable("stat.levelup.vit");
-    private static final Component VITALITY_SUF = Component.translatable("gui.levelup.open_bracket");
     private static final Component ENDURANCE = Component.translatable("stat.levelup.end");
-    private static final Component ENDURANCE_SUF = Component.translatable("gui.levelup.open_bracket");
 
     private static final ResourceLocation GUI_LOCATION = new ResourceLocation(LevelUP.MOD_ID, "textures/gui/container/levelup_gui.png");
 
@@ -53,7 +47,8 @@ public class LevelUPLimitScreen extends Screen {
         Level level = this.minecraft.level;
         if(level == null) return;
 
-        ForgeSlider con = addRenderableWidget(new ForgeSlider(
+        //Con
+        addRenderableWidget(new ForgeSlider(
                 leftPos + 8,
                 topPos + 18,
                 160,
@@ -78,7 +73,8 @@ public class LevelUPLimitScreen extends Screen {
             }
         });
 
-        ForgeSlider dex = addRenderableWidget(new ForgeSlider(
+        //dex
+        addRenderableWidget(new ForgeSlider(
                 leftPos + 8,
                 topPos + 46,
                 160,
@@ -103,7 +99,8 @@ public class LevelUPLimitScreen extends Screen {
             }
         });
 
-        ForgeSlider str = addRenderableWidget(new ForgeSlider(
+        //Str
+        addRenderableWidget(new ForgeSlider(
                 leftPos + 8,
                 topPos + 72,
                 160,
@@ -128,7 +125,8 @@ public class LevelUPLimitScreen extends Screen {
             }
         });
 
-        ForgeSlider vit = addRenderableWidget(new ForgeSlider(
+        //vit
+        addRenderableWidget(new ForgeSlider(
                 leftPos + 8,
                 topPos + 100,
                 160,
@@ -153,7 +151,8 @@ public class LevelUPLimitScreen extends Screen {
             }
         });
 
-        ForgeSlider end = addRenderableWidget(new ForgeSlider(
+        //end
+        addRenderableWidget(new ForgeSlider(
                 leftPos + 8,
                 topPos + 128,
                 160,
