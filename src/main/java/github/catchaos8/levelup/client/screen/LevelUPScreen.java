@@ -4,7 +4,7 @@ import github.catchaos8.levelup.LevelUP;
 import github.catchaos8.levelup.attributes.ModAttributes;
 import github.catchaos8.levelup.client.ClientStatData;
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
-import github.catchaos8.levelup.lib.ModNetwork;
+import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.networking.packet.IncreaseStatC2SPacket;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -178,7 +178,7 @@ public class LevelUPScreen extends Screen {
         assert player != null;
 
 
-        drawXpBar(graphics, 7,20, this.imageWidth - 14, 5);
+        drawXpBar(graphics, 7,20, this.imageWidth - 14);
 
         graphics.drawString(this.font, CONSTITUTION.getString() + "%d" .formatted((int) player.getAttributeValue(ModAttributes.CONSTITUTION.get())),
                 this.leftPos + text_x, this.topPos + 40, 0x404040, false);
@@ -322,7 +322,7 @@ public class LevelUPScreen extends Screen {
         return 0;
     }
 
-    private void drawXpBar(@NotNull GuiGraphics graphics, int x, int y, int width, int height) {
+    private void drawXpBar(@NotNull GuiGraphics graphics, int x, int y, int width) {
         int currentXp = getStat(6); // Get XP value
         int level = getStat(7);
         int maxXp = (int) (0.2 * (level * level) + 0.25 * level + 10); // Dynamic max XP calculation
@@ -336,11 +336,11 @@ public class LevelUPScreen extends Screen {
 
         // Draw the XP bar background using the XP_BAR_BG texture (142x5)
         // The background needs to be scaled properly to match the XP bar size
-        graphics.blit(XP_BAR_BG, adjustedX, adjustedY-10, 0, 0, width, height, 162, 5); // Background texture
+        graphics.blit(XP_BAR_BG, adjustedX, adjustedY-10, 0, 0, width, 5, 162, 5); // Background texture
 
         // Draw the XP progress using the XP_BAR_FULL texture (142x5)
         // Scale the progress width based on the current XP
-        graphics.blit(XP_BAR_FULL, adjustedX, adjustedY-10, 0, 0, filledWidth, height, 162, 5); // Progress texture
+        graphics.blit(XP_BAR_FULL, adjustedX, adjustedY-10, 0, 0, filledWidth, 5, 162, 5); // Progress texture
 
         // Optionally, draw the XP value as text
         graphics.drawString(this.font, "Level %d - XP: %d / %d".formatted(level, currentXp, maxXp),

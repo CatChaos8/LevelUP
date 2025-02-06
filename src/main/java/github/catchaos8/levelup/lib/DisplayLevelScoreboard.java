@@ -1,4 +1,4 @@
-package github.catchaos8.levelup.networking;
+package github.catchaos8.levelup.lib;
 
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
 import net.minecraft.network.chat.Component;

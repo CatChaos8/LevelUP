@@ -2,7 +2,7 @@ package github.catchaos8.levelup.event;
 
 import github.catchaos8.levelup.LevelUP;
 import github.catchaos8.levelup.client.screen.ClientHooks;
-import github.catchaos8.levelup.lib.ModNetwork;
+import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.networking.packet.IncreaseStatC2SPacket;
 import github.catchaos8.levelup.utility.KeyBinding;
 import net.minecraftforge.api.distmarker.Dist;
