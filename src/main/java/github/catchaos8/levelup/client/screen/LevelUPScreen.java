@@ -4,7 +4,7 @@ import github.catchaos8.levelup.LevelUP;
 import github.catchaos8.levelup.attributes.ModAttributes;
 import github.catchaos8.levelup.client.ClientStatData;
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
-import github.catchaos8.levelup.networking.ModNetwork;
+import github.catchaos8.levelup.lib.ModNetwork;
 import github.catchaos8.levelup.networking.packet.IncreaseStatC2SPacket;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;

@@ -4,7 +4,7 @@ import com.mojang.logging.LogUtils;
 import github.catchaos8.levelup.attributes.ModAttributes;
 import github.catchaos8.levelup.config.LevelUPClientConfig;
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
-import github.catchaos8.levelup.networking.ModNetwork;
+import github.catchaos8.levelup.lib.ModNetwork;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

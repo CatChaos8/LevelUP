@@ -2,14 +2,13 @@ package github.catchaos8.levelup.networking.packet;
 
 import github.catchaos8.levelup.attributes.ModAttributes;
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
+import github.catchaos8.levelup.lib.ModNetwork;
 import github.catchaos8.levelup.lib.SetStats;
 import github.catchaos8.levelup.networking.DisplayLevelScoreboard;
-import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.common.ForgeMod;
@@ -17,6 +16,8 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.UUID;
 import java.util.function.Supplier;
+
+import static github.catchaos8.levelup.lib.SetStats.makeAttributeMod;
 
 public class IncreaseStatC2SPacket {
 
@@ -282,31 +283,6 @@ public class IncreaseStatC2SPacket {
                 int level = stats.getStat(7);
                 DisplayLevelScoreboard.updateLevel(player, level);
             });
-        });
-    }
-
-
-    public void makeAttributeMod(int baseStat,
-                                 float modifierPerStat, AttributeModifier.Operation attributeModOperation,
-                                 ServerPlayer player, UUID uuid,
-                                 Attribute attributeName) {
-        player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
-
-
-            AttributeModifier modifier = new AttributeModifier(
-                    uuid,
-                    "boost from player stats",
-                    modifierPerStat * stats.getStat(baseStat),
-                    attributeModOperation
-            );
-            var attribute = player.getAttribute(attributeName);
-            if (attribute != null) {
-                // Remove any existing modifier with the same UUID to avoid stacking
-                attribute.removeModifier(uuid);
-                // Add the new modifier
-                attribute.addPermanentModifier(modifier);
-            }
-
         });
     }
 }

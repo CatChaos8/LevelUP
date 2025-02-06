@@ -1,4 +1,4 @@
-package github.catchaos8.levelup.networking;
+package github.catchaos8.levelup.lib;
 
 import github.catchaos8.levelup.LevelUP;
 import github.catchaos8.levelup.networking.packet.IncreaseStatC2SPacket;

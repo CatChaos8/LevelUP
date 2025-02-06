@@ -58,5 +58,8 @@
   "name.levelup.lvl": " - Level ",
 
   "attribute.levelup.con": "Constitution",
-  "attribute.levelup.dex": "Dexterity"
+  "attribute.levelup.dex": "Dexterity",
+  "attribute.levelup.str": "Strength",
+  "attribute.levelup.vit": "Vitality",
+  "attribute.levelup.end": "Endurance"
 }
