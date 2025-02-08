@@ -1,13 +1,16 @@
 package github.catchaos8.levelup.lib;
 
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.ServerScoreboard;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.scores.Objective;
 import net.minecraft.world.scores.Scoreboard;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 
 public class DisplayLevelScoreboard {
     public static final String LEVEL_OBJECTIVE = "classlvl";
@@ -37,14 +40,6 @@ public class DisplayLevelScoreboard {
             }
         }
 
-        if(LevelUPCommonConfig.DISPLAY_LEVEL_UNDER_NAME_IN_PLAYER_LIST.get()) {
-            scoreboard.setDisplayObjective(ServerScoreboard.DISPLAY_SLOT_LIST, levelObjective);
-        } else {
-            if (scoreboard.getDisplayObjective(Scoreboard.DISPLAY_SLOT_LIST) == levelObjective) {
-                scoreboard.setDisplayObjective(ServerScoreboard.DISPLAY_SLOT_LIST, null);
-            }
-        }
-
         if(LevelUPCommonConfig.DISPLAY_LEVEL_UNDER_NAME_IN_SIDEBAR.get()) {
             scoreboard.setDisplayObjective(ServerScoreboard.DISPLAY_SLOT_SIDEBAR, levelObjective);
         } else {
@@ -63,20 +58,19 @@ public class DisplayLevelScoreboard {
         // Get the objective for the level
         Objective levelObjective = scoreboard.getObjective(LEVEL_OBJECTIVE);
 
-        // Create the display text with a prefix "Level: "
-        Component levelText = Component.literal(player.getName().getString()).append(Component.translatable("name.levelup.lvl").append(Component.literal(String.valueOf(playerLevel))));
-
         // If the objective is valid, update the player's score with the level text
         if (levelObjective != null) {
             // Set the score for the player to be the level with the prefix
             scoreboard.getOrCreatePlayerScore(player.getScoreboardName(), levelObjective).setScore(playerLevel);
-
-            if (LevelUPCommonConfig.DISPLAY_LEVEL_BESIDE_NAME.get()) {
-                player.setCustomName(levelText);
-                player.setCustomNameVisible(true);
-            } else {
-                player.setCustomNameVisible(false);
-            }
         }
+    }
+
+    public static void setName(PlayerEvent.TabListNameFormat event, int level) {
+        MutableComponent name = Component.empty();
+        name.append((event.getDisplayName() != null ? event.getEntity().getDisplayName() : event.getEntity().getName()));
+
+        name.append(Component.translatable("name.levelup.short").withStyle(ChatFormatting.GREEN).append(String.valueOf(level)).withStyle(ChatFormatting.GREEN));
+
+        event.setDisplayName(name);
     }
 }

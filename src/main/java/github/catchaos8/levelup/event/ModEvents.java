@@ -10,7 +10,6 @@ import github.catchaos8.levelup.lib.DisplayLevelScoreboard;
 import github.catchaos8.levelup.networking.packet.StatDataSyncS2CPacket;
 import github.catchaos8.levelup.stats.PlayerStats;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -37,8 +36,8 @@ import net.minecraftforge.server.command.ConfigCommand;
 
 import java.util.UUID;
 
-import static github.catchaos8.levelup.lib.SetStats.makeAttributeMod;
-import static github.catchaos8.levelup.lib.SetStats.setAttributeStat;
+import static github.catchaos8.levelup.lib.DisplayLevelScoreboard.setName;
+import static github.catchaos8.levelup.lib.SetStats.*;
 
 public class ModEvents {
 
@@ -247,28 +246,8 @@ public class ModEvents {
                     player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
                         stats.addStat(6, xpAmount);
 
-                        int level = stats.getStat(7);
-                        int xp = stats.getStat(6);
-
-                        int xpNeeded = (int) (0.2 * (level * level) + 0.25 * level + 10);
-                        int freepointsGiven = LevelUPCommonConfig.FREEPOINTS_PER_LEVEL.get();
-
-                        int maxLevel = LevelUPCommonConfig.LEVEL_CAP.get();
-
-                        if (xp >= xpNeeded && level < maxLevel) {
-                            //Level
-                            stats.addStat(7, 1);
-                            //XP
-                            stats.subStat(6, xpNeeded);
-                            //FreePoints
-                            stats.addStat(5, freepointsGiven);
-
-                            //Update scoreboard
-                            DisplayLevelScoreboard.updateLevel(serverPlayer, level);
-
-                            player.sendSystemMessage(Component.literal("LevelUP! You are now level " + stats.getStat(7) + "!"));
-
-                        }
+                        //see if player can levelup
+                        increaseLevel(serverPlayer);
 
                         //Sync
                         ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), serverPlayer);
@@ -324,6 +303,20 @@ public class ModEvents {
         @SubscribeEvent
         public static void onServerStart(ServerStartingEvent event) {
             DisplayLevelScoreboard.initializeScoreboard(event.getServer().getScoreboard());
+        }
+
+        @SubscribeEvent
+        public static void setTab(PlayerEvent.TabListNameFormat event) {
+
+            if( event.getEntity() instanceof ServerPlayer player) {
+                player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
+                    if(LevelUPCommonConfig.DISPLAY_LEVEL_BESIDE_NAME_IN_PLAYER_LIST.get()) {
+                        setName(event, stats.getStat(7));
+                    }
+                });
+            }
+
+
         }
     }
 

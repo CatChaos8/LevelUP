@@ -31,10 +31,8 @@ public class LevelUPCommonConfig {
 
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> DISPLAY_LEVEL_UNDER_NAME;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> DISPLAY_LEVEL_UNDER_NAME_IN_PLAYER_LIST;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> DISPLAY_LEVEL_BESIDE_NAME_IN_PLAYER_LIST;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DISPLAY_LEVEL_UNDER_NAME_IN_SIDEBAR;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> DISPLAY_LEVEL_BESIDE_NAME;
-
     static {
         BUILDER.push("Client Configs for LevelUP");
 
@@ -68,12 +66,10 @@ public class LevelUPCommonConfig {
 
         DISPLAY_LEVEL_UNDER_NAME = BUILDER.comment("Display the level under your nametag")
                         .define("Display under name", false);
-        DISPLAY_LEVEL_UNDER_NAME_IN_PLAYER_LIST = BUILDER.comment("Display the level under your name in playerlist")
-                .define("Display in list", false);
+        DISPLAY_LEVEL_BESIDE_NAME_IN_PLAYER_LIST = BUILDER.comment("Display the level beside your name in playerlist")
+                .define("Display in list", true);
         DISPLAY_LEVEL_UNDER_NAME_IN_SIDEBAR = BUILDER.comment("Display the level on the side of your screen")
                 .define("Display in sidebar", false);
-        DISPLAY_LEVEL_BESIDE_NAME = BUILDER.comment("Display the level beside player's nametage. Shows up in chat, tab menu and nametag")
-                        .define("Display in Username", true);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

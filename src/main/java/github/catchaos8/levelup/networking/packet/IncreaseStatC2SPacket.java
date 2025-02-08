@@ -7,7 +7,6 @@ import github.catchaos8.levelup.lib.SetStats;
 import github.catchaos8.levelup.lib.DisplayLevelScoreboard;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -17,6 +16,7 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.UUID;
 import java.util.function.Supplier;
 
+import static github.catchaos8.levelup.lib.SetStats.increaseLevel;
 import static github.catchaos8.levelup.lib.SetStats.makeAttributeMod;
 
 public class IncreaseStatC2SPacket {
@@ -180,25 +180,8 @@ public class IncreaseStatC2SPacket {
                     if (type == 6) {
                         stats.addStat(type, amount);
 
-                        int level = stats.getStat(7);
-                        int xp = stats.getStat(6);
-
-                        int xpNeeded = (int) (0.2*(level*level) + 0.25*level + 10);
-                        int freepointsGiven = LevelUPCommonConfig.FREEPOINTS_PER_LEVEL.get();
-
-                        int maxLevel = LevelUPCommonConfig.LEVEL_CAP.get();
-
-                        if (xp >= xpNeeded && level < maxLevel) {
-                            //Level
-                            stats.addStat(7, 1);
-                            //XP
-                            stats.subStat(6, xpNeeded);
-                            //FreePoints
-                            stats.addStat(5, freepointsGiven);
-
-                            player.sendSystemMessage(Component.literal("LevelUP! You are now level " + stats.getStat(7) + "!"));
-
-                        }
+                        //see if player can levelup
+                        increaseLevel(player);
 
                         //Sync
                         ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
