@@ -101,6 +101,7 @@ public class SetStats {
 
                 //Update the scoreboard
                 DisplayLevelScoreboard.updateLevel(player, level);
+
                 if(xp >= xpNeeded) {
                     increaseLevel(player);
                 }

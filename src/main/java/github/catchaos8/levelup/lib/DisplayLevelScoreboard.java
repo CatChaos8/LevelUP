@@ -40,6 +40,14 @@ public class DisplayLevelScoreboard {
             }
         }
 
+        if(LevelUPCommonConfig.DISPLAY_LEVEL_BESIDE_NAME_IN_PLAYER_LIST.get()) {
+            scoreboard.setDisplayObjective(ServerScoreboard.DISPLAY_SLOT_LIST, levelObjective);
+        } else {
+            if (scoreboard.getDisplayObjective(Scoreboard.DISPLAY_SLOT_LIST) == levelObjective) {
+                scoreboard.setDisplayObjective(ServerScoreboard.DISPLAY_SLOT_LIST, null);
+            }
+        }
+
         if(LevelUPCommonConfig.DISPLAY_LEVEL_UNDER_NAME_IN_SIDEBAR.get()) {
             scoreboard.setDisplayObjective(ServerScoreboard.DISPLAY_SLOT_SIDEBAR, levelObjective);
         } else {
@@ -65,11 +73,11 @@ public class DisplayLevelScoreboard {
         }
     }
 
-    public static void setName(PlayerEvent.TabListNameFormat event, int level) {
+    public static void setName(PlayerEvent.TabListNameFormat event) {
         MutableComponent name = Component.empty();
         name.append((event.getDisplayName() != null ? event.getEntity().getDisplayName() : event.getEntity().getName()));
 
-        name.append(Component.translatable("name.levelup.short").withStyle(ChatFormatting.GREEN).append(String.valueOf(level)).withStyle(ChatFormatting.GREEN));
+        name.append(Component.translatable("name.levelup.short").withStyle(ChatFormatting.GREEN));
 
         event.setDisplayName(name);
     }

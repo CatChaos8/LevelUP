@@ -311,7 +311,7 @@ public class ModEvents {
             if( event.getEntity() instanceof ServerPlayer player) {
                 player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
                     if(LevelUPCommonConfig.DISPLAY_LEVEL_BESIDE_NAME_IN_PLAYER_LIST.get()) {
-                        setName(event, stats.getStat(7));
+                        setName(event);
                     }
                 });
             }
