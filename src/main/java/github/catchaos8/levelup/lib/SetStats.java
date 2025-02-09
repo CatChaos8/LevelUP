@@ -79,7 +79,7 @@ public class SetStats {
             int xp = stats.getStat(6);
             int level = stats.getStat(7);
 
-            int xpNeeded = (int) (0.2*(level*level) + 0.25*level + 10);
+            int xpNeeded = (int) (LevelUPCommonConfig.A_VALUE.get()*(level*level) + LevelUPCommonConfig.B_VALUE.get()*level + LevelUPCommonConfig.C_VALUE.get());
             int freepointsGiven = LevelUPCommonConfig.FREEPOINTS_PER_LEVEL.get();
 
             int maxLevel = LevelUPCommonConfig.LEVEL_CAP.get();

@@ -30,9 +30,15 @@ public class LevelUPCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> STAT_CAP;
 
 
+    public static final ForgeConfigSpec.ConfigValue<Float> A_VALUE;
+    public static final ForgeConfigSpec.ConfigValue<Float> B_VALUE;
+    public static final ForgeConfigSpec.ConfigValue<Float> C_VALUE;
+
     public static final ForgeConfigSpec.ConfigValue<Boolean> DISPLAY_LEVEL_UNDER_NAME;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DISPLAY_LEVEL_BESIDE_NAME_IN_PLAYER_LIST;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DISPLAY_LEVEL_UNDER_NAME_IN_SIDEBAR;
+
+
     static {
         BUILDER.push("Client Configs for LevelUP");
 
@@ -63,6 +69,13 @@ public class LevelUPCommonConfig {
                 .define("Max Level", 999999);
         STAT_CAP = BUILDER.comment("Max Level a player can reach without commands")
                 .define("Max Stat", 1073741824);
+
+        A_VALUE = BUILDER.comment("The a value in the equation for calculating xp for next level: ax^2+bx+c     a increases how fast the xp needed for the next level increases")
+                .define("A value", (float) 0.2);
+        B_VALUE = BUILDER.comment("The b value in the equation for calculating xp for next level: ax^2+bx+c     a increases how fast the xp needed for the next level increases")
+                .define("Max Stat", (float) 0.25);
+        C_VALUE = BUILDER.comment("The c value in the equation for calculating xp for next level: ax^2+bx+c     c is the base xp needed for level 1")
+                .define("Max Stat", (float) 10);
 
         DISPLAY_LEVEL_UNDER_NAME = BUILDER.comment("Display the level under your nametag")
                         .define("Display under name", false);
