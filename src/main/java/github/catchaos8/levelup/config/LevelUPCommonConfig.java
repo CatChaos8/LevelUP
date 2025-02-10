@@ -73,9 +73,9 @@ public class LevelUPCommonConfig {
         A_VALUE = BUILDER.comment("The a value in the equation for calculating xp for next level: ax^2+bx+c     a increases how fast the xp needed for the next level increases")
                 .define("A value", (float) 0.2);
         B_VALUE = BUILDER.comment("The b value in the equation for calculating xp for next level: ax^2+bx+c     a increases how fast the xp needed for the next level increases")
-                .define("Max Stat", (float) 0.25);
+                .define("B value", (float) 0.25);
         C_VALUE = BUILDER.comment("The c value in the equation for calculating xp for next level: ax^2+bx+c     c is the base xp needed for level 1")
-                .define("Max Stat", (float) 10);
+                .define("C value", (float) 10);
 
         DISPLAY_LEVEL_UNDER_NAME = BUILDER.comment("Display the level under your nametag")
                         .define("Display under name", false);

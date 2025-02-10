@@ -306,6 +306,7 @@ public class LevelUPScreen extends Screen {
     private void handleEndButton(Button increase) {
         ModNetwork.sendToServer(new IncreaseStatC2SPacket(4, 1));
     }
+
     private void handleLimitButton(Button button) {
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> ClientHooks::openLevelUPLimitGUI);
     }
@@ -325,7 +326,7 @@ public class LevelUPScreen extends Screen {
     private void drawXpBar(@NotNull GuiGraphics graphics, int x, int y, int width) {
         int currentXp = getStat(6); // Get XP value
         int level = getStat(7);
-        int maxXp = (int) (0.2 * (level * level) + 0.25 * level + 10); // Dynamic max XP calculation
+        int maxXp = (int) (LevelUPCommonConfig.A_VALUE.get() * (level * level) + LevelUPCommonConfig.B_VALUE.get() * level + LevelUPCommonConfig.C_VALUE.get()); // Dynamic max XP calculation
 
         // Calculate the width of the filled portion
         int filledWidth = (int) ((currentXp / (float) maxXp) * width);
