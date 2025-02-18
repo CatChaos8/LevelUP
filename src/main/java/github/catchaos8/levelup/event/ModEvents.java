@@ -5,8 +5,8 @@ import github.catchaos8.levelup.attributes.ModAttributes;
 import github.catchaos8.levelup.commands.get.*;
 import github.catchaos8.levelup.commands.set.*;
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
-import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.lib.DisplayLevelScoreboard;
+import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.networking.packet.StatDataSyncS2CPacket;
 import github.catchaos8.levelup.stats.PlayerStats;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
@@ -16,10 +16,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -33,8 +31,6 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.command.ConfigCommand;
-
-import java.util.UUID;
 
 import static github.catchaos8.levelup.lib.DisplayLevelScoreboard.setName;
 import static github.catchaos8.levelup.lib.SetStats.*;
@@ -94,7 +90,6 @@ public class ModEvents {
             original.revive();
             Player player = event.getEntity();
 
-            final UUID STATS_MOD_UUID = UUID.fromString("d7663cf7-09d3-48a9-9e22-bc0f495a96b8");
 
             event.getOriginal().getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(oldStore -> {
                 //>:(
@@ -145,65 +140,7 @@ public class ModEvents {
                         stats.setStat(12,(int) serverPlayer.getAttributeValue(ModAttributes.ENDURANCE.get()));
                     }
 
-                    //Constitution
-                    //HP Increase
-                    makeAttributeMod(8,
-                            LevelUPCommonConfig.CONSTITUTION_HP.get(),
-                            AttributeModifier.Operation.MULTIPLY_BASE, serverPlayer,
-                            STATS_MOD_UUID, Attributes.MAX_HEALTH);
-                    //Max fall before fall dmg is in mod events
-                    //Dexterity
-
-                    makeAttributeMod(9,
-                            LevelUPCommonConfig.DEXTERITY_SPEED.get(),
-                            AttributeModifier.Operation.MULTIPLY_BASE, serverPlayer,
-                            STATS_MOD_UUID, Attributes.MOVEMENT_SPEED);
-
-                    makeAttributeMod(9,
-                            LevelUPCommonConfig.DEXTERITY_SWIM_SPEED.get(),
-                            AttributeModifier.Operation.MULTIPLY_BASE, serverPlayer,
-                            STATS_MOD_UUID, ForgeMod.SWIM_SPEED.get());
-
-                    //Strength
-
-                    //Damage
-                    makeAttributeMod(10,
-                            LevelUPCommonConfig.STRENGTH_DAMAGE.get(),
-                            AttributeModifier.Operation.MULTIPLY_BASE, serverPlayer,
-                            STATS_MOD_UUID, Attributes.ATTACK_DAMAGE);
-
-                    //Knockback
-                    makeAttributeMod(10,
-                            LevelUPCommonConfig.STRENGTH_KNOCKBACK.get(),
-                            AttributeModifier.Operation.MULTIPLY_BASE, serverPlayer,
-                            STATS_MOD_UUID, Attributes.ATTACK_KNOCKBACK);
-
-
-
-                    //Vitality
-
-                    //Regen somewhere else
-
-                    //Armor
-                    makeAttributeMod(11,
-                            LevelUPCommonConfig.VITALITY_ARMOR.get(),
-                            AttributeModifier.Operation.MULTIPLY_BASE, serverPlayer,
-                            STATS_MOD_UUID, Attributes.ARMOR);
-
-
-                    //Endurance
-
-                    //Armour toughness
-                    makeAttributeMod(12,
-                            LevelUPCommonConfig.ENDURANCE_ARMOR_TOUGHNESS.get(),
-                            AttributeModifier.Operation.ADDITION, serverPlayer,
-                            STATS_MOD_UUID, Attributes.ARMOR_TOUGHNESS);
-
-                    //Knockback resistance
-                    makeAttributeMod(12,
-                            LevelUPCommonConfig.ENDURANCE_KNOCKBACK_RESISTANCE.get(),
-                            AttributeModifier.Operation.MULTIPLY_BASE, serverPlayer,
-                            STATS_MOD_UUID, Attributes.KNOCKBACK_RESISTANCE);
+                    makeAttributeMods(serverPlayer, 99);
 
                     ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), serverPlayer);
 
@@ -256,20 +193,20 @@ public class ModEvents {
             }
         }
 
-        //Vitality
+        //Vitality/update on attribute stuff
         @SubscribeEvent
         public static void onLivingUpdate(LivingEvent.LivingTickEvent event) {
             if (event.getEntity() instanceof Player player) {
-
                 player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
+                    //Do the vit stuff
                     int vitality = stats.getStat(11);
                     //Regen
-                    float regenMulti = LevelUPCommonConfig.VITALITY_HP_REGEN.get();
+                    double regenMulti = LevelUPCommonConfig.VITALITY_HP_REGEN.get();
                     if (vitality > 0) {
                         if (!player.level().getLevelData().isHardcore()) {
-                            player.heal(vitality * regenMulti);
+                            player.heal((float) (vitality * regenMulti));
                         } else {
-                            player.heal(vitality * regenMulti / LevelUPCommonConfig.VITALITY_HARDCORE_NERF.get());
+                            player.heal((float) (vitality * regenMulti / LevelUPCommonConfig.VITALITY_HARDCORE_NERF.get()));
                         }
                     }
                 });
@@ -283,12 +220,14 @@ public class ModEvents {
                 player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
                     if (event.getDistance() > 0) {
                         int constitution = stats.getStat(8);
-                        float fallDMGReduction = LevelUPCommonConfig.CONSTITUTION_FALL_DAMAGE_REDUCTION.get();
+
+                        double fallDMGReductionDouble = LevelUPCommonConfig.CONSTITUTION_FALL_DAMAGE_REDUCTION.get();
+                        float fallDMGReduction = (float) fallDMGReductionDouble;
 
                         float currentDamage = event.getDamageMultiplier() * event.getDistance();
 
                         // Apply flat reduction
-                        float newDamage = Math.max(0, currentDamage - fallDMGReduction * constitution);
+                        float newDamage = Math.max(0, currentDamage - fallDMGReduction * constitution - 3);
                         if (!player.level().isClientSide) {
                             if (constitution > 0) {
                                 event.setDamageMultiplier(newDamage / event.getDistance());
@@ -318,6 +257,49 @@ public class ModEvents {
 
 
         }
+
+//        //Checking if player equips anything that changes their attributes
+//        @SubscribeEvent
+//        public static void onEquipmentChange(LivingEquipmentChangeEvent event) {
+//
+//            if (event.getEntity() instanceof ServerPlayer player) {
+//                player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
+//                    var con = player.getAttribute(ModAttributes.CONSTITUTION.get());
+//                    if(con != null) {
+//                        //Getting base and amount of stuff
+//                        int conAmount = (int) con.getValue();
+//                        int limitedCon = stats.getStat(8);
+//
+//                        //Geting what slot the item is being applied to
+//                        EquipmentSlot slot = event.getSlot();
+//                        ItemStack newItem = event.getFrom();
+//                        ItemStack oldItem = event.getTo();
+//
+//                        double[] newCon = getAttributeValues(oldItem, ModAttributes.CONSTITUTION.get(), slot);
+//                        double[] oldCon = getAttributeValues(newItem, ModAttributes.CONSTITUTION.get(), slot);
+//
+//
+//
+//                        player.sendSystemMessage(Component.literal("New Con: ").append(Arrays.toString(newCon)));
+//                        player.sendSystemMessage(Component.literal("Old Con: ").append(Arrays.toString(oldCon)));
+//
+//                        if(oldCon[1] == 0 && newCon[1] == 0) {
+//                            int increase = (int) (newCon[0] - oldCon[0]);
+//                            if(conAmount - oldCon[0] == limitedCon) {
+//                                player.sendSystemMessage(Component.literal("Changed by: ").append(String.valueOf(increase)));
+//                                stats.addStat(8, increase);
+//                                makeAttributeMods(player, 0);
+//                            }
+//                        }
+//
+//                        //If the limited stat is greater/equal to the base amount, set it to max
+//                        //Sync
+//                        ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
+//                    }
+//                });
+//            }
+//        }
+
     }
 
     @Mod.EventBusSubscriber(modid = LevelUP.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)

@@ -178,7 +178,7 @@ public class LevelUPScreen extends Screen {
         assert player != null;
 
 
-        drawXpBar(graphics, 7,20, this.imageWidth - 14);
+        drawXpBar(graphics, this.imageWidth - 14);
 
         graphics.drawString(this.font, CONSTITUTION.getString() + "%d" .formatted((int) player.getAttributeValue(ModAttributes.CONSTITUTION.get())),
                 this.leftPos + text_x, this.topPos + 40, 0x404040, false);
@@ -323,7 +323,7 @@ public class LevelUPScreen extends Screen {
         return 0;
     }
 
-    private void drawXpBar(@NotNull GuiGraphics graphics, int x, int y, int width) {
+    private void drawXpBar(@NotNull GuiGraphics graphics, int width) {
         int currentXp = getStat(6); // Get XP value
         int level = getStat(7);
         int maxXp = (int) (LevelUPCommonConfig.A_VALUE.get() * (level * level) + LevelUPCommonConfig.B_VALUE.get() * level + LevelUPCommonConfig.C_VALUE.get()); // Dynamic max XP calculation
@@ -332,8 +332,8 @@ public class LevelUPScreen extends Screen {
         int filledWidth = (int) ((currentXp / (float) maxXp) * width);
 
         // Adjust position relative to `leftPos` and `topPos`
-        int adjustedX = x + this.leftPos;
-        int adjustedY = y + this.topPos;
+        int adjustedX = 7 + this.leftPos;
+        int adjustedY = 20 + this.topPos;
 
         // Draw the XP bar background using the XP_BAR_BG texture (142x5)
         // The background needs to be scaled properly to match the XP bar size
