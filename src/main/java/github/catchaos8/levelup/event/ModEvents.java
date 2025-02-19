@@ -10,19 +10,19 @@ import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.networking.packet.StatDataSyncS2CPacket;
 import github.catchaos8.levelup.stats.PlayerStats;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ExperienceOrb;
-import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -258,47 +258,55 @@ public class ModEvents {
 
         }
 
-//        //Checking if player equips anything that changes their attributes
-//        @SubscribeEvent
-//        public static void onEquipmentChange(LivingEquipmentChangeEvent event) {
-//
-//            if (event.getEntity() instanceof ServerPlayer player) {
-//                player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
-//                    var con = player.getAttribute(ModAttributes.CONSTITUTION.get());
-//                    if(con != null) {
-//                        //Getting base and amount of stuff
-//                        int conAmount = (int) con.getValue();
-//                        int limitedCon = stats.getStat(8);
-//
-//                        //Geting what slot the item is being applied to
-//                        EquipmentSlot slot = event.getSlot();
-//                        ItemStack newItem = event.getFrom();
-//                        ItemStack oldItem = event.getTo();
-//
-//                        double[] newCon = getAttributeValues(oldItem, ModAttributes.CONSTITUTION.get(), slot);
-//                        double[] oldCon = getAttributeValues(newItem, ModAttributes.CONSTITUTION.get(), slot);
-//
-//
-//
-//                        player.sendSystemMessage(Component.literal("New Con: ").append(Arrays.toString(newCon)));
-//                        player.sendSystemMessage(Component.literal("Old Con: ").append(Arrays.toString(oldCon)));
-//
-//                        if(oldCon[1] == 0 && newCon[1] == 0) {
-//                            int increase = (int) (newCon[0] - oldCon[0]);
-//                            if(conAmount - oldCon[0] == limitedCon) {
-//                                player.sendSystemMessage(Component.literal("Changed by: ").append(String.valueOf(increase)));
-//                                stats.addStat(8, increase);
-//                                makeAttributeMods(player, 0);
-//                            }
-//                        }
-//
-//                        //If the limited stat is greater/equal to the base amount, set it to max
-//                        //Sync
-//                        ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
-//                    }
-//                });
-//            }
-//        }
+        //Checking if player equips anything that changes their attributes
+        @SubscribeEvent
+        public static void onEquipmentChange(LivingEquipmentChangeEvent event) {
+
+            if (event.getEntity() instanceof ServerPlayer player) {
+                player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
+                    var con = player.getAttribute(ModAttributes.CONSTITUTION.get());
+                    if(con != null) {
+                        //Getting base and amount of stuff
+                        //for some reason con.getValue(); returns the value before it changes
+                        int conAmount = (int) con.getValue();
+                        int limitedCon = stats.getStat(8);
+
+                        //Geting what slot the item is being applied to and the items
+                        EquipmentSlot slot = event.getSlot();
+                        ItemStack newItem = event.getFrom();
+                        ItemStack oldItem = event.getTo();
+
+                        //Gets the value and op type of the items that they changed
+                        double[] newCon = getAttributeValues(oldItem, ModAttributes.CONSTITUTION.get(), slot);
+                        double[] oldCon = getAttributeValues(newItem, ModAttributes.CONSTITUTION.get(), slot);
+
+                        //if the type of the items are additive(not multiplicative), add the stats and stuff
+                        if(oldCon[1] == 0 && newCon[1] == 0) {
+                            int increase = (int) (newCon[0] - oldCon[0]);
+                            if (increase != 0) {
+                                player.sendSystemMessage(Component.literal("!= 0"));
+                                if (conAmount == limitedCon) {
+                                    //Sets
+                                    stats.setStat(8, conAmount + increase);
+
+                                    makeAttributeMods(player, 0);
+                                } else if(increase < 0) {
+                                    if(conAmount + increase < limitedCon) {
+                                        //sets
+                                        stats.setStat(8, conAmount + increase);
+                                        makeAttributeMods(player, 0);
+                                    }
+                                }
+                            }
+                        }
+
+                        //If the limited stat is greater/equal to the base amount, set it to max
+                        //Sync
+                        ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
+                    }
+                });
+            }
+        }
 
     }
 
