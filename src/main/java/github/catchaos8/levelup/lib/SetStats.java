@@ -131,41 +131,58 @@ public class SetStats {
         //Constitution
         if(type == 0 || type == 99) {
             //HP Increase
-            makeAttributeMod(8,
-                    LevelUPCommonConfig.CONSTITUTION_HP.get(),
-                    AttributeModifier.Operation.MULTIPLY_BASE, player,
-                    STATS_MOD_UUID, Attributes.MAX_HEALTH);
+            if(LevelUPCommonConfig.DO_HP.get()) {
+                makeAttributeMod(8,
+                        LevelUPCommonConfig.CONSTITUTION_HP.get(),
+                        AttributeModifier.Operation.MULTIPLY_BASE, player,
+                        STATS_MOD_UUID, Attributes.MAX_HEALTH);
+            }
             //Max fall before fall dmg is in mod events
         }
 
         //Dexterity
         if(type == 1 || type == 99) {
             //Speed
-            makeAttributeMod(9,
-                    LevelUPCommonConfig.DEXTERITY_SPEED.get(),
-                    AttributeModifier.Operation.MULTIPLY_BASE, player,
-                    STATS_MOD_UUID, Attributes.MOVEMENT_SPEED);
+            if(LevelUPCommonConfig.DO_SPEED.get()) {
+                makeAttributeMod(9,
+                        LevelUPCommonConfig.DEXTERITY_SPEED.get(),
+                        AttributeModifier.Operation.MULTIPLY_BASE, player,
+                        STATS_MOD_UUID, Attributes.MOVEMENT_SPEED);
+            }
+            //Attack Speed
+            if(LevelUPCommonConfig.DO_ATTACK_SPEED.get()) {
+                makeAttributeMod(9,
+                        LevelUPCommonConfig.DEXTERITY_ATTACK_SPEED.get(),
+                        AttributeModifier.Operation.MULTIPLY_BASE, player,
+                        STATS_MOD_UUID, Attributes.ATTACK_SPEED);
+            }
             //Swim Speed
-            makeAttributeMod(9,
-                    LevelUPCommonConfig.DEXTERITY_SWIM_SPEED.get(),
-                    AttributeModifier.Operation.MULTIPLY_BASE, player,
-                    STATS_MOD_UUID, ForgeMod.SWIM_SPEED.get());
+            if(LevelUPCommonConfig.DO_SWIM_SPEED.get()) {
+                makeAttributeMod(9,
+                        LevelUPCommonConfig.DEXTERITY_SWIM_SPEED.get(),
+                        AttributeModifier.Operation.MULTIPLY_BASE, player,
+                        STATS_MOD_UUID, ForgeMod.SWIM_SPEED.get());
+            }
         }
 
 
         //Strength
         if(type == 2 || type == 99) {
-            //Damage
-            makeAttributeMod(10,
-                    LevelUPCommonConfig.STRENGTH_DAMAGE.get(),
-                    AttributeModifier.Operation.MULTIPLY_BASE, player,
-                    STATS_MOD_UUID, Attributes.ATTACK_DAMAGE);
 
+            //Damage
+            if(LevelUPCommonConfig.DO_DAMAGE.get()) {
+                makeAttributeMod(10,
+                        LevelUPCommonConfig.STRENGTH_DAMAGE.get(),
+                        AttributeModifier.Operation.MULTIPLY_BASE, player,
+                        STATS_MOD_UUID, Attributes.ATTACK_DAMAGE);
+            }
             //Knockback
-            makeAttributeMod(10,
-                    LevelUPCommonConfig.STRENGTH_KNOCKBACK.get(),
-                    AttributeModifier.Operation.MULTIPLY_BASE, player,
-                    STATS_MOD_UUID, Attributes.ATTACK_KNOCKBACK);
+            if(LevelUPCommonConfig.DO_KNOCKBACK.get()) {
+                makeAttributeMod(10,
+                        LevelUPCommonConfig.STRENGTH_KNOCKBACK.get(),
+                        AttributeModifier.Operation.MULTIPLY_BASE, player,
+                        STATS_MOD_UUID, Attributes.ATTACK_KNOCKBACK);
+            }
         }
 
         //Vitality
@@ -173,26 +190,31 @@ public class SetStats {
             //Regen in events
 
             //Armor
-            makeAttributeMod(11,
-                    LevelUPCommonConfig.VITALITY_ARMOR.get(),
-                    AttributeModifier.Operation.MULTIPLY_BASE, player,
-                    STATS_MOD_UUID, Attributes.ARMOR);
+            if(LevelUPCommonConfig.DO_ARMOR.get()) {
+                makeAttributeMod(11,
+                        LevelUPCommonConfig.VITALITY_ARMOR.get(),
+                        AttributeModifier.Operation.MULTIPLY_BASE, player,
+                        STATS_MOD_UUID, Attributes.ARMOR);
+            }
         }
 
         //Endurance
         if(type == 4 || type == 99) {
 
             //Armour toughness
-            makeAttributeMod(12,
-                    LevelUPCommonConfig.ENDURANCE_ARMOR_TOUGHNESS.get(),
-                    AttributeModifier.Operation.ADDITION, player,
-                    STATS_MOD_UUID, Attributes.ARMOR_TOUGHNESS);
-
+            if(LevelUPCommonConfig.DO_ARMOR_TOUGHNESS.get()) {
+                makeAttributeMod(12,
+                        LevelUPCommonConfig.ENDURANCE_ARMOR_TOUGHNESS.get(),
+                        AttributeModifier.Operation.ADDITION, player,
+                        STATS_MOD_UUID, Attributes.ARMOR_TOUGHNESS);
+            }
             //Knockback resistance
-            makeAttributeMod(12,
-                    LevelUPCommonConfig.ENDURANCE_KNOCKBACK_RESISTANCE.get(),
-                    AttributeModifier.Operation.MULTIPLY_BASE, player,
-                    STATS_MOD_UUID, Attributes.KNOCKBACK_RESISTANCE);
+            if(LevelUPCommonConfig.DO_KB_RES.get()) {
+                makeAttributeMod(12,
+                        LevelUPCommonConfig.ENDURANCE_KNOCKBACK_RESISTANCE.get(),
+                        AttributeModifier.Operation.MULTIPLY_BASE, player,
+                        STATS_MOD_UUID, Attributes.KNOCKBACK_RESISTANCE);
+            }
         }
     }
 

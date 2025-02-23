@@ -198,15 +198,17 @@ public class ModEvents {
         public static void onLivingUpdate(LivingEvent.LivingTickEvent event) {
             if (event.getEntity() instanceof Player player) {
                 player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
-                    //Do the vit stuff
-                    int vitality = stats.getStat(11);
-                    //Regen
-                    double regenMulti = LevelUPCommonConfig.VITALITY_HP_REGEN.get();
-                    if (vitality > 0) {
-                        if (!player.level().getLevelData().isHardcore()) {
-                            player.heal((float) (vitality * regenMulti));
-                        } else {
-                            player.heal((float) (vitality * regenMulti / LevelUPCommonConfig.VITALITY_HARDCORE_NERF.get()));
+                    if(LevelUPCommonConfig.DO_HP_REGEN.get()) {
+                        //Do the vit stuff
+                        int vitality = stats.getStat(11);
+                        //Regen
+                        double regenMulti = LevelUPCommonConfig.VITALITY_HP_REGEN.get();
+                        if (vitality > 0) {
+                            if (!player.level().getLevelData().isHardcore()) {
+                                player.heal((float) (vitality * regenMulti));
+                            } else {
+                                player.heal((float) (vitality * regenMulti / LevelUPCommonConfig.VITALITY_HARDCORE_NERF.get()));
+                            }
                         }
                     }
                 });
@@ -216,25 +218,27 @@ public class ModEvents {
         //Constitution max height before fall
         @SubscribeEvent
         public static void onLivingFall(LivingFallEvent event) {
-            if (event.getEntity() instanceof Player player) {
-                player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
-                    if (event.getDistance() > 0) {
-                        int constitution = stats.getStat(8);
+            if(LevelUPCommonConfig.DO_FALL_DAMAGE_REDUCTION.get()) {
+                if (event.getEntity() instanceof Player player) {
+                    player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
+                        if (event.getDistance() > 0) {
+                            int constitution = stats.getStat(8);
 
-                        double fallDMGReductionDouble = LevelUPCommonConfig.CONSTITUTION_FALL_DAMAGE_REDUCTION.get();
-                        float fallDMGReduction = (float) fallDMGReductionDouble;
+                            double fallDMGReductionDouble = LevelUPCommonConfig.CONSTITUTION_FALL_DAMAGE_REDUCTION.get();
+                            float fallDMGReduction = (float) fallDMGReductionDouble;
 
-                        float currentDamage = event.getDamageMultiplier() * event.getDistance();
+                            float currentDamage = event.getDamageMultiplier() * event.getDistance();
 
-                        // Apply flat reduction
-                        float newDamage = Math.max(0, currentDamage - fallDMGReduction * constitution - 3);
-                        if (!player.level().isClientSide) {
-                            if (constitution > 0) {
-                                event.setDamageMultiplier(newDamage / event.getDistance());
+                            // Apply flat reduction
+                            float newDamage = Math.max(0, currentDamage - fallDMGReduction * constitution - 3);
+                            if (!player.level().isClientSide) {
+                                if (constitution > 0) {
+                                    event.setDamageMultiplier(newDamage / event.getDistance());
+                                }
                             }
                         }
-                    }
-                });
+                    });
+                }
             }
         }
 
@@ -284,7 +288,6 @@ public class ModEvents {
                         if(oldCon[1] == 0 && newCon[1] == 0) {
                             int increase = (int) (newCon[0] - oldCon[0]);
                             if (increase != 0) {
-                                player.sendSystemMessage(Component.literal("!= 0"));
                                 if (conAmount == limitedCon) {
                                     //Sets
                                     stats.setStat(8, conAmount + increase);
@@ -307,7 +310,6 @@ public class ModEvents {
                 });
             }
         }
-
     }
 
     @Mod.EventBusSubscriber(modid = LevelUP.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)

@@ -29,6 +29,7 @@
 
   "gui.levelup.dex_description": "Dexterity: ",
   "gui.levelup.speed": "% movement speed\n",
+  "gui.levelup.attack_speed": "% attack speed\n",
   "gui.levelup.swim_speed": "% swim speed",
 
 

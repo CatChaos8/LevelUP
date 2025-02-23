@@ -3,15 +3,18 @@ package github.catchaos8.levelup.client.screen;
 import github.catchaos8.levelup.LevelUP;
 import github.catchaos8.levelup.attributes.ModAttributes;
 import github.catchaos8.levelup.client.ClientStatData;
+import github.catchaos8.levelup.config.LevelUPClientConfig;
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
 import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.networking.packet.IncreaseStatC2SPacket;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
@@ -193,8 +196,9 @@ public class LevelUPScreen extends Screen {
         graphics.drawString(this.font, FREEPOINTS.getString() + "%d".formatted(this.getStat(5)),
                 this.leftPos + 8, this.topPos + 140, 0x404040, false);
 
-
-        Component CON_INFO = Component.translatable("gui.levelup.con_description").append(String.valueOf((int) player.getAttributeValue(ModAttributes.CONSTITUTION.get()))).append(Component.translatable("gui.levelup.newline"))
+        Component DO_HP = Component.empty();
+        Component DO_FALL = Component.empty();
+        MutableComponent CON_INFO = Component.translatable("gui.levelup.con_description").append(String.valueOf((int) player.getAttributeValue(ModAttributes.CONSTITUTION.get()))).append(Component.translatable("gui.levelup.newline"))
                 .append(Component.translatable("gui.levelup.base")).append(String.valueOf(getStat(0)))
                 .append(Component.translatable("gui.levelup.newline"))
 
@@ -202,14 +206,21 @@ public class LevelUPScreen extends Screen {
                 .append(String.valueOf((int) player.getAttributeValue(ModAttributes.CONSTITUTION.get()) - getStat(0)))
                 .append(Component.translatable("gui.levelup.newline"))
 
-                .append(Component.translatable("gui.levelup.line"))
-
-                .append(PLUS.getString() + LevelUPCommonConfig.CONSTITUTION_HP.get()*100*getStat(8) + Component.translatable("gui.levelup.percent_hp").getString())
-                .append(PLUS.getString() + LevelUPCommonConfig.CONSTITUTION_FALL_DAMAGE_REDUCTION.get()*getStat(8) + Component.translatable("gui.levelup.max_fall_height").getString());
-
+                .append(Component.translatable("gui.levelup.line"));
+        if(LevelUPCommonConfig.DO_HP.get()) {
+            DO_HP = Component.literal(PLUS.getString() + LevelUPCommonConfig.CONSTITUTION_HP.get() * 100 * getStat(8) + Component.translatable("gui.levelup.percent_hp").getString());
+        } else if(LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()) {
+            DO_HP = Component.literal(PLUS.getString() + LevelUPCommonConfig.CONSTITUTION_HP.get() * 100 * getStat(8) + Component.translatable("gui.levelup.percent_hp").getString()).withStyle(ChatFormatting.RED);
+        }
+        if(LevelUPCommonConfig.DO_FALL_DAMAGE_REDUCTION.get()) {
+            DO_FALL = Component.literal(PLUS.getString() + LevelUPCommonConfig.CONSTITUTION_FALL_DAMAGE_REDUCTION.get() * getStat(8) + Component.translatable("gui.levelup.max_fall_height").getString());
+        } else if(LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()) {
+            DO_FALL = Component.literal(PLUS.getString() + LevelUPCommonConfig.CONSTITUTION_FALL_DAMAGE_REDUCTION.get() * getStat(8) + Component.translatable("gui.levelup.max_fall_height").getString()).withStyle(ChatFormatting.RED);
+        }
+        CON_INFO.append(DO_HP).append(DO_FALL);
         constitutionInfo.setTooltip(Tooltip.create(CON_INFO));
 
-        Component DEX_INFO = Component.translatable("gui.levelup.dex_description").append(String.valueOf((int) player.getAttributeValue(ModAttributes.DEXTERITY.get()))).append(Component.translatable("gui.levelup.newline"))
+        MutableComponent DEX_INFO = Component.translatable("gui.levelup.dex_description").append(String.valueOf((int) player.getAttributeValue(ModAttributes.DEXTERITY.get()))).append(Component.translatable("gui.levelup.newline"))
                 .append(Component.translatable("gui.levelup.base")).append(String.valueOf(getStat(1)))
                 .append(Component.translatable("gui.levelup.newline"))
 
@@ -217,14 +228,31 @@ public class LevelUPScreen extends Screen {
                 .append(String.valueOf((int) player.getAttributeValue(ModAttributes.DEXTERITY.get()) - getStat(1)))
                 .append(Component.translatable("gui.levelup.newline"))
 
-                .append(Component.translatable("gui.levelup.line"))
+                .append(Component.translatable("gui.levelup.line"));
+        Component DO_SPEED = Component.empty();
+        Component DO_ATTACK_SPEED = Component.empty();
+        Component DO_SWIM_SPEED = Component.empty();
 
-                .append(PLUS.getString() + LevelUPCommonConfig.DEXTERITY_SPEED.get()*100*getStat(9) + Component.translatable("gui.levelup.speed").getString())
-                .append(PLUS.getString() + LevelUPCommonConfig.DEXTERITY_SWIM_SPEED.get()*100*getStat(9) + Component.translatable("gui.levelup.swim_speed").getString());
+        if(LevelUPCommonConfig.DO_SPEED.get()) {
+            DO_SPEED = Component.literal(PLUS.getString() + LevelUPCommonConfig.DEXTERITY_SPEED.get() * 100 * getStat(9) + Component.translatable("gui.levelup.speed").getString());
+        } else if(LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()) {
+            DO_SPEED = Component.literal(PLUS.getString() + LevelUPCommonConfig.DEXTERITY_SPEED.get() * 100 * getStat(9) + Component.translatable("gui.levelup.speed").getString()).withStyle(ChatFormatting.RED);
+        }
+        if(LevelUPCommonConfig.DO_ATTACK_SPEED.get()) {
+            DO_ATTACK_SPEED = Component.literal(PLUS.getString() + LevelUPCommonConfig.DEXTERITY_ATTACK_SPEED.get() * 100 * getStat(9) + Component.translatable("gui.levelup.attack_speed").getString());
+        } else if(LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()) {
+            DO_ATTACK_SPEED = Component.literal(PLUS.getString() + LevelUPCommonConfig.DEXTERITY_ATTACK_SPEED.get() * 100 * getStat(9) + Component.translatable("gui.levelup.attack_speed").getString()).withStyle(ChatFormatting.RED);
+        }
+        if(LevelUPCommonConfig.DO_SWIM_SPEED.get()) {
+            DO_SWIM_SPEED = Component.literal(PLUS.getString() + LevelUPCommonConfig.DEXTERITY_SWIM_SPEED.get() * 100 * getStat(9) + Component.translatable("gui.levelup.swim_speed").getString());
+        } else if(LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()) {
+            DO_SWIM_SPEED = Component.literal(PLUS.getString() + LevelUPCommonConfig.DEXTERITY_SWIM_SPEED.get() * 100 * getStat(9) + Component.translatable("gui.levelup.swim_speed").getString()).withStyle(ChatFormatting.RED);
+        }
 
+        DEX_INFO.append(DO_SPEED).append(DO_ATTACK_SPEED).append(DO_SWIM_SPEED);
         dexterityInfo.setTooltip(Tooltip.create(DEX_INFO));
 
-        Component STR_INFO = Component.translatable("gui.levelup.str_description").append(String.valueOf((int) player.getAttributeValue(ModAttributes.STRENGTH.get()))).append(Component.translatable("gui.levelup.newline"))
+        MutableComponent STR_INFO = Component.translatable("gui.levelup.str_description").append(String.valueOf((int) player.getAttributeValue(ModAttributes.STRENGTH.get()))).append(Component.translatable("gui.levelup.newline"))
                 .append(Component.translatable("gui.levelup.base")).append(String.valueOf(getStat(2)))
                 .append(Component.translatable("gui.levelup.newline"))
 
@@ -232,50 +260,65 @@ public class LevelUPScreen extends Screen {
                 .append(String.valueOf((int) player.getAttributeValue(ModAttributes.STRENGTH.get()) - getStat(2)))
                 .append(Component.translatable("gui.levelup.newline"))
 
-                .append(Component.translatable("gui.levelup.line"))
-
-                .append(PLUS.getString() + LevelUPCommonConfig.STRENGTH_DAMAGE.get()*100*getStat(10) + Component.translatable("gui.levelup.damage").getString())
-                .append(PLUS.getString() + LevelUPCommonConfig.STRENGTH_KNOCKBACK.get()*100*getStat(10) + Component.translatable("gui.levelup.knockback").getString());
-
+                .append(Component.translatable("gui.levelup.line"));
+        Component DO_DAMAGE = Component.empty();
+        Component DO_KNOCKBACK = Component.empty();
+        if(LevelUPCommonConfig.DO_DAMAGE.get()) {
+            DO_DAMAGE = Component.literal(PLUS.getString() + LevelUPCommonConfig.STRENGTH_DAMAGE.get() * 100 * getStat(10) + Component.translatable("gui.levelup.damage").getString());
+        } else if(LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()) {
+            DO_DAMAGE = Component.literal(PLUS.getString() + LevelUPCommonConfig.STRENGTH_DAMAGE.get() * 100 * getStat(10) + Component.translatable("gui.levelup.damage").getString()).withStyle(ChatFormatting.RED);
+        }
+        if(LevelUPCommonConfig.DO_KNOCKBACK.get()) {
+            DO_KNOCKBACK = Component.literal(PLUS.getString() + LevelUPCommonConfig.STRENGTH_KNOCKBACK.get() * 100 * getStat(10) + Component.translatable("gui.levelup.knockback").getString());
+        } else if(LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()) {
+            DO_KNOCKBACK = Component.literal(PLUS.getString() + LevelUPCommonConfig.STRENGTH_KNOCKBACK.get() * 100 * getStat(10) + Component.translatable("gui.levelup.knockback").getString()).withStyle(ChatFormatting.RED);
+        }
+        STR_INFO.append(DO_DAMAGE).append(DO_KNOCKBACK);
         strengthInfo.setTooltip(Tooltip.create(STR_INFO));
 
         if(this.minecraft == null) return;
         Level level = this.minecraft.level;
         if(level == null) return;
 
-        Component VIT_INFO;
+        MutableComponent VIT_INFO;
 
-        if(level.getLevelData().isHardcore()) {
-            VIT_INFO = Component.translatable("gui.levelup.vit_description").append(String.valueOf((int) player.getAttributeValue(ModAttributes.VITALITY.get()))).append(Component.translatable("gui.levelup.newline"))
-                    .append(Component.translatable("gui.levelup.base")).append(String.valueOf(getStat(3)))
-                    .append(Component.translatable("gui.levelup.newline"))
+        VIT_INFO = Component.translatable("gui.levelup.vit_description").append(String.valueOf((int) player.getAttributeValue(ModAttributes.VITALITY.get()))).append(Component.translatable("gui.levelup.newline"))
+                .append(Component.translatable("gui.levelup.base")).append(String.valueOf(getStat(3)))
+                .append(Component.translatable("gui.levelup.newline"))
 
-                    .append(Component.translatable("gui.levelup.items"))
-                    .append(String.valueOf((int) player.getAttributeValue(ModAttributes.VITALITY.get()) - getStat(3)))
-                    .append(Component.translatable("gui.levelup.newline"))
+                .append(Component.translatable("gui.levelup.items"))
+                .append(String.valueOf((int) player.getAttributeValue(ModAttributes.VITALITY.get()) - getStat(3)))
+                .append(Component.translatable("gui.levelup.newline"))
 
-                    .append(Component.translatable("gui.levelup.line"))
+                .append(Component.translatable("gui.levelup.line"));
 
-                    .append(PLUS.getString() + (LevelUPCommonConfig.VITALITY_HP_REGEN.get()*getStat(11)*20)/3 + Component.translatable("gui.levelup.heal").getString())
-                    .append(PLUS.getString() + LevelUPCommonConfig.VITALITY_ARMOR.get()*100*getStat(11) + Component.translatable("gui.levelup.armor").getString());
-        } else {
-            VIT_INFO = Component.translatable("gui.levelup.vit_description").append(String.valueOf((int) player.getAttributeValue(ModAttributes.VITALITY.get()))).append(Component.translatable("gui.levelup.newline"))
-                    .append(Component.translatable("gui.levelup.base")).append(String.valueOf(getStat(3)))
-                    .append(Component.translatable("gui.levelup.newline"))
+            Component DO_HP_REGEN = Component.empty();
+            Component DO_ARMOR = Component.empty();
+            if(LevelUPCommonConfig.DO_HP_REGEN.get()) {
+                if(level.getLevelData().isHardcore()) {
+                    DO_HP_REGEN = Component.literal(PLUS.getString() + (LevelUPCommonConfig.VITALITY_HP_REGEN.get() * getStat(11) * 20) / LevelUPCommonConfig.VITALITY_HARDCORE_NERF.get() + Component.translatable("gui.levelup.heal").getString());
+                } else {
+                    DO_HP_REGEN = Component.literal(PLUS.getString() + LevelUPCommonConfig.VITALITY_HP_REGEN.get()*getStat(11)*20 + Component.translatable("gui.levelup.heal").getString());
+                }
+            } else if(LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()) {
+                if(level.getLevelData().isHardcore()) {
+                    DO_HP_REGEN = Component.literal(PLUS.getString() + (LevelUPCommonConfig.VITALITY_HP_REGEN.get() * getStat(11) * 20) / LevelUPCommonConfig.VITALITY_HARDCORE_NERF.get() + Component.translatable("gui.levelup.heal").getString()).withStyle(ChatFormatting.RED);
+                } else {
+                    DO_HP_REGEN = Component.literal(PLUS.getString() + LevelUPCommonConfig.VITALITY_HP_REGEN.get()*getStat(11)*20 + Component.translatable("gui.levelup.heal").getString()).withStyle(ChatFormatting.RED);
+                }
+            }
+            if(LevelUPCommonConfig.DO_ARMOR.get()) {
+                DO_ARMOR = Component.literal(PLUS.getString() + LevelUPCommonConfig.VITALITY_ARMOR.get() * 100 * getStat(11) + Component.translatable("gui.levelup.armor").getString());
+            } else if(LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()){
+                DO_ARMOR = Component.literal(PLUS.getString() + LevelUPCommonConfig.VITALITY_ARMOR.get() * 100 * getStat(11) + Component.translatable("gui.levelup.armor").getString()).withStyle(ChatFormatting.RED);
+            }
+        VIT_INFO.append(DO_HP_REGEN).append(DO_ARMOR);
 
-                    .append(Component.translatable("gui.levelup.items"))
-                    .append(String.valueOf((int) player.getAttributeValue(ModAttributes.VITALITY.get()) - getStat(3)))
-                    .append(Component.translatable("gui.levelup.newline"))
-
-                    .append(Component.translatable("gui.levelup.line"))
-
-                    .append(PLUS.getString() + LevelUPCommonConfig.VITALITY_HP_REGEN.get()*getStat(11)*20 + Component.translatable("gui.levelup.heal").getString())
-                    .append(PLUS.getString() + LevelUPCommonConfig.VITALITY_ARMOR.get()*100*getStat(11) + Component.translatable("gui.levelup.armor").getString());
-
-        }
         vitalityInfo.setTooltip(Tooltip.create(VIT_INFO));
 
-        Component END_INFO = Component.translatable("gui.levelup.end_description").append(String.valueOf((int) player.getAttributeValue(ModAttributes.ENDURANCE.get()))).append(Component.translatable("gui.levelup.newline"))
+        Component DO_ARMOR_TOUGHNESS = Component.empty();
+        Component DO_KB_RES = Component.empty();
+        MutableComponent END_INFO = Component.translatable("gui.levelup.end_description").append(String.valueOf((int) player.getAttributeValue(ModAttributes.ENDURANCE.get()))).append(Component.translatable("gui.levelup.newline"))
                 .append(Component.translatable("gui.levelup.base")).append(String.valueOf(getStat(4)))
                 .append(Component.translatable("gui.levelup.newline"))
 
@@ -283,11 +326,19 @@ public class LevelUPScreen extends Screen {
                 .append(String.valueOf((int) player.getAttributeValue(ModAttributes.ENDURANCE.get()) - getStat(4)))
                 .append(Component.translatable("gui.levelup.newline"))
 
-                .append(Component.translatable("gui.levelup.line"))
+                .append(Component.translatable("gui.levelup.line"));
+        if(LevelUPCommonConfig.DO_ARMOR_TOUGHNESS.get()) {
+            DO_ARMOR_TOUGHNESS = Component.literal(PLUS.getString() + LevelUPCommonConfig.ENDURANCE_ARMOR_TOUGHNESS.get() * getStat(12) + Component.translatable("gui.levelup.toughness").getString());
+        } else if (LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()) {
+            DO_ARMOR_TOUGHNESS = Component.literal(PLUS.getString() + LevelUPCommonConfig.ENDURANCE_ARMOR_TOUGHNESS.get() * getStat(12) + Component.translatable("gui.levelup.toughness").getString()).withStyle(ChatFormatting.RED);
+        }
+        if(LevelUPCommonConfig.DO_KB_RES.get()) {
+            DO_KB_RES = Component.literal(PLUS.getString() + LevelUPCommonConfig.ENDURANCE_KNOCKBACK_RESISTANCE.get() * 100 * getStat(12) + Component.translatable("gui.levelup.knockback_resistance").getString());
+        } else if(LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()) {
+            DO_KB_RES = Component.literal(PLUS.getString() + LevelUPCommonConfig.ENDURANCE_KNOCKBACK_RESISTANCE.get() * 100 * getStat(12) + Component.translatable("gui.levelup.knockback_resistance").getString());
+        }
 
-                .append(PLUS.getString() + LevelUPCommonConfig.ENDURANCE_ARMOR_TOUGHNESS.get()*getStat(12) + Component.translatable("gui.levelup.toughness").getString())
-                .append(PLUS.getString() + LevelUPCommonConfig.ENDURANCE_KNOCKBACK_RESISTANCE.get()*100*getStat(12) + Component.translatable("gui.levelup.knockback_resistance").getString());
-
+        END_INFO.append(DO_ARMOR_TOUGHNESS).append(DO_KB_RES);
         enduranceInfo.setTooltip(Tooltip.create(END_INFO));
 
     }
