@@ -36,6 +36,8 @@ public class LevelUPCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_ARMOR_TOUGHNESS;
     public static final ForgeConfigSpec.ConfigValue<Double> ENDURANCE_KNOCKBACK_RESISTANCE;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_KB_RES;
+    public static final ForgeConfigSpec.ConfigValue<Double> ENDURANCE_HUNGER;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> DO_HUNGER;
 
 
     public static final ForgeConfigSpec.ConfigValue<Integer> FREEPOINTS_PER_LEVEL;
@@ -102,7 +104,10 @@ public class LevelUPCommonConfig {
                 .define("Do armor toughness", true);
         ENDURANCE_KNOCKBACK_RESISTANCE = BUILDER.comment("Knockback Resistance per stat").define("KB Res Increase", 0.01);
         DO_KB_RES = BUILDER.comment("Enable endurance kb res")
-                .define("Do kb res", true);
+                .define("Do kb res", false);
+        ENDURANCE_HUNGER = BUILDER.comment("Hunger cost decrease of sprinting per stat").define("Hunger Cost Decrease", 0.01);
+        DO_HUNGER = BUILDER.comment("Enable endurance hunger decrease")
+                .define("do hunger decrease", true);
 
         LEVEL_CAP = BUILDER.comment("Max Level a player can reach without commands")
                 .define("Max Level", 999999);

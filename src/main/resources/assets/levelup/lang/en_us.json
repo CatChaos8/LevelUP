@@ -20,31 +20,33 @@
   "gui.levelup.level_gui": "LevelUP",
   "gui.levelup.level_gui_limit": "Stat Limiter",
   "gui.levelup.plus": "+",
+  "gui.levelup.minus": "-",
   "gui.levelup.limit": "Limit Stats",
 
   "gui.levelup.info": "i",
-  "gui.levelup.percent_hp": "% health\n",
+  "gui.levelup.percent_hp": "% health",
   "gui.levelup.max_fall_height": " max fall height",
   "gui.levelup.con_description": "Constitution: ",
 
   "gui.levelup.dex_description": "Dexterity: ",
-  "gui.levelup.speed": "% movement speed\n",
-  "gui.levelup.attack_speed": "% attack speed\n",
+  "gui.levelup.speed": "% movement speed",
+  "gui.levelup.attack_speed": "% attack speed",
   "gui.levelup.swim_speed": "% swim speed",
 
 
   "gui.levelup.str_description": "Strength: ",
-  "gui.levelup.damage": "% damage\n",
+  "gui.levelup.damage": "% damage",
   "gui.levelup.knockback": "% knockback",
 
 
   "gui.levelup.vit_description": "Vitality: ",
-  "gui.levelup.heal": " passive regeneration\n",
+  "gui.levelup.heal": " passive regeneration",
   "gui.levelup.armor": "% armor",
 
   "gui.levelup.end_description": "Endurance: ",
-  "gui.levelup.toughness": " armour toughness\n",
+  "gui.levelup.toughness": " armour toughness",
   "gui.levelup.knockback_resistance": " knockback resistance",
+  "gui.levelup.hunger": "% sprint hunger cost",
 
   "gui.levelup.line": "----------------------------",
   "gui.levelup.newline": "\n",
