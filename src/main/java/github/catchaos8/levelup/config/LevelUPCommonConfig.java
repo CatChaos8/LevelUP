@@ -53,6 +53,8 @@ public class LevelUPCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> DISPLAY_LEVEL_BESIDE_NAME_IN_PLAYER_LIST;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DISPLAY_LEVEL_UNDER_NAME_IN_SIDEBAR;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> STAT_INCREASE_PER_ENCHANT_LVL;
+
 
     static {
         BUILDER.push("Client Configs for LevelUP");
@@ -127,6 +129,11 @@ public class LevelUPCommonConfig {
                 .define("Display in list", true);
         DISPLAY_LEVEL_UNDER_NAME_IN_SIDEBAR = BUILDER.comment("Display the level on the side of your screen")
                 .define("Display in sidebar", false);
+
+
+        STAT_INCREASE_PER_ENCHANT_LVL = BUILDER.comment("Stat increase per enchantment level")
+                .define("Ench Stat Increase", 5);
+
 
         BUILDER.pop();
         SPEC = BUILDER.build();

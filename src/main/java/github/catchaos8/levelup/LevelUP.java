@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import github.catchaos8.levelup.attributes.ModAttributes;
 import github.catchaos8.levelup.config.LevelUPClientConfig;
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
+import github.catchaos8.levelup.enchants.ModEnchants;
 import github.catchaos8.levelup.networking.ModNetwork;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -31,6 +32,8 @@ public class LevelUP {
         modEventBus.addListener(this::commonSetup);
 
         ModAttributes.register(modEventBus);
+
+        ModEnchants.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
 

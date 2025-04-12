@@ -3,6 +3,7 @@ package github.catchaos8.levelup.lib;
 import com.google.common.collect.Multimap;
 import github.catchaos8.levelup.attributes.ModAttributes;
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
+import github.catchaos8.levelup.enchants.ModEnchants;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -12,6 +13,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.common.ForgeMod;
 
 import java.util.Map;
@@ -238,5 +240,27 @@ public class SetStats {
         }
         //If that attribute not on item, return 0.0
         return new double[]{0.0, 0}; //
+    }
+
+    public static void applyEnchantModifiers(Multimap<Attribute, AttributeModifier> modifiers, ItemStack item, int uuidSuffix) {
+        Map<Attribute, Integer> attributeLevels = Map.of(
+                ModAttributes.CONSTITUTION.get(), EnchantmentHelper.getEnchantments(item).getOrDefault(ModEnchants.FORTIFYING.get(), 0),
+                ModAttributes.DEXTERITY.get(), EnchantmentHelper.getEnchantments(item).getOrDefault(ModEnchants.REFLEX.get(), 0),
+                ModAttributes.STRENGTH.get(), EnchantmentHelper.getEnchantments(item).getOrDefault(ModEnchants.STRENGTHENING.get(), 0),
+                ModAttributes.VITALITY.get(), EnchantmentHelper.getEnchantments(item).getOrDefault(ModEnchants.INNER_STRENGTH.get(), 0),
+                ModAttributes.ENDURANCE.get(), EnchantmentHelper.getEnchantments(item).getOrDefault(ModEnchants.UNYIELDING.get(), 0)
+        );
+
+        for (Map.Entry<Attribute, Integer> entry : attributeLevels.entrySet()) {
+            if (entry.getValue() > 0) {
+                AttributeModifier modifier = new AttributeModifier(
+                        UUID.fromString("2a1f767a-e617-44e9-9922-0000000000" + uuidSuffix),
+                        "enchant " + entry.getKey().getDescriptionId() + " modifier",
+                        entry.getValue() * LevelUPCommonConfig.STAT_INCREASE_PER_ENCHANT_LVL.get(),
+                        AttributeModifier.Operation.ADDITION
+                );
+                modifiers.put(entry.getKey(), modifier);
+            }
+        }
     }
 }

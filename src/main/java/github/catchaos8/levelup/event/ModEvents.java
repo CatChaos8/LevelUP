@@ -10,10 +10,11 @@ import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.networking.packet.StatDataSyncS2CPacket;
 import github.catchaos8.levelup.stats.PlayerStats;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -31,6 +32,8 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.command.ConfigCommand;
+
+import java.util.List;
 
 import static github.catchaos8.levelup.lib.DisplayLevelScoreboard.setName;
 import static github.catchaos8.levelup.lib.SetStats.*;
@@ -262,54 +265,57 @@ public class ModEvents {
 
         }
 
-        //Checking if player equips anything that changes their attributes
+        //Checking if player equips anything that changes their attributes so that it changes automatically
         @SubscribeEvent
         public static void onEquipmentChange(LivingEquipmentChangeEvent event) {
 
             if (event.getEntity() instanceof ServerPlayer player) {
                 player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
-                    var con = player.getAttribute(ModAttributes.CONSTITUTION.get());
-                    if(con != null) {
-                        //Getting base and amount of stuff
-                        //for some reason con.getValue(); returns the value before it changes
-                        int conAmount = (int) con.getValue();
-                        int limitedCon = stats.getStat(8);
+                    EquipmentSlot slot = event.getSlot();
+                    ItemStack newItem = event.getFrom();
+                    ItemStack oldItem = event.getTo();
 
-                        //Geting what slot the item is being applied to and the items
-                        EquipmentSlot slot = event.getSlot();
-                        ItemStack newItem = event.getFrom();
-                        ItemStack oldItem = event.getTo();
+                    // Make the thing to show the limited stat, the attribute, and the base stat for each stat type
+                    record StatRecord(int index, Attribute attribute, int modIndex) {}
 
-                        //Gets the value and op type of the items that they changed
-                        double[] newCon = getAttributeValues(oldItem, ModAttributes.CONSTITUTION.get(), slot);
-                        double[] oldCon = getAttributeValues(newItem, ModAttributes.CONSTITUTION.get(), slot);
+                    List<StatRecord> statRecordList = List.of(
+                            new StatRecord(8, ModAttributes.CONSTITUTION.get(), 0),
+                            new StatRecord(9, ModAttributes.DEXTERITY.get(), 1),
+                            new StatRecord(10, ModAttributes.STRENGTH.get(), 2),
+                            new StatRecord(11, ModAttributes.VITALITY.get(), 3),
+                            new StatRecord(12, ModAttributes.ENDURANCE.get(), 4)
+                    );
 
-                        //if the type of the items are additive(not multiplicative), add the stats and stuff
-                        if(oldCon[1] == 0 && newCon[1] == 0) {
-                            int increase = (int) (newCon[0] - oldCon[0]);
+                    for (StatRecord info : statRecordList) {
+                        AttributeInstance attrInstance = player.getAttribute(info.attribute());
+                        if (attrInstance == null) continue; //For eff so that it checks if u have a 0 in a stat
+
+                        int current = (int) attrInstance.getValue(); //Gets total stats(base + items)
+                        int limited = stats.getStat(info.index());   //Gets limited stats
+
+                        double[] newVals = getAttributeValues(oldItem, info.attribute(), slot); //Gets attributes the items give in the old items and new ones
+                        double[] oldVals = getAttributeValues(newItem, info.attribute(), slot);
+
+                        if (oldVals[1] == 0 && newVals[1] == 0) { //If the attribute increase is additive
+                            int increase = (int) (newVals[0] - oldVals[0]);
+                            //If it increases
                             if (increase != 0) {
-                                if (conAmount == limitedCon) {
-                                    //Sets
-                                    stats.setStat(8, conAmount + increase);
-
-                                    makeAttributeMods(player, 0);
-                                } else if(increase < 0) {
-                                    if(conAmount + increase < limitedCon) {
-                                        //sets
-                                        stats.setStat(8, conAmount + increase);
-                                        makeAttributeMods(player, 0);
-                                    }
+                                if (current == limited || (increase < 0 && current + increase < limited)) { //To check if it increases or if the increase is less than 0 and u have less than the increase or whatever
+                                    stats.setStat(info.index(), current + increase);
+                                    makeAttributeMods(player, info.modIndex());
                                 }
                             }
                         }
 
-                        //If the limited stat is greater/equal to the base amount, set it to max
-                        //Sync
+                        //Sync w/ client
                         ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
                     }
                 });
+
             }
         }
+
+
     }
 
     @Mod.EventBusSubscriber(modid = LevelUP.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)

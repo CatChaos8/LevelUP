@@ -66,5 +66,11 @@
   "attribute.levelup.vit": "Vitality",
   "attribute.levelup.end": "Endurance",
 
-  "name.levelup.short": " Lv. "
+  "name.levelup.short": " Lv. ",
+
+  "enchantment.levelup.fortifying": "Fortifying",
+  "enchantment.levelup.reflex": "Reflex",
+  "enchantment.levelup.strengthening": "Strengthening",
+  "enchantment.levelup.inner_strength": "Inner Strength",
+  "enchantment.levelup.unyielding": "Unyielding"
 }
