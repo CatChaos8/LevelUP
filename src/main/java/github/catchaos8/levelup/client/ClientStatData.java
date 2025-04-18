@@ -1,17 +1,17 @@
 package github.catchaos8.levelup.client;
 
 public class ClientStatData {
-    private static int[] playerStats;
+    private static float[] playerStats;
 
-    public static void set(int[] stats) {
+    public static void set(float[] stats) {
         ClientStatData.playerStats = stats;
     }
 
-    public static int[] getPlayerStats() {
+    public static float[] getPlayerStats() {
         return playerStats;
     }
 
-    public int getStat(int type) {
+    public float getStat(int type) {
         return playerStats[type];
     }
 }

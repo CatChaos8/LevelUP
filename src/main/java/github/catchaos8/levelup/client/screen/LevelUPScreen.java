@@ -184,27 +184,27 @@ public class LevelUPScreen extends Screen {
 
         drawXpBar(graphics, this.imageWidth - 14);
 
-        graphics.drawString(this.font, CONSTITUTION.getString() + "%d" .formatted((int) player.getAttributeValue(ModAttributes.CONSTITUTION.get())),
+        graphics.drawString(this.font, CONSTITUTION.getString() + "%.0f" .formatted((float) player.getAttributeValue(ModAttributes.CONSTITUTION.get())),
                 this.leftPos + text_x, this.topPos + 40, 0x404040, false);
-        graphics.drawString(this.font, DEXTERITY.getString() + "%d".formatted((int) player.getAttributeValue(ModAttributes.DEXTERITY.get())),
+        graphics.drawString(this.font, DEXTERITY.getString() + "%.0f".formatted((float) player.getAttributeValue(ModAttributes.DEXTERITY.get())),
                 this.leftPos + text_x, this.topPos + 60, 0x404040, false);
-        graphics.drawString(this.font, STRENGTH.getString() + "%d".formatted((int) player.getAttributeValue(ModAttributes.STRENGTH.get())),
+        graphics.drawString(this.font, STRENGTH.getString() + "%.0f".formatted((float) player.getAttributeValue(ModAttributes.STRENGTH.get())),
                 this.leftPos + text_x, this.topPos + 80, 0x404040, false);
-        graphics.drawString(this.font, VITALITY.getString() + "%d".formatted((int) player.getAttributeValue(ModAttributes.VITALITY.get())),
+        graphics.drawString(this.font, VITALITY.getString() + "%.0f".formatted((float) player.getAttributeValue(ModAttributes.VITALITY.get())),
                 this.leftPos + text_x, this.topPos + 100, 0x404040, false);
-        graphics.drawString(this.font, ENDURANCE.getString() + "%d".formatted((int) player.getAttributeValue(ModAttributes.ENDURANCE.get())),
+        graphics.drawString(this.font, ENDURANCE.getString() + "%.0f".formatted((float) player.getAttributeValue(ModAttributes.ENDURANCE.get())),
                 this.leftPos + text_x, this.topPos + 120, 0x404040, false);
-        graphics.drawString(this.font, FREEPOINTS.getString() + "%d".formatted(this.getStat(5)),
+        graphics.drawString(this.font, FREEPOINTS.getString() + "%.2f".formatted(this.getStat(5)),
                 this.leftPos + 8, this.topPos + 140, 0x404040, false);
 
         Component DO_HP = Component.empty();
         Component DO_FALL = Component.empty();
-        MutableComponent CON_INFO = Component.translatable("gui.levelup.con_description").append(String.valueOf((int) player.getAttributeValue(ModAttributes.CONSTITUTION.get()))).append(Component.translatable("gui.levelup.newline"))
+        MutableComponent CON_INFO = Component.translatable("gui.levelup.con_description").append(String.valueOf((float) player.getAttributeValue(ModAttributes.CONSTITUTION.get()))).append(Component.translatable("gui.levelup.newline"))
                 .append(Component.translatable("gui.levelup.base")).append(String.valueOf(getStat(0)))
                 .append(Component.translatable("gui.levelup.newline"))
 
                 .append(Component.translatable("gui.levelup.items"))
-                .append(String.valueOf((int) player.getAttributeValue(ModAttributes.CONSTITUTION.get()) - getStat(0)))
+                .append(String.valueOf((float) player.getAttributeValue(ModAttributes.CONSTITUTION.get()) - getStat(0)))
                 .append(Component.translatable("gui.levelup.newline"))
 
                 .append(Component.translatable("gui.levelup.line"));
@@ -221,12 +221,12 @@ public class LevelUPScreen extends Screen {
         CON_INFO.append(DO_HP).append(DO_FALL);
         constitutionInfo.setTooltip(Tooltip.create(CON_INFO));
 
-        MutableComponent DEX_INFO = Component.translatable("gui.levelup.dex_description").append(String.valueOf((int) player.getAttributeValue(ModAttributes.DEXTERITY.get()))).append(Component.translatable("gui.levelup.newline"))
+        MutableComponent DEX_INFO = Component.translatable("gui.levelup.dex_description").append(String.valueOf((float) player.getAttributeValue(ModAttributes.DEXTERITY.get()))).append(Component.translatable("gui.levelup.newline"))
                 .append(Component.translatable("gui.levelup.base")).append(String.valueOf(getStat(1)))
                 .append(Component.translatable("gui.levelup.newline"))
 
                 .append(Component.translatable("gui.levelup.items"))
-                .append(String.valueOf((int) player.getAttributeValue(ModAttributes.DEXTERITY.get()) - getStat(1)))
+                .append(String.valueOf((float) player.getAttributeValue(ModAttributes.DEXTERITY.get()) - getStat(1)))
                 .append(Component.translatable("gui.levelup.newline"))
 
                 .append(Component.translatable("gui.levelup.line"));
@@ -253,12 +253,12 @@ public class LevelUPScreen extends Screen {
         DEX_INFO.append(DO_SPEED).append(DO_ATTACK_SPEED).append(DO_SWIM_SPEED);
         dexterityInfo.setTooltip(Tooltip.create(DEX_INFO));
 
-        MutableComponent STR_INFO = Component.translatable("gui.levelup.str_description").append(String.valueOf((int) player.getAttributeValue(ModAttributes.STRENGTH.get()))).append(Component.translatable("gui.levelup.newline"))
+        MutableComponent STR_INFO = Component.translatable("gui.levelup.str_description").append(String.valueOf((float) player.getAttributeValue(ModAttributes.STRENGTH.get()))).append(Component.translatable("gui.levelup.newline"))
                 .append(Component.translatable("gui.levelup.base")).append(String.valueOf(getStat(2)))
                 .append(Component.translatable("gui.levelup.newline"))
 
                 .append(Component.translatable("gui.levelup.items"))
-                .append(String.valueOf((int) player.getAttributeValue(ModAttributes.STRENGTH.get()) - getStat(2)))
+                .append(String.valueOf((float) player.getAttributeValue(ModAttributes.STRENGTH.get()) - getStat(2)))
                 .append(Component.translatable("gui.levelup.newline"))
 
                 .append(Component.translatable("gui.levelup.line"));
@@ -283,12 +283,12 @@ public class LevelUPScreen extends Screen {
 
         MutableComponent VIT_INFO;
 
-        VIT_INFO = Component.translatable("gui.levelup.vit_description").append(String.valueOf((int) player.getAttributeValue(ModAttributes.VITALITY.get()))).append(Component.translatable("gui.levelup.newline"))
+        VIT_INFO = Component.translatable("gui.levelup.vit_description").append(String.valueOf((float) player.getAttributeValue(ModAttributes.VITALITY.get()))).append(Component.translatable("gui.levelup.newline"))
                 .append(Component.translatable("gui.levelup.base")).append(String.valueOf(getStat(3)))
                 .append(Component.translatable("gui.levelup.newline"))
 
                 .append(Component.translatable("gui.levelup.items"))
-                .append(String.valueOf((int) player.getAttributeValue(ModAttributes.VITALITY.get()) - getStat(3)))
+                .append(String.valueOf((float) player.getAttributeValue(ModAttributes.VITALITY.get()) - getStat(3)))
                 .append(Component.translatable("gui.levelup.newline"))
 
                 .append(Component.translatable("gui.levelup.line"));
@@ -325,12 +325,12 @@ public class LevelUPScreen extends Screen {
         Component DO_KB_RES = Component.empty();
         Component DO_HUNGER = Component.empty();
 
-        MutableComponent END_INFO = Component.translatable("gui.levelup.end_description").append(String.valueOf((int) player.getAttributeValue(ModAttributes.ENDURANCE.get()))).append(Component.translatable("gui.levelup.newline"))
+        MutableComponent END_INFO = Component.translatable("gui.levelup.end_description").append(String.valueOf((float) player.getAttributeValue(ModAttributes.ENDURANCE.get()))).append(Component.translatable("gui.levelup.newline"))
                 .append(Component.translatable("gui.levelup.base")).append(String.valueOf(getStat(4)))
                 .append(Component.translatable("gui.levelup.newline"))
 
                 .append(Component.translatable("gui.levelup.items"))
-                .append(String.valueOf((int) player.getAttributeValue(ModAttributes.ENDURANCE.get()) - getStat(4)))
+                .append(String.valueOf((float) player.getAttributeValue(ModAttributes.ENDURANCE.get()) - getStat(4)))
                 .append(Component.translatable("gui.levelup.newline"))
 
                 .append(Component.translatable("gui.levelup.line"));
@@ -359,19 +359,19 @@ public class LevelUPScreen extends Screen {
 
     }
     private void handleConButton(Button increase) {
-        ModNetwork.sendToServer(new IncreaseStatC2SPacket(0, 1));
+        ModNetwork.sendToServer(new IncreaseStatC2SPacket(0, 1.0f));
     }
     private void handleDexButton(Button increase) {
-        ModNetwork.sendToServer(new IncreaseStatC2SPacket(1, 1));
+        ModNetwork.sendToServer(new IncreaseStatC2SPacket(1, 1.0f));
     }
     private void handleStrButton(Button increase) {
-        ModNetwork.sendToServer(new IncreaseStatC2SPacket(2, 1));
+        ModNetwork.sendToServer(new IncreaseStatC2SPacket(2, 1.0f));
     }
     private void handleVitButton(Button increase) {
-        ModNetwork.sendToServer(new IncreaseStatC2SPacket(3, 1));
+        ModNetwork.sendToServer(new IncreaseStatC2SPacket(3, 1.0f));
     }
     private void handleEndButton(Button increase) {
-        ModNetwork.sendToServer(new IncreaseStatC2SPacket(4, 1));
+        ModNetwork.sendToServer(new IncreaseStatC2SPacket(4, 1.0f));
     }
 
     private void handleLimitButton(Button button) {
@@ -382,8 +382,8 @@ public class LevelUPScreen extends Screen {
     }
 
 
-    private int getStat(int type) {
-        int[] stats = ClientStatData.getPlayerStats();
+    private float getStat(int type) {
+        float[] stats = ClientStatData.getPlayerStats();
         if(this.minecraft != null && this.minecraft.player != null) {
             return stats[type];
         }
@@ -391,11 +391,11 @@ public class LevelUPScreen extends Screen {
     }
 
     private void drawXpBar(@NotNull GuiGraphics graphics, int width) {
-        int currentXp = getStat(6); // Get XP value
-        int level = getStat(7);
-        int maxXp = (int) (LevelUPCommonConfig.A_VALUE.get() * (level * level) + LevelUPCommonConfig.B_VALUE.get() * level + LevelUPCommonConfig.C_VALUE.get()); // Dynamic max XP calculation
+        float currentXp = getStat(6); // Get XP value
+        float level = getStat(7);
+        int maxXp = (int) (LevelUPCommonConfig.A_VALUE.get() * (level * level) + LevelUPCommonConfig.B_VALUE.get() * level + LevelUPCommonConfig.C_VALUE.get()); // xp to level up
 
-        // Calculate the width of the filled portion
+        // get width of the filled portion
         int filledWidth = (int) ((currentXp / (float) maxXp) * width);
 
         // Adjust position relative to `leftPos` and `topPos`
@@ -411,8 +411,8 @@ public class LevelUPScreen extends Screen {
         graphics.blit(XP_BAR_FULL, adjustedX, adjustedY-10, 0, 0, filledWidth, 5, 162, 5); // Progress texture
 
         // Optionally, draw the XP value as text
-        graphics.drawString(this.font, "Level %d - XP: %d / %d".formatted(level, currentXp, maxXp),
-                adjustedX + width / 2 - this.font.width("Level %d - XP: %d / %d".formatted(level, currentXp, maxXp)) / 2,
+        graphics.drawString(this.font, "Level %.0f - XP: %.0f / %d".formatted(level, currentXp, maxXp),
+                adjustedX + width / 2 - this.font.width("Level %.0f - XP: %.0f / %d".formatted(level, currentXp, maxXp)) / 2,
                 adjustedY, 0x404040, false); // White text above the bar
     }
 

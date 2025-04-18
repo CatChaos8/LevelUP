@@ -35,7 +35,7 @@ public class SetClassLevelCommand {
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
                 stats.setStat( 7, amount);
                 ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
-                int level = stats.getStat(7);
+                float level = stats.getStat(7);
                 DisplayLevelScoreboard.updateLevel(player, level);
                 player.sendSystemMessage(Component.translatable(CLASSLVL).append(Component.literal("" + stats.getStat(7))));
             });

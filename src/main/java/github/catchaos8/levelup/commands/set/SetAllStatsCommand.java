@@ -53,7 +53,7 @@ public class SetAllStatsCommand {
                     SetStats.setAttributeStat(amount, i,player);
                 }
                 player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
-                    int level = stats.getStat(7);
+                    float level = stats.getStat(7);
                     DisplayLevelScoreboard.updateLevel(player, level);
                 });
 

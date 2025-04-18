@@ -40,7 +40,7 @@ public class LevelUPCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_HUNGER;
 
 
-    public static final ForgeConfigSpec.ConfigValue<Integer> FREEPOINTS_PER_LEVEL;
+    public static final ForgeConfigSpec.ConfigValue<Float> FREEPOINTS_PER_LEVEL;
     public static final ForgeConfigSpec.ConfigValue<Integer> LEVEL_CAP;
     public static final ForgeConfigSpec.ConfigValue<Integer> STAT_CAP;
 
@@ -61,7 +61,7 @@ public class LevelUPCommonConfig {
 
         //Config
         FREEPOINTS_PER_LEVEL = BUILDER.comment("How many stat points per level!")
-                        .define("Points Per Level", 3);
+                        .define("Points Per Level", 3.0f);
 
 
         CONSTITUTION_FALL_DAMAGE_REDUCTION = BUILDER.comment("height before fall damage per stat")

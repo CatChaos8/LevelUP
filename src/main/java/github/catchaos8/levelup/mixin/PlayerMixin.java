@@ -18,7 +18,7 @@ public abstract class PlayerMixin {
         FoodData foodData = player.getFoodData();
         if(LevelUPCommonConfig.DO_HUNGER.get()) {
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
-                int end = stats.getStat(12);
+                float end = stats.getStat(12);
                 if (end != 0) {
                     if (player.isSprinting()) {
                         double hungerDecrease = LevelUPCommonConfig.ENDURANCE_HUNGER.get();

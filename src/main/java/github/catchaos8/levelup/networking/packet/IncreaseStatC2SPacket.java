@@ -16,10 +16,10 @@ import static github.catchaos8.levelup.lib.SetStats.*;
 public class IncreaseStatC2SPacket {
 
     private final int type;
-    private final int amount;
+    private final float amount;
 
 
-    public IncreaseStatC2SPacket(int type, int amount) {
+    public IncreaseStatC2SPacket(int type, float amount) {
         this.type = Math.max(0, Math.min(12, type));
 
         this.amount = Math.max(0, amount);
@@ -28,14 +28,14 @@ public class IncreaseStatC2SPacket {
     public IncreaseStatC2SPacket(FriendlyByteBuf buf) {
         this.type = buf.readInt();
 
-        this.amount = buf.readInt();
+        this.amount = buf.readFloat();
 
     }
 
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeInt(type);
 
-        buf.writeInt(amount);
+        buf.writeFloat(amount);
     }
 
     public void handle(Supplier<NetworkEvent.Context> supplier) {
@@ -116,8 +116,8 @@ public class IncreaseStatC2SPacket {
                 //Sync
                 ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
                 //Update Level
-                int level = stats.getStat(7);
-                DisplayLevelScoreboard.updateLevel(player, level);
+                float level = stats.getStat(7);
+                DisplayLevelScoreboard.updateLevel(player, (int) level);
             });
         });
 

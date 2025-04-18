@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class SetStats {
-    public static void setAttributeStat(int amount, int type, ServerPlayer player){
+    public static void setAttributeStat(float amount, int type, ServerPlayer player){
 
         UUID uuid = UUID.fromString("d7663cf7-09d3-48a9-9e22-bc0f495a96b8");
 
@@ -92,11 +92,11 @@ public class SetStats {
     public static void increaseLevel(ServerPlayer player) {
         player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
 
-            int xp = stats.getStat(6);
-            int level = stats.getStat(7);
+            float xp = stats.getStat(6);
+            float level = stats.getStat(7);
 
             int xpNeeded = (int) (LevelUPCommonConfig.A_VALUE.get()*(level*level) + LevelUPCommonConfig.B_VALUE.get()*level + LevelUPCommonConfig.C_VALUE.get());
-            int freepointsGiven = LevelUPCommonConfig.FREEPOINTS_PER_LEVEL.get();
+            float freepointsGiven = LevelUPCommonConfig.FREEPOINTS_PER_LEVEL.get();
 
             int maxLevel = LevelUPCommonConfig.LEVEL_CAP.get();
 
@@ -108,7 +108,7 @@ public class SetStats {
                 //FreePoints
                 stats.addStat(5, freepointsGiven);
 
-                player.sendSystemMessage(Component.literal("LevelUP! You are now level " + stats.getStat(7) + "!"));
+                player.sendSystemMessage(Component.literal("LevelUP! You are now level " + ((int) stats.getStat(7)) + "!"));
 
                 //If there is enough xp for another level
                 xp = stats.getStat(6);

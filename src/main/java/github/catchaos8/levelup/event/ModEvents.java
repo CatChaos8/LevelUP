@@ -165,7 +165,7 @@ public class ModEvents {
                 if (event.getEntity() instanceof ServerPlayer player) {
                     player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
 
-                        int level = stats.getStat(7);
+                        float level = stats.getStat(7);
                         DisplayLevelScoreboard.updateLevel(player, level);
                         ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
 
@@ -203,7 +203,7 @@ public class ModEvents {
                 player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
                     if(LevelUPCommonConfig.DO_HP_REGEN.get()) {
                         //Do the vit stuff
-                        int vitality = stats.getStat(11);
+                        float vitality = stats.getStat(11);
                         //Regen
                         double regenMulti = LevelUPCommonConfig.VITALITY_HP_REGEN.get();
                         if (vitality > 0) {
@@ -225,7 +225,7 @@ public class ModEvents {
                 if (event.getEntity() instanceof Player player) {
                     player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
                         if (event.getDistance() > 0) {
-                            int constitution = stats.getStat(8);
+                            float constitution = stats.getStat(8);
 
                             double fallDMGReductionDouble = LevelUPCommonConfig.CONSTITUTION_FALL_DAMAGE_REDUCTION.get();
                             float fallDMGReduction = (float) fallDMGReductionDouble;
@@ -291,7 +291,7 @@ public class ModEvents {
                         if (attrInstance == null) continue; //For eff so that it checks if u have a 0 in a stat
 
                         int current = (int) attrInstance.getValue(); //Gets total stats(base + items)
-                        int limited = stats.getStat(info.index());   //Gets limited stats
+                        float limited = stats.getStat(info.index());   //Gets limited stats
 
                         double[] newVals = getAttributeValues(oldItem, info.attribute(), slot); //Gets attributes the items give in the old items and new ones
                         double[] oldVals = getAttributeValues(newItem, info.attribute(), slot);

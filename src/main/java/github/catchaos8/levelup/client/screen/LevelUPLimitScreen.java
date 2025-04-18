@@ -64,12 +64,12 @@ public class LevelUPLimitScreen extends Screen {
             public void onRelease(double mouseX, double mouseY) {
                 super.onRelease(mouseX, mouseY);
 
-                setLimitedStat(8, (int) this.getValue());
+                setLimitedStat(8, (float) this.getValue());
             }
             @Override
             public void onDrag(double mouseX, double mouseY, double deltaX, double deltaY) {
                 super.onDrag(mouseX, mouseY, deltaX, deltaY);
-                setLimitedStat(8, (int) this.getValue());
+                setLimitedStat(8, (float) this.getValue());
             }
         });
 
@@ -90,12 +90,12 @@ public class LevelUPLimitScreen extends Screen {
             public void onRelease(double mouseX, double mouseY) {
                 super.onRelease(mouseX, mouseY);
 
-                setLimitedStat(9, (int) this.getValue());
+                setLimitedStat(9, (float) this.getValue());
             }
             @Override
             public void onDrag(double mouseX, double mouseY, double deltaX, double deltaY) {
                 super.onDrag(mouseX, mouseY, deltaX, deltaY);
-                setLimitedStat(9, (int) this.getValue());
+                setLimitedStat(9, (float) this.getValue());
             }
         });
 
@@ -107,7 +107,7 @@ public class LevelUPLimitScreen extends Screen {
                 20,
                 STRENGTH,
                 Component.empty(),
-                0.0,
+                0.0f,
                 getStat(97),
                 getStat(10),
                 true
@@ -116,12 +116,12 @@ public class LevelUPLimitScreen extends Screen {
             public void onRelease(double mouseX, double mouseY) {
                 super.onRelease(mouseX, mouseY);
 
-                setLimitedStat(10, (int) this.getValue());
+                setLimitedStat(10, (float) this.getValue());
             }
             @Override
             public void onDrag(double mouseX, double mouseY, double deltaX, double deltaY) {
                 super.onDrag(mouseX, mouseY, deltaX, deltaY);
-                setLimitedStat(10, (int) this.getValue());
+                setLimitedStat(10, (float) this.getValue());
             }
         });
 
@@ -142,12 +142,12 @@ public class LevelUPLimitScreen extends Screen {
             public void onRelease(double mouseX, double mouseY) {
                 super.onRelease(mouseX, mouseY);
 
-                setLimitedStat(11, (int) this.getValue());
+                setLimitedStat(11, (float) this.getValue());
             }
             @Override
             public void onDrag(double mouseX, double mouseY, double deltaX, double deltaY) {
                 super.onDrag(mouseX, mouseY, deltaX, deltaY);
-                setLimitedStat(11, (int) this.getValue());
+                setLimitedStat(11, (float) this.getValue());
             }
         });
 
@@ -168,12 +168,12 @@ public class LevelUPLimitScreen extends Screen {
             public void onRelease(double mouseX, double mouseY) {
                 super.onRelease(mouseX, mouseY);
 
-                setLimitedStat(12, (int) this.getValue());
+                setLimitedStat(12, (float) this.getValue());
             }
             @Override
             public void onDrag(double mouseX, double mouseY, double deltaX, double deltaY) {
                 super.onDrag(mouseX, mouseY, deltaX, deltaY);
-                setLimitedStat(12, (int) this.getValue());
+                setLimitedStat(12, (float) this.getValue());
             }
         });
     }
@@ -187,28 +187,28 @@ public class LevelUPLimitScreen extends Screen {
         super.render(graphics, mouseX, mouseY, partialTicks);
     }
 
-    private int getStat(int type) {
-        int[] stats = ClientStatData.getPlayerStats();
+    private float getStat(int type) {
+        float[] stats = ClientStatData.getPlayerStats();
         if(this.minecraft != null && this.minecraft.player != null) {
             var player = this.minecraft.player;
             //The high type nums are for getting Attribute. They do not replace low numbers so that u can still display the low numbers
             if (type == 95) {
-                return (int) player.getAttributeValue(ModAttributes.CONSTITUTION.get());
+                return (float) player.getAttributeValue(ModAttributes.CONSTITUTION.get());
             } else if(type == 96) {
-                return (int) player.getAttributeValue(ModAttributes.DEXTERITY.get());
+                return (float) player.getAttributeValue(ModAttributes.DEXTERITY.get());
             } else if(type == 97) {
-                return (int) player.getAttributeValue(ModAttributes.STRENGTH.get());
+                return (float) player.getAttributeValue(ModAttributes.STRENGTH.get());
             } else if(type == 98) {
-                return (int) player.getAttributeValue(ModAttributes.VITALITY.get());
+                return (float) player.getAttributeValue(ModAttributes.VITALITY.get());
             } else if(type == 99) {
-                return (int) player.getAttributeValue(ModAttributes.ENDURANCE.get());
+                return (float) player.getAttributeValue(ModAttributes.ENDURANCE.get());
             }
             return stats[type];
         }
         return 0;
     }
 
-    private void setLimitedStat(int type, int amount) {
+    private void setLimitedStat(int type, float amount) {
         ModNetwork.sendToServer(new IncreaseStatC2SPacket(type, amount));
     }
 

@@ -59,7 +59,7 @@ public class DisplayLevelScoreboard {
     }
 
     // Update the player's level on the scoreboard/custom name
-    public static void updateLevel(ServerPlayer player, int playerLevel) {
+    public static void updateLevel(ServerPlayer player, float playerLevel) {
         ServerLevel serverLevel = player.serverLevel();
         ServerScoreboard scoreboard = serverLevel.getScoreboard();
 
@@ -69,7 +69,7 @@ public class DisplayLevelScoreboard {
         // If the objective is valid, update the player's score with the level text
         if (levelObjective != null) {
             // Set the score for the player to be the level with the prefix
-            scoreboard.getOrCreatePlayerScore(player.getScoreboardName(), levelObjective).setScore(playerLevel);
+            scoreboard.getOrCreatePlayerScore(player.getScoreboardName(), levelObjective).setScore((int) playerLevel);
         }
     }
 
