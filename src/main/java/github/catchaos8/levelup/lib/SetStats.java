@@ -20,50 +20,31 @@ import java.util.Map;
 import java.util.UUID;
 
 public class SetStats {
-    public static void setAttributeStat(float amount, int type, ServerPlayer player){
 
+    private static final Attribute[] ATTRIBUTES = {
+            ModAttributes.CONSTITUTION.get(),
+            ModAttributes.DEXTERITY.get(),
+            ModAttributes.STRENGTH.get(),
+            ModAttributes.VITALITY.get(),
+            ModAttributes.ENDURANCE.get()
+    };
+
+    public static void setAttributeStat(float amount, int type, ServerPlayer player) {
         UUID uuid = UUID.fromString("d7663cf7-09d3-48a9-9e22-bc0f495a96b8");
 
         player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
-            AttributeModifier modifier = new AttributeModifier(
-                    uuid,
-                    "stat base",
-                    amount,
-                    AttributeModifier.Operation.ADDITION
-            );
+            if (type >= 0 && type < ATTRIBUTES.length) {
+                Attribute attributeType = ATTRIBUTES[type];
+                AttributeInstance attributeInstance = player.getAttribute(attributeType);
 
-            AttributeInstance attribute = null;
-            AttributeInstance attributeInstance = null;
-
-            if(type == 0){
-                attribute = player.getAttribute(ModAttributes.CONSTITUTION.get());
-                attributeInstance = player.getAttribute(ModAttributes.CONSTITUTION.get());
-            }else if(type == 1) {
-                attribute = player.getAttribute(ModAttributes.DEXTERITY.get());
-                attributeInstance = player.getAttribute(ModAttributes.DEXTERITY.get());
-            } else if (type == 2) {
-                attribute = player.getAttribute(ModAttributes.STRENGTH.get());
-                attributeInstance = player.getAttribute(ModAttributes.STRENGTH.get());
-            } else if (type == 3) {
-                attribute = player.getAttribute(ModAttributes.VITALITY.get());
-                attributeInstance = player.getAttribute(ModAttributes.VITALITY.get());
-            } else if (type == 4) {
-                attribute = player.getAttribute(ModAttributes.ENDURANCE.get());
-                attributeInstance = player.getAttribute(ModAttributes.ENDURANCE.get());
-            }
-
-            assert attributeInstance != null;
-            attributeInstance.setBaseValue(amount);
-
-
-            if (attribute != null) {
-                // Remove any existing modifier with the same UUID to avoid stacking
-                attribute.removeModifier(uuid);
+                if (attributeInstance != null) {
+                    attributeInstance.setBaseValue(amount);
+                    attributeInstance.removeModifier(uuid);
+                    attributeInstance.addPermanentModifier(new AttributeModifier(uuid, "stat base", amount, AttributeModifier.Operation.ADDITION));
+                }
             }
         });
     }
-
-
 
     public static void makeAttributeMod(int baseStat,
                                  double modifierPerStat, AttributeModifier.Operation attributeModOperation,
@@ -75,7 +56,7 @@ public class SetStats {
             AttributeModifier modifier = new AttributeModifier(
                     uuid,
                     "boost from player stats",
-                    modifierPerStat * stats.getStat(baseStat),
+                    modifierPerStat * stats.getLimitedStat(baseStat),
                     attributeModOperation
             );
             var attribute = player.getAttribute(attributeName);
@@ -92,8 +73,8 @@ public class SetStats {
     public static void increaseLevel(ServerPlayer player) {
         player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
 
-            float xp = stats.getStat(6);
-            float level = stats.getStat(7);
+            float xp = stats.getInfo(1);
+            float level = stats.getInfo(2);
 
             int xpNeeded = (int) (LevelUPCommonConfig.A_VALUE.get()*(level*level) + LevelUPCommonConfig.B_VALUE.get()*level + LevelUPCommonConfig.C_VALUE.get());
             float freepointsGiven = LevelUPCommonConfig.FREEPOINTS_PER_LEVEL.get();
@@ -102,17 +83,17 @@ public class SetStats {
 
             if (xp >= xpNeeded && level < maxLevel) {
                 //Level
-                stats.addStat(7, 1);
+                stats.addInfo(2, 1);
                 //XP
-                stats.subStat(6, xpNeeded);
+                stats.subInfo(1, xpNeeded);
                 //FreePoints
-                stats.addStat(5, freepointsGiven);
+                stats.addInfo(0, freepointsGiven);
 
-                player.sendSystemMessage(Component.literal("LevelUP! You are now level " + ((int) stats.getStat(7)) + "!"));
+                player.sendSystemMessage(Component.literal("LevelUP! You are now level " + (int)level + "!"));
 
-                //If there is enough xp for another level
-                xp = stats.getStat(6);
-                level = stats.getStat(7);
+                //If there is enough xp for another level(Re-adjusts Variables)
+                xp = stats.getInfo(1);
+                level = stats.getInfo(2);
                 xpNeeded = (int) (0.2*(level*level) + 0.25*level + 10);
 
                 //Update the scoreboard
@@ -126,7 +107,7 @@ public class SetStats {
         });
     }
 
-    public static void makeAttributeMods(ServerPlayer player, int type) {
+    public static void makeAttributeSingleMod(ServerPlayer player, int type) {
 
         final UUID STATS_MOD_UUID = UUID.fromString("d7663cf7-09d3-48a9-9e22-bc0f495a96b8");
 
@@ -134,7 +115,7 @@ public class SetStats {
         if(type == 0 || type == 99) {
             //HP Increase
             if(LevelUPCommonConfig.DO_HP.get()) {
-                makeAttributeMod(8,
+                makeAttributeMod(type,
                         LevelUPCommonConfig.CONSTITUTION_HP.get(),
                         AttributeModifier.Operation.MULTIPLY_BASE, player,
                         STATS_MOD_UUID, Attributes.MAX_HEALTH);
@@ -146,21 +127,21 @@ public class SetStats {
         if(type == 1 || type == 99) {
             //Speed
             if(LevelUPCommonConfig.DO_SPEED.get()) {
-                makeAttributeMod(9,
+                makeAttributeMod(type,
                         LevelUPCommonConfig.DEXTERITY_SPEED.get(),
                         AttributeModifier.Operation.MULTIPLY_BASE, player,
                         STATS_MOD_UUID, Attributes.MOVEMENT_SPEED);
             }
             //Attack Speed
             if(LevelUPCommonConfig.DO_ATTACK_SPEED.get()) {
-                makeAttributeMod(9,
+                makeAttributeMod(type,
                         LevelUPCommonConfig.DEXTERITY_ATTACK_SPEED.get(),
                         AttributeModifier.Operation.MULTIPLY_BASE, player,
                         STATS_MOD_UUID, Attributes.ATTACK_SPEED);
             }
             //Swim Speed
             if(LevelUPCommonConfig.DO_SWIM_SPEED.get()) {
-                makeAttributeMod(9,
+                makeAttributeMod(type,
                         LevelUPCommonConfig.DEXTERITY_SWIM_SPEED.get(),
                         AttributeModifier.Operation.MULTIPLY_BASE, player,
                         STATS_MOD_UUID, ForgeMod.SWIM_SPEED.get());
@@ -173,14 +154,14 @@ public class SetStats {
 
             //Damage
             if(LevelUPCommonConfig.DO_DAMAGE.get()) {
-                makeAttributeMod(10,
+                makeAttributeMod(type,
                         LevelUPCommonConfig.STRENGTH_DAMAGE.get(),
                         AttributeModifier.Operation.MULTIPLY_BASE, player,
                         STATS_MOD_UUID, Attributes.ATTACK_DAMAGE);
             }
             //Knockback
             if(LevelUPCommonConfig.DO_KNOCKBACK.get()) {
-                makeAttributeMod(10,
+                makeAttributeMod(type,
                         LevelUPCommonConfig.STRENGTH_KNOCKBACK.get(),
                         AttributeModifier.Operation.MULTIPLY_BASE, player,
                         STATS_MOD_UUID, Attributes.ATTACK_KNOCKBACK);
@@ -193,7 +174,7 @@ public class SetStats {
 
             //Armor
             if(LevelUPCommonConfig.DO_ARMOR.get()) {
-                makeAttributeMod(11,
+                makeAttributeMod(type,
                         LevelUPCommonConfig.VITALITY_ARMOR.get(),
                         AttributeModifier.Operation.MULTIPLY_BASE, player,
                         STATS_MOD_UUID, Attributes.ARMOR);
@@ -205,18 +186,98 @@ public class SetStats {
 
             //Armour toughness
             if(LevelUPCommonConfig.DO_ARMOR_TOUGHNESS.get()) {
-                makeAttributeMod(12,
+                makeAttributeMod(type,
                         LevelUPCommonConfig.ENDURANCE_ARMOR_TOUGHNESS.get(),
                         AttributeModifier.Operation.ADDITION, player,
                         STATS_MOD_UUID, Attributes.ARMOR_TOUGHNESS);
             }
             //Knockback resistance
             if(LevelUPCommonConfig.DO_KB_RES.get()) {
-                makeAttributeMod(12,
+                makeAttributeMod(type,
                         LevelUPCommonConfig.ENDURANCE_KNOCKBACK_RESISTANCE.get(),
                         AttributeModifier.Operation.MULTIPLY_BASE, player,
                         STATS_MOD_UUID, Attributes.KNOCKBACK_RESISTANCE);
             }
+        }
+    }
+
+    public static void makeAttributeMods(ServerPlayer player) {
+
+        final UUID STATS_MOD_UUID = UUID.fromString("d7663cf7-09d3-48a9-9e22-bc0f495a96b8");
+
+        //Constitution
+        //HP Increase
+        if(LevelUPCommonConfig.DO_HP.get()) {
+            makeAttributeMod(0,
+                    LevelUPCommonConfig.CONSTITUTION_HP.get(),
+                    AttributeModifier.Operation.MULTIPLY_BASE, player,
+                    STATS_MOD_UUID, Attributes.MAX_HEALTH);
+        }
+        //Max fall before fall dmg is in mod events
+
+        //Dexterity
+        //Speed
+        if(LevelUPCommonConfig.DO_SPEED.get()) {
+            makeAttributeMod(1,
+                    LevelUPCommonConfig.DEXTERITY_SPEED.get(),
+                    AttributeModifier.Operation.MULTIPLY_BASE, player,
+                    STATS_MOD_UUID, Attributes.MOVEMENT_SPEED);
+        }
+        //Attack Speed
+        if(LevelUPCommonConfig.DO_ATTACK_SPEED.get()) {
+            makeAttributeMod(1,
+                    LevelUPCommonConfig.DEXTERITY_ATTACK_SPEED.get(),
+                    AttributeModifier.Operation.MULTIPLY_BASE, player,
+                    STATS_MOD_UUID, Attributes.ATTACK_SPEED);
+        }
+        //Swim Speed
+        if(LevelUPCommonConfig.DO_SWIM_SPEED.get()) {
+            makeAttributeMod(1,
+                    LevelUPCommonConfig.DEXTERITY_SWIM_SPEED.get(),
+                    AttributeModifier.Operation.MULTIPLY_BASE, player,
+                    STATS_MOD_UUID, ForgeMod.SWIM_SPEED.get());
+        }
+
+        //Strength
+        //Damage
+        if(LevelUPCommonConfig.DO_DAMAGE.get()) {
+            makeAttributeMod(2,
+                    LevelUPCommonConfig.STRENGTH_DAMAGE.get(),
+                    AttributeModifier.Operation.MULTIPLY_BASE, player,
+                    STATS_MOD_UUID, Attributes.ATTACK_DAMAGE);
+        }
+        //Knockback
+        if(LevelUPCommonConfig.DO_KNOCKBACK.get()) {
+            makeAttributeMod(2,
+                    LevelUPCommonConfig.STRENGTH_KNOCKBACK.get(),
+                    AttributeModifier.Operation.MULTIPLY_BASE, player,
+                    STATS_MOD_UUID, Attributes.ATTACK_KNOCKBACK);
+        }
+
+        //Vitality
+        //Regen in events
+        //Armor
+        if(LevelUPCommonConfig.DO_ARMOR.get()) {
+            makeAttributeMod(3,
+                    LevelUPCommonConfig.VITALITY_ARMOR.get(),
+                    AttributeModifier.Operation.MULTIPLY_BASE, player,
+                    STATS_MOD_UUID, Attributes.ARMOR);
+        }
+
+        //Endurance
+        //Armour toughness
+        if(LevelUPCommonConfig.DO_ARMOR_TOUGHNESS.get()) {
+            makeAttributeMod(4,
+                    LevelUPCommonConfig.ENDURANCE_ARMOR_TOUGHNESS.get(),
+                    AttributeModifier.Operation.ADDITION, player,
+                    STATS_MOD_UUID, Attributes.ARMOR_TOUGHNESS);
+        }
+        //Knockback resistance
+        if(LevelUPCommonConfig.DO_KB_RES.get()) {
+            makeAttributeMod(4,
+                    LevelUPCommonConfig.ENDURANCE_KNOCKBACK_RESISTANCE.get(),
+                    AttributeModifier.Operation.MULTIPLY_BASE, player,
+                    STATS_MOD_UUID, Attributes.KNOCKBACK_RESISTANCE);
         }
     }
 

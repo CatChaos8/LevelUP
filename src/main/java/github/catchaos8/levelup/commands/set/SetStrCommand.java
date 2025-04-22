@@ -35,11 +35,11 @@ public class SetStrCommand {
         assert player != null;
         if(player.hasPermissions(2)) {
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
-            stats.setStat(2, amount);
+            stats.setInfo(2, amount);
             SetStats.setAttributeStat(amount, 2,player);
-            ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
+            ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), player);
 
-            player.sendSystemMessage(Component.translatable(STRENGTH).append(Component.literal("" + stats.getStat(2))));
+            player.sendSystemMessage(Component.translatable(STRENGTH).append(Component.literal("" + stats.getInfo(2))));
         });
         } else {
             player.sendSystemMessage(Component.translatable("cmd.levelup.noperms"));

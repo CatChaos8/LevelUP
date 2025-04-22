@@ -36,11 +36,11 @@ public class SetVitCommand {
         if(player.hasPermissions(2)) {
 
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
-            stats.setStat(3, amount);
+            stats.setInfo(3, amount);
             SetStats.setAttributeStat(amount, 3, player);
 
-            ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
-            player.sendSystemMessage(Component.translatable(VITALITY).append(Component.literal("" + stats.getStat(3))));
+            ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), player);
+            player.sendSystemMessage(Component.translatable(VITALITY).append(Component.literal("" + stats.getInfo(3))));
         });
         } else {
             player.sendSystemMessage(Component.translatable("cmd.levelup.noperms"));

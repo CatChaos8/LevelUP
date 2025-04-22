@@ -35,11 +35,11 @@ public class SetDexCommand {
         assert player != null;
         if(player.hasPermissions(2)) {
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
-                stats.setStat(1, amount);
+                stats.setInfo(1, amount);
                 SetStats.setAttributeStat(amount, 1,player);
-                ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
+                ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), player);
 
-                player.sendSystemMessage(Component.translatable(DEXTERITY).append(Component.literal("" + stats.getStat(1))));
+                player.sendSystemMessage(Component.translatable(DEXTERITY).append(Component.literal("" + stats.getInfo(1))));
             });
         } else {
             player.sendSystemMessage(Component.translatable("cmd.levelup.noperms"));

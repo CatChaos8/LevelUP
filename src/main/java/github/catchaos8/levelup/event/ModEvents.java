@@ -6,6 +6,7 @@ import github.catchaos8.levelup.commands.get.*;
 import github.catchaos8.levelup.commands.set.*;
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
 import github.catchaos8.levelup.lib.DisplayLevelScoreboard;
+import github.catchaos8.levelup.lib.SetStats;
 import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.networking.packet.StatDataSyncS2CPacket;
 import github.catchaos8.levelup.stats.PlayerStats;
@@ -102,7 +103,7 @@ public class ModEvents {
 
                     newStore.copyFrom(oldStore);
                     if (event.isWasDeath()) {
-                        newStore.setStat(6, 0);
+                        newStore.setInfo(1, 0);
                     }
 
                 });
@@ -111,41 +112,29 @@ public class ModEvents {
             if (event.getEntity() instanceof ServerPlayer serverPlayer) {
                 player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
                     //Set Modifier to attributes based on stats
-                    setAttributeStat(stats.getStat(0), 0,
-                            serverPlayer);
-
-                    setAttributeStat( stats.getStat(1), 1,
-                            serverPlayer);
-
-                    setAttributeStat(stats.getStat(2), 2,
-                            serverPlayer);
-
-                    setAttributeStat( stats.getStat(3), 3,
-                            serverPlayer);
-
-                    setAttributeStat(stats.getStat(4), 4,
-                            serverPlayer);
-
-                    //Checking to make sure that limited stat isn't above max due to items before death
-                    if(serverPlayer.getAttributeValue(ModAttributes.CONSTITUTION.get()) < stats.getStat(8)) {
-                        stats.setStat(8,(int) serverPlayer.getAttributeValue(ModAttributes.CONSTITUTION.get()));
-                    }
-                    if(serverPlayer.getAttributeValue(ModAttributes.DEXTERITY.get()) < stats.getStat(9)) {
-                        stats.setStat(9,(int) serverPlayer.getAttributeValue(ModAttributes.DEXTERITY.get()));
-                    }
-                    if(serverPlayer.getAttributeValue(ModAttributes.STRENGTH.get()) < stats.getStat(10)) {
-                        stats.setStat(10,(int) serverPlayer.getAttributeValue(ModAttributes.STRENGTH.get()));
-                    }
-                    if(serverPlayer.getAttributeValue(ModAttributes.VITALITY.get()) < stats.getStat(11)) {
-                        stats.setStat(11,(int) serverPlayer.getAttributeValue(ModAttributes.VITALITY.get()));
-                    }
-                    if(serverPlayer.getAttributeValue(ModAttributes.ENDURANCE.get()) < stats.getStat(12)) {
-                        stats.setStat(12,(int) serverPlayer.getAttributeValue(ModAttributes.ENDURANCE.get()));
+                    for(int i = 0; i < stats.getLength(); i++) {
+                        setAttributeStat(stats.getBaseStat(i), i,
+                                serverPlayer);
                     }
 
-                    makeAttributeMods(serverPlayer, 99);
+                    Attribute[] attributes = new Attribute[] {
+                            ModAttributes.CONSTITUTION.get(),
+                            ModAttributes.DEXTERITY.get(),
+                            ModAttributes.STRENGTH.get(),
+                            ModAttributes.VITALITY.get(),
+                            ModAttributes.ENDURANCE.get()
+                    };
 
-                    ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), serverPlayer);
+                    for (int i = 0; i < attributes.length; i++) {
+                        double currentValue = serverPlayer.getAttributeValue(attributes[i]);
+                        if (currentValue < stats.getLimitedStat(i)) {
+                            stats.setLimitedStat(i, (int) currentValue);
+                        }
+                    }
+
+                    SetStats.makeAttributeMods(serverPlayer);
+
+                    ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), serverPlayer);
 
                     //Heal
                     serverPlayer.heal((float) serverPlayer.getAttributeValue(Attributes.MAX_HEALTH));
@@ -165,9 +154,9 @@ public class ModEvents {
                 if (event.getEntity() instanceof ServerPlayer player) {
                     player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
 
-                        float level = stats.getStat(7);
+                        float level = stats.getInfo(2);
                         DisplayLevelScoreboard.updateLevel(player, level);
-                        ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
+                        ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), player);
 
                     });
                 }
@@ -184,13 +173,13 @@ public class ModEvents {
                 // server-side execution
                 if (!player.level().isClientSide && player instanceof ServerPlayer serverPlayer) {
                     player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
-                        stats.addStat(6, xpAmount);
+                        stats.addInfo(1, xpAmount);
 
                         //see if player can levelup
                         increaseLevel(serverPlayer);
 
                         //Sync
-                        ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), serverPlayer);
+                        ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), serverPlayer);
                     });
                 }
             }
@@ -203,7 +192,7 @@ public class ModEvents {
                 player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
                     if(LevelUPCommonConfig.DO_HP_REGEN.get()) {
                         //Do the vit stuff
-                        float vitality = stats.getStat(11);
+                        float vitality = stats.getLimitedStat(3);
                         //Regen
                         double regenMulti = LevelUPCommonConfig.VITALITY_HP_REGEN.get();
                         if (vitality > 0) {
@@ -225,7 +214,7 @@ public class ModEvents {
                 if (event.getEntity() instanceof Player player) {
                     player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
                         if (event.getDistance() > 0) {
-                            float constitution = stats.getStat(8);
+                            float constitution = stats.getLimitedStat(0);
 
                             double fallDMGReductionDouble = LevelUPCommonConfig.CONSTITUTION_FALL_DAMAGE_REDUCTION.get();
                             float fallDMGReduction = (float) fallDMGReductionDouble;
@@ -276,14 +265,14 @@ public class ModEvents {
                     ItemStack oldItem = event.getTo();
 
                     // Make the thing to show the limited stat, the attribute, and the base stat for each stat type
-                    record StatRecord(int index, Attribute attribute, int modIndex) {}
+                    record StatRecord(Attribute attribute, int modIndex) {}
 
                     List<StatRecord> statRecordList = List.of(
-                            new StatRecord(8, ModAttributes.CONSTITUTION.get(), 0),
-                            new StatRecord(9, ModAttributes.DEXTERITY.get(), 1),
-                            new StatRecord(10, ModAttributes.STRENGTH.get(), 2),
-                            new StatRecord(11, ModAttributes.VITALITY.get(), 3),
-                            new StatRecord(12, ModAttributes.ENDURANCE.get(), 4)
+                            new StatRecord(ModAttributes.CONSTITUTION.get(), 0),
+                            new StatRecord(ModAttributes.DEXTERITY.get(), 1),
+                            new StatRecord(ModAttributes.STRENGTH.get(), 2),
+                            new StatRecord(ModAttributes.VITALITY.get(), 3),
+                            new StatRecord(ModAttributes.ENDURANCE.get(), 4)
                     );
 
                     for (StatRecord info : statRecordList) {
@@ -291,7 +280,7 @@ public class ModEvents {
                         if (attrInstance == null) continue; //For eff so that it checks if u have a 0 in a stat
 
                         int current = (int) attrInstance.getValue(); //Gets total stats(base + items)
-                        float limited = stats.getStat(info.index());   //Gets limited stats
+                        float limited = stats.getLimitedStat(info.modIndex);   //Gets limited stats
 
                         double[] newVals = getAttributeValues(oldItem, info.attribute(), slot); //Gets attributes the items give in the old items and new ones
                         double[] oldVals = getAttributeValues(newItem, info.attribute(), slot);
@@ -301,14 +290,14 @@ public class ModEvents {
                             //If it increases
                             if (increase != 0) {
                                 if (current == limited || (increase < 0 && current + increase < limited)) { //To check if it increases or if the increase is less than 0 and u have less than the increase or whatever
-                                    stats.setStat(info.index(), current + increase);
-                                    makeAttributeMods(player, info.modIndex());
+                                    stats.setLimitedStat(info.modIndex, current + increase);
+                                    SetStats.makeAttributeSingleMod(player, info.modIndex());
                                 }
                             }
                         }
 
                         //Sync w/ client
-                        ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getStatArr()), player);
+                        ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), player);
                     }
                 });
 

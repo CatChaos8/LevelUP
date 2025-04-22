@@ -26,7 +26,7 @@ public class GetStrCommand {
         ServerPlayer player = context.getSource().getPlayer();
 
         player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(getStats -> {
-            player.sendSystemMessage(Component.translatable(STRENGTH).append(Component.literal("" + getStats.getStat(2))));
+            player.sendSystemMessage(Component.translatable(STRENGTH).append(Component.literal("" + getStats.getInfo(2))));
         });
 
         return 1;

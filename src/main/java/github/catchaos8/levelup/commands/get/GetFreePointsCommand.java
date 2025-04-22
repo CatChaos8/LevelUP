@@ -26,7 +26,7 @@ public class GetFreePointsCommand {
         ServerPlayer player = context.getSource().getPlayer();
 
         player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(getStats -> {
-            player.sendSystemMessage(Component.translatable(FREEPOINTS).append(Component.literal("" + getStats.getStat(5))));
+            player.sendSystemMessage(Component.translatable(FREEPOINTS).append(Component.literal("" + getStats.getInfo(5))));
         });
 
         return 1;

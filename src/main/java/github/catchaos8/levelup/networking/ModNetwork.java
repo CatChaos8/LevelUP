@@ -1,7 +1,9 @@
 package github.catchaos8.levelup.networking;
 
 import github.catchaos8.levelup.LevelUP;
-import github.catchaos8.levelup.networking.packet.IncreaseStatC2SPacket;
+import github.catchaos8.levelup.networking.packet.ChangeInfoC2SPacket;
+import github.catchaos8.levelup.networking.packet.IncreaseBaseStatC2SPacket;
+import github.catchaos8.levelup.networking.packet.SetLimitedStatC2SPacket;
 import github.catchaos8.levelup.networking.packet.StatDataSyncS2CPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -29,10 +31,22 @@ public class ModNetwork {
 
         INSTANCE = net;
 
-        net.messageBuilder(IncreaseStatC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(IncreaseStatC2SPacket::new)
-                .encoder(IncreaseStatC2SPacket::toBytes)
-                .consumerMainThread(IncreaseStatC2SPacket::handle)
+        net.messageBuilder(IncreaseBaseStatC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(IncreaseBaseStatC2SPacket::new)
+                .encoder(IncreaseBaseStatC2SPacket::toBytes)
+                .consumerMainThread(IncreaseBaseStatC2SPacket::handle)
+                .add();
+
+        net.messageBuilder(SetLimitedStatC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(SetLimitedStatC2SPacket::new)
+                .encoder(SetLimitedStatC2SPacket::toBytes)
+                .consumerMainThread(SetLimitedStatC2SPacket::handle)
+                .add();
+
+        net.messageBuilder(ChangeInfoC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(ChangeInfoC2SPacket::new)
+                .encoder(ChangeInfoC2SPacket::toBytes)
+                .consumerMainThread(ChangeInfoC2SPacket::handle)
                 .add();
 
         net.messageBuilder(StatDataSyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)

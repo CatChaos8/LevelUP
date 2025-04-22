@@ -25,7 +25,7 @@ public class GetClassXPCommand {
         ServerPlayer player = context.getSource().getPlayer();
 
         player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(getStats -> {
-            player.sendSystemMessage(Component.translatable(CLASSXP).append(Component.literal("" + getStats.getStat(6))));
+            player.sendSystemMessage(Component.translatable(CLASSXP).append(Component.literal("" + getStats.getInfo(6))));
         });
 
         return 1;

@@ -1,5 +1,6 @@
 package github.catchaos8.levelup.stats;
 
+import github.catchaos8.levelup.lib.StatType;
 import net.minecraft.nbt.CompoundTag;
 
 import java.util.Arrays;
@@ -8,81 +9,128 @@ public class PlayerStats {
 
     private final int min_stat = 0;
 
-    private float[] stats = {
-            0.0f, //Con            0
-            0.0f, //Dex            1
-            0.0f, //Str            2
-            0.0f, //Vit            3
-            0.0f, //End            4
+    private StatType[] statTypes = new StatType[] {
+            new StatType(0.0f, 0.0f, "Constitution"),
+            new StatType(0.0f, 0.0f, "Dexterity"),
+            new StatType(0.0f, 0.0f, "Strength"),
+            new StatType(0.0f, 0.0f, "Vitality"),
+            new StatType(0.0f, 0.0f, "Endurance")
+    };
+
+    private float[] info = {
             0.0f, //Freepoints     5
             0.0f, //Class XP       6
             0.0f, //Class Level    7
-            0.0f, //Limit Con      8
-            0.0f, //Limit Dex      9
-            0.0f, //Limit Str      10
-            0.0f, //Limit Vit      11
-            0.0f  //Limit End      12
     };
 
-    public float[] getStatArr() {
-        return this.stats;
+    public float[] getInfoArr() {
+        return this.info;
     }
 
-    public float getStat(int type) {
-        return stats[type];
+    public int getLength() {
+        return this.statTypes.length;
     }
 
-    public void addStat(int statType, float add) {
-        this.stats[statType] = stats[statType] + add;
+    public float getInfo(int type) {
+        return info[type];
     }
 
-    public void subStat(int statType, float sub) {
-        this.stats[statType] = Math.max(stats[statType] - sub, min_stat);
+    public void addInfo(int statType, float add) {
+        this.info[statType] = info[statType] + add;
     }
 
-    public void setStat(int statType, float amount) {
-        this.stats[statType] = Math.max(amount, min_stat);
+    public void subInfo(int statType, float sub) {
+        this.info[statType] = Math.max(info[statType] - sub, min_stat);
+    }
+
+    public void setInfo(int statType, float amount) {
+        this.info[statType] = Math.max(amount, min_stat);
+    }
+
+    public StatType[] getStatsTypeArr() {
+        return statTypes;
+    }
+
+    public float[] getStatsBaseArr() {
+        float[] array = new float[statTypes.length];
+        for (int i = 0; i < statTypes.length; i++) {
+            array[i] = statTypes[i].getBase();
+        }
+        return array;
+    }
+
+    public float[] getStatsLimitedArr() {
+        float[] array = new float[statTypes.length];
+        for (int i = 0; i < statTypes.length; i++) {
+            array[i] = statTypes[i].getLimited();
+        }
+        return array;
+    }
+
+    public float getBaseStat(int type) {
+        return statTypes[type].getBase();
+    }
+
+    public float getLimitedStat(int type) {
+        return statTypes[type].getLimited();
+    }
+
+    public void setBaseStat(int type, float value) {
+        statTypes[type].setBase(value);
+    }
+
+    public void setLimitedStat(int type, float value) {
+        statTypes[type].setLimited(value);
+    }
+
+    public void addBaseStat(int type, float amount) {
+        statTypes[type].setBase(statTypes[type].getBase() + amount);
+    }
+
+    public void addLimitedStat(int type, float amount) {
+        statTypes[type].setLimited(statTypes[type].getLimited() + amount);
+    }
+
+    public void subBaseStat(int type, float amount) {
+        statTypes[type].setBase(Math.max((statTypes[type].getBase() - amount), min_stat));
+    }
+
+
+    public void subLimitedStat(int type, float amount) {
+        statTypes[type].setLimited(Math.max((statTypes[type].getLimited() - amount), min_stat));
     }
 
     public void copyFrom(PlayerStats source){
-        this.stats = Arrays.copyOf(source.stats, source.stats.length);
+        this.info = Arrays.copyOf(source.info, source.info.length);
+        this.statTypes = Arrays.copyOf(source.statTypes, source.statTypes.length);
     }
 
-
     public void saveNBTData(CompoundTag nbt) {
-        nbt.putFloat("constitution", stats[0]);
-        nbt.putFloat("dexterity", stats[1]);
-        nbt.putFloat("strength", stats[2]);
-        nbt.putFloat("vitality", stats[3]);
-        nbt.putFloat("endurance", stats[4]);
+        for (StatType stat : statTypes) {
+            String name = stat.getName().toLowerCase();
+            nbt.putFloat(name, stat.getBase());
+            nbt.putFloat("limit_" + name, stat.getLimited());
+        }
 
-        nbt.putFloat("freepoints", stats[5]);
-        nbt.putFloat("classxp", stats[6]);
-        nbt.putFloat("classLevel", stats[7]);
-
-        nbt.putFloat("limit_con", stats[8]);
-        nbt.putFloat("limit_dex", stats[9]);
-        nbt.putFloat("limit_str", stats[10]);
-        nbt.putFloat("limit_vit", stats[11]);
-        nbt.putFloat("limit_end", stats[12]);
+        // Save info
+        nbt.putFloat("freepoints", info[0]);
+        nbt.putFloat("classxp", info[1]);
+        nbt.putFloat("classLevel", info[2]);
     }
 
     public void loadNBTData(CompoundTag nbt) {
-        stats[0] = nbt.getFloat("constitution");
-        stats[1] = nbt.getFloat("dexterity");
-        stats[2] = nbt.getFloat("strength");
-        stats[3] = nbt.getFloat("vitality");
-        stats[4] = nbt.getFloat("endurance");
+        //Loading base/limited
+        for (StatType saved : statTypes) {
+            String name = saved.getName().toLowerCase();
+            saved.setBase(nbt.getFloat(name));
+            saved.setLimited(nbt.getFloat("limit_" + name));
+        }
 
-        stats[5] = nbt.getFloat("freepoints");
-        stats[6] = nbt.getFloat("classxp");
-        stats[7] = nbt.getFloat("classLevel");
-
-        stats[8] = nbt.getFloat("limit_con");
-        stats[9] = nbt.getFloat("limit_dex");
-        stats[10] = nbt.getFloat("limit_str");
-        stats[11] = nbt.getFloat("limit_vit");
-        stats[12] = nbt.getFloat("limit_end");
+        //Loading info
+        info[0] = nbt.getFloat("freepoints");
+        info[1] = nbt.getFloat("classxp");
+        info[2] = nbt.getFloat("classLevel");
     }
+
 
 }

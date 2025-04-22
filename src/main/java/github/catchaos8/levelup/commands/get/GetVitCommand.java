@@ -26,7 +26,7 @@ public class GetVitCommand {
         ServerPlayer player = context.getSource().getPlayer();
 
         player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(getStats -> {
-            player.sendSystemMessage(Component.translatable(VITALITY).append(Component.literal("" + getStats.getStat(3))));
+            player.sendSystemMessage(Component.translatable(VITALITY).append(Component.literal("" + getStats.getInfo(3))));
         });
 
         return 1;

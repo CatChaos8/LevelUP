@@ -24,7 +24,6 @@ public class ModAttributes {
             ATTRIBUTES.register("strength", () -> new RangedAttribute("attribute.levelup.str", 0, 0,1073741824)
                     .setSyncable(true));
 
-
     public static final RegistryObject<Attribute> VITALITY =
             ATTRIBUTES.register("vitality", () -> new RangedAttribute("attribute.levelup.vit", 0, 0,1073741824)
                     .setSyncable(true));

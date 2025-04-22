@@ -25,7 +25,7 @@ public class GetClassLevelCommand {
         ServerPlayer player = context.getSource().getPlayer();
 
         player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(getStats -> {
-            player.sendSystemMessage(Component.translatable(CLASSLVL).append(Component.literal("" + getStats.getStat(7))));
+            player.sendSystemMessage(Component.translatable(CLASSLVL).append(Component.literal("" + getStats.getInfo(7))));
         });
 
         return 1;
