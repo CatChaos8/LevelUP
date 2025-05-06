@@ -22,11 +22,12 @@ public class GetStrCommand {
 
     }
 
-    private int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+    private int execute(CommandContext<CommandSourceStack> context) {
         ServerPlayer player = context.getSource().getPlayer();
 
+        assert player != null;
         player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(getStats -> {
-            player.sendSystemMessage(Component.translatable(STRENGTH).append(Component.literal("" + getStats.getInfo(2))));
+            player.sendSystemMessage(Component.translatable(STRENGTH).append(Component.literal("" + getStats.getBaseStat(2))));
         });
 
         return 1;

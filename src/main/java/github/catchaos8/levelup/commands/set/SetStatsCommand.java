@@ -46,32 +46,36 @@ public class SetStatsCommand {
         if(player.hasPermissions(2)) {
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
 
-            stats.setInfo(stat, amount);
-            SetStats.setAttributeStat(amount, stat, player);
+                if (stat < stats.getStatsTypeArr().length) {
+                    stats.setBaseStat(stat, amount);
+                    SetStats.setAttributeStat(amount, stat, player);
+                } else {
+                    stats.setInfo(stat - stats.getStatsTypeArr().length, amount);
+                }
 
-            if(stat == 0) {
-                player.sendSystemMessage(Component.translatable(CONSTITUTION).append(Component.literal("" + stats.getInfo(0))));
-            } else if(stat == 1) {
-                player.sendSystemMessage(Component.translatable(DEXTERITY).append(Component.literal("" + stats.getInfo(1))));
-            } else if(stat == 2) {
-                player.sendSystemMessage(Component.translatable(STRENGTH).append(Component.literal("" + stats.getInfo(2))));
-            } else if(stat == 3) {
-                player.sendSystemMessage(Component.translatable(VITALITY).append(Component.literal("" + stats.getInfo(3))));
-            } else if(stat == 4) {
-                player.sendSystemMessage(Component.translatable(ENDURANCE).append(Component.literal("" + stats.getInfo(4))));
-            } else if(stat == 5) {
-                player.sendSystemMessage(Component.translatable(FREEPOINTS).append(Component.literal("" + stats.getInfo(5))));
-            } else if(stat == 6) {
-                player.sendSystemMessage(Component.translatable(CLASSXP).append(Component.literal("" + stats.getInfo(6))));
-            } else if(stat == 7) {
-                player.sendSystemMessage(Component.translatable(CLASSLVL).append(Component.literal("" + stats.getInfo(7))));
-            }
-            ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), player);
 
-        });
-    } else {
-        player.sendSystemMessage(Component.translatable("cmd.levelup.noperms"));
-    }
+                if(stat == 0) {
+                    player.sendSystemMessage(Component.translatable(CONSTITUTION).append(Component.literal("" + stats.getBaseStat(0))));
+                } else if(stat == 1) {
+                    player.sendSystemMessage(Component.translatable(DEXTERITY).append(Component.literal("" + stats.getBaseStat(1))));
+                } else if(stat == 2) {
+                    player.sendSystemMessage(Component.translatable(STRENGTH).append(Component.literal("" + stats.getBaseStat(2))));
+                } else if(stat == 3) {
+                    player.sendSystemMessage(Component.translatable(VITALITY).append(Component.literal("" + stats.getBaseStat(3))));
+                } else if(stat == 4) {
+                    player.sendSystemMessage(Component.translatable(ENDURANCE).append(Component.literal("" + stats.getBaseStat(4))));
+                } else if(stat == 5) {
+                    player.sendSystemMessage(Component.translatable(FREEPOINTS).append(Component.literal("" + stats.getInfo(0))));
+                } else if(stat == 6) {
+                    player.sendSystemMessage(Component.translatable(CLASSXP).append(Component.literal("" + stats.getInfo(1))));
+                } else if(stat == 7) {
+                    player.sendSystemMessage(Component.translatable(CLASSLVL).append(Component.literal("" + stats.getInfo(2))));
+                }
+                ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), player);
+            });
+        } else {
+            player.sendSystemMessage(Component.translatable("cmd.levelup.noperms"));
+        }
 
         return 1;
     }

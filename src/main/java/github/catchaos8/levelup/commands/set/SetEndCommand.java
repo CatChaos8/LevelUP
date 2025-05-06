@@ -36,11 +36,12 @@ public class SetEndCommand {
         assert player != null;
         if(player.hasPermissions(2)) {
         player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
-            stats.setInfo(4, amount);
+            stats.setLimitedStat(4, stats.getLimitedStat(4)-stats.getBaseStat(4) + amount);
+            stats.setBaseStat(4, amount);
             SetStats.setAttributeStat(amount, 4,player);
             ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), player);
 
-            player.sendSystemMessage(Component.translatable(ENDURANCE).append(Component.literal("" + stats.getInfo(4))));
+            player.sendSystemMessage(Component.translatable(ENDURANCE).append(Component.literal("" + stats.getBaseStat(4))));
         });
         } else {
             player.sendSystemMessage(Component.translatable("cmd.levelup.noperms"));

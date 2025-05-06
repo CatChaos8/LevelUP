@@ -33,11 +33,11 @@ public class SetClassLevelCommand {
         assert player != null;
         if(player.hasPermissions(2)) {
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
-                stats.setInfo( 7, amount);
+                stats.setInfo( 2, amount);
                 ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), player);
-                float level = stats.getInfo(7);
+                float level = stats.getInfo(2);
                 DisplayLevelScoreboard.updateLevel(player, level);
-                player.sendSystemMessage(Component.translatable(CLASSLVL).append(Component.literal("" + stats.getInfo(7))));
+                player.sendSystemMessage(Component.translatable(CLASSLVL).append(Component.literal("" + level)));
             });
 
         } else {

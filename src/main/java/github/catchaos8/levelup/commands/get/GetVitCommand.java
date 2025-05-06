@@ -25,8 +25,9 @@ public class GetVitCommand {
     private int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayer();
 
+        assert player != null;
         player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(getStats -> {
-            player.sendSystemMessage(Component.translatable(VITALITY).append(Component.literal("" + getStats.getInfo(3))));
+            player.sendSystemMessage(Component.translatable(VITALITY).append(Component.literal("" + getStats.getBaseStat(3))));
         });
 
         return 1;

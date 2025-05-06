@@ -47,25 +47,28 @@ public class SetAllStatsCommand {
         if(player.hasPermissions(2)) {
 
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stat -> {
-
-                for (int i = 0; i <= 7; i++) {
+                System.out.println("DJASFHUIAHJAUIO" + amount);
+                for (int i = 0; i < stat.getInfoArr().length; i++) {
                     stat.setInfo(i, amount);
-                    SetStats.setAttributeStat(amount, i,player);
                 }
-                player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
-                    float level = stats.getInfo(7);
-                    DisplayLevelScoreboard.updateLevel(player, level);
-                });
+                for (int i = 0; i < stat.getStatsTypeArr().length; i++) {
+                    stat.setLimitedStat(i, stat.getLimitedStat(i)-stat.getBaseStat(i) + amount);
+                    stat.setBaseStat(i, amount);
+                    SetStats.setAttributeStat(amount, i, player);
+                }
+                SetStats.makeAttributeMods(player);
+                float level = stat.getInfo(1);
+                DisplayLevelScoreboard.updateLevel(player, level);
 
                 player.sendSystemMessage(Component.literal(("Your stats are: ")));
-                player.sendSystemMessage(Component.translatable(CONSTITUTION).append(Component.literal("" + stat.getInfo(0))));
-                player.sendSystemMessage(Component.translatable(DEXTERITY).append(Component.literal("" + stat.getInfo(1))));
-                player.sendSystemMessage(Component.translatable(STRENGTH).append(Component.literal("" + stat.getInfo(2))));
-                player.sendSystemMessage(Component.translatable(VITALITY).append(Component.literal("" + stat.getInfo(3))));
-                player.sendSystemMessage(Component.translatable(ENDURANCE).append(Component.literal("" + stat.getInfo(4))));
-                player.sendSystemMessage(Component.translatable(FREEPOINTS).append(Component.literal("" + stat.getInfo(5))));
-                player.sendSystemMessage(Component.translatable(CLASSXP).append(Component.literal("" + stat.getInfo(6))));
-                player.sendSystemMessage(Component.translatable(CLASSLVL).append(Component.literal("" + stat.getInfo(7))));
+                player.sendSystemMessage(Component.translatable(CONSTITUTION).append(Component.literal("" + stat.getBaseStat(0))));
+                player.sendSystemMessage(Component.translatable(DEXTERITY).append(Component.literal("" + stat.getBaseStat(1))));
+                player.sendSystemMessage(Component.translatable(STRENGTH).append(Component.literal("" + stat.getBaseStat(2))));
+                player.sendSystemMessage(Component.translatable(VITALITY).append(Component.literal("" + stat.getBaseStat(3))));
+                player.sendSystemMessage(Component.translatable(ENDURANCE).append(Component.literal("" + stat.getBaseStat(4))));
+                player.sendSystemMessage(Component.translatable(FREEPOINTS).append(Component.literal("" + stat.getInfo(0))));
+                player.sendSystemMessage(Component.translatable(CLASSXP).append(Component.literal("" + stat.getInfo(1))));
+                player.sendSystemMessage(Component.translatable(CLASSLVL).append(Component.literal("" + stat.getInfo(2))));
 
                 ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stat.getInfoArr(), stat.getStatsTypeArr()), player);
             });

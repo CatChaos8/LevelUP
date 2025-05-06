@@ -21,11 +21,12 @@ public class GetClassXPCommand {
 
     }
 
-    private int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+    private int execute(CommandContext<CommandSourceStack> context) {
         ServerPlayer player = context.getSource().getPlayer();
 
+        assert player != null;
         player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(getStats -> {
-            player.sendSystemMessage(Component.translatable(CLASSXP).append(Component.literal("" + getStats.getInfo(6))));
+            player.sendSystemMessage(Component.translatable(CLASSXP).append(Component.literal("" + getStats.getInfo(1))));
         });
 
         return 1;

@@ -35,10 +35,10 @@ public class SetFreePointsCommand {
         if(player.hasPermissions(2)) {
                 player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
 
-                    stats.setInfo(5, amount);
+                    stats.setInfo(0, amount);
                     ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), player);
 
-                    player.sendSystemMessage(Component.translatable(FREEPOINTS).append(Component.literal("" + stats.getInfo(5))));
+                    player.sendSystemMessage(Component.translatable(FREEPOINTS).append(Component.literal("" + stats.getInfo(0))));
                 });
         } else {
             player.sendSystemMessage(Component.translatable("cmd.levelup.noperms"));

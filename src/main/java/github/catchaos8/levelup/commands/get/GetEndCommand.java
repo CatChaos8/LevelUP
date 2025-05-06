@@ -26,7 +26,7 @@ public class GetEndCommand {
         ServerPlayer player = context.getSource().getPlayer();
 
         player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(getStats -> {
-            player.sendSystemMessage(Component.translatable(ENDURANCE).append(Component.literal("" + getStats.getInfo(4))));
+            player.sendSystemMessage(Component.translatable(ENDURANCE).append(Component.literal("" + getStats.getBaseStat(4))));
         });
 
         return 1;

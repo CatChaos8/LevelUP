@@ -32,10 +32,10 @@ public class SetClassXPCommand {
         assert player != null;
         if(player.hasPermissions(2)) {
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
-                stats.setInfo(6, amount);
+                stats.setInfo(1, amount);
                 ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), player);
 
-                player.sendSystemMessage(Component.translatable(CLASSXP).append(Component.literal("" + stats.getInfo(6))));
+                player.sendSystemMessage(Component.translatable(CLASSXP).append(Component.literal("" + stats.getInfo(1))));
             });
         } else {
             player.sendSystemMessage(Component.translatable("cmd.levelup.noperms"));

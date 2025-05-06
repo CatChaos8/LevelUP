@@ -26,7 +26,7 @@ public class GetDexCommand {
         ServerPlayer player = context.getSource().getPlayer();
 
         player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(getStats -> {
-            player.sendSystemMessage(Component.translatable(DEXTERITY).append(Component.literal("" + getStats.getInfo(1))));
+            player.sendSystemMessage(Component.translatable(DEXTERITY).append(Component.literal("" + getStats.getBaseStat(1))));
         });
 
         return 1;

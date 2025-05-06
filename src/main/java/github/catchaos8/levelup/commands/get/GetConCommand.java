@@ -20,11 +20,12 @@ public class GetConCommand {
 
     }
 
-    private int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+    private int execute(CommandContext<CommandSourceStack> context) {
         ServerPlayer player = context.getSource().getPlayer();
 
+        assert player != null;
         player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(getStats -> {
-            player.sendSystemMessage(Component.translatable(CONSTITUTION).append(Component.literal("" + getStats.getInfo(0))));
+            player.sendSystemMessage(Component.translatable(CONSTITUTION).append(Component.literal("" + getStats.getBaseStat(0))));
         });
 
         return 1;

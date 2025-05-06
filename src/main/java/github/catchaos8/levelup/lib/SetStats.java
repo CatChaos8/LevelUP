@@ -39,8 +39,6 @@ public class SetStats {
 
                 if (attributeInstance != null) {
                     attributeInstance.setBaseValue(amount);
-                    attributeInstance.removeModifier(uuid);
-                    attributeInstance.addPermanentModifier(new AttributeModifier(uuid, "stat base", amount, AttributeModifier.Operation.ADDITION));
                 }
             }
         });

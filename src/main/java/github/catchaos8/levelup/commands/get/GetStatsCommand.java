@@ -36,21 +36,21 @@ public class GetStatsCommand {
         assert player != null;
         player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(getStats -> {
             if(stat == 0) {
-                player.sendSystemMessage(Component.translatable(CONSTITUTION).append(Component.literal("" + getStats.getInfo(0))));
+                player.sendSystemMessage(Component.translatable(CONSTITUTION).append(Component.literal("" + getStats.getBaseStat(0))));
             } else if(stat == 1) {
-                player.sendSystemMessage(Component.translatable(DEXTERITY).append(Component.literal("" + getStats.getInfo(1))));
+                player.sendSystemMessage(Component.translatable(DEXTERITY).append(Component.literal("" + getStats.getBaseStat(1))));
             } else if(stat == 2) {
-                player.sendSystemMessage(Component.translatable(STRENGTH).append(Component.literal("" + getStats.getInfo(2))));
+                player.sendSystemMessage(Component.translatable(STRENGTH).append(Component.literal("" + getStats.getBaseStat(2))));
             } else if(stat == 3) {
-                player.sendSystemMessage(Component.translatable(VITALITY).append(Component.literal("" + getStats.getInfo(3))));
+                player.sendSystemMessage(Component.translatable(VITALITY).append(Component.literal("" + getStats.getBaseStat(3))));
             } else if(stat == 4) {
-                player.sendSystemMessage(Component.translatable(ENDURANCE).append(Component.literal("" + getStats.getInfo(4))));
+                player.sendSystemMessage(Component.translatable(ENDURANCE).append(Component.literal("" + getStats.getBaseStat(4))));
             } else if(stat == 5) {
-                player.sendSystemMessage(Component.translatable(FREEPOINTS).append(Component.literal("" + getStats.getInfo(5))));
+                player.sendSystemMessage(Component.translatable(FREEPOINTS).append(Component.literal("" + getStats.getInfo(0))));
             } else if(stat == 6) {
-                player.sendSystemMessage(Component.translatable(CLASSXP).append(Component.literal("" + getStats.getInfo(6))));
+                player.sendSystemMessage(Component.translatable(CLASSXP).append(Component.literal("" + getStats.getInfo(1))));
             } else if(stat == 7) {
-                player.sendSystemMessage(Component.translatable(CLASSLVL).append(Component.literal("" + getStats.getInfo(7))));
+                player.sendSystemMessage(Component.translatable(CLASSLVL).append(Component.literal("" + getStats.getInfo(2))));
             }
 
 
