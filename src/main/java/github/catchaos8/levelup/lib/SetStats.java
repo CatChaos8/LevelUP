@@ -75,7 +75,7 @@ public class SetStats {
             float level = stats.getInfo(2);
 
             int xpNeeded = (int) (LevelUPCommonConfig.A_VALUE.get()*(level*level) + LevelUPCommonConfig.B_VALUE.get()*level + LevelUPCommonConfig.C_VALUE.get());
-            float freepointsGiven = LevelUPCommonConfig.FREEPOINTS_PER_LEVEL.get();
+            double freepointsGiven = LevelUPCommonConfig.FREEPOINTS_PER_LEVEL.get();
 
             int maxLevel = LevelUPCommonConfig.LEVEL_CAP.get();
 
@@ -85,9 +85,9 @@ public class SetStats {
                 //XP
                 stats.subInfo(1, xpNeeded);
                 //FreePoints
-                stats.addInfo(0, freepointsGiven);
+                stats.addInfo(0, (float) freepointsGiven);
 
-                player.sendSystemMessage(Component.literal("LevelUP! You are now level " + (int)level + "!"));
+                player.sendSystemMessage(Component.literal("LevelUP! You are now level " + (int)(level+1) + "!"));
 
                 //If there is enough xp for another level(Re-adjusts Variables)
                 xp = stats.getInfo(1);
