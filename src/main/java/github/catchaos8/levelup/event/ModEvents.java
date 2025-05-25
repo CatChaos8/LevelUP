@@ -4,6 +4,7 @@ import github.catchaos8.levelup.LevelUP;
 import github.catchaos8.levelup.attributes.ModAttributes;
 import github.catchaos8.levelup.commands.get.*;
 import github.catchaos8.levelup.commands.set.*;
+import github.catchaos8.levelup.config.LevelUPClientConfig;
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
 import github.catchaos8.levelup.lib.DisplayLevelScoreboard;
 import github.catchaos8.levelup.lib.SetStats;
@@ -35,6 +36,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.command.ConfigCommand;
 
 import java.util.List;
+import java.util.Random;
 
 import static github.catchaos8.levelup.lib.DisplayLevelScoreboard.setName;
 import static github.catchaos8.levelup.lib.SetStats.*;
@@ -89,25 +91,51 @@ public class ModEvents {
 
         @SubscribeEvent
         public static void onPlayerCloned(PlayerEvent.Clone event) {
-
             Player original = event.getOriginal();
             original.revive();
             Player player = event.getEntity();
 
+            if(!LevelUPCommonConfig.RESET_POINTS.get()) {
+                event.getOriginal().getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(oldStore -> {
+                    //
+                    event.getEntity().getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(newStore -> {
+                        //Remake the stats
+                        newStore.copyFrom(oldStore);
+                        if (event.isWasDeath()) {
+                            newStore.setInfo(1, 0);
+                        }
+                        if(LevelUPCommonConfig.LOSE_POINTS.get() && event.isWasDeath()) {
+                            //Reset XP if it was death,
+                            float totalPoints = 0;
+                            for (int i = 0; i < newStore.getLength(); i++) {
+                                totalPoints += newStore.getBaseStat(i);
+                            }
+                            totalPoints += newStore.getInfo(0);
 
-            event.getOriginal().getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(oldStore -> {
-                //>:(
-                event.getEntity().getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(newStore -> {
+                            if (newStore.getInfo(2) > 0 && totalPoints >= 3) { //Lose points
+                                float freePointLoss = Math.min(newStore.getInfo(0), 3); //Takes freepoints first
+                                newStore.subInfo(0, freePointLoss);
 
-                    //Reset XP if it was death,
+                                float lostPoints = freePointLoss;
 
-                    newStore.copyFrom(oldStore);
-                    if (event.isWasDeath()) {
-                        newStore.setInfo(1, 0);
-                    }
+                                Random random = new Random();
 
+                                while (lostPoints < 3) {
+                                    int lostStat = random.nextInt(newStore.getLength());
+                                    if(newStore.getBaseStat(lostStat) > 0) {
+                                        newStore.subBaseStat(lostStat, 1);
+                                        lostPoints +=1;
+                                    }
+                                }
+                                newStore.subInfo(2, 1);
+                            }
+
+                        }
+
+
+                    });
                 });
-            });
+            }
 
             if (event.getEntity() instanceof ServerPlayer serverPlayer) {
                 player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
@@ -132,7 +160,7 @@ public class ModEvents {
                         }
                     }
 
-                    SetStats.makeAttributeMods(serverPlayer);
+                    makeAttributeMods(serverPlayer);
 
                     ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), serverPlayer);
 
@@ -291,7 +319,7 @@ public class ModEvents {
                             if (increase != 0) {
                                 if (current == limited || (increase < 0 && current + increase < limited)) { //To check if it increases or if the increase is less than 0 and u have less than the increase or whatever
                                     stats.setLimitedStat(info.modIndex, current + increase);
-                                    SetStats.makeAttributeSingleMod(player, info.modIndex());
+                                    makeAttributeSingleMod(player, info.modIndex());
                                 }
                             }
                         }

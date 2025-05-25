@@ -8,6 +8,10 @@ public class LevelUPCommonConfig {
     public static final ForgeConfigSpec SPEC;
 
 
+    public static final ForgeConfigSpec.ConfigValue<Boolean> RESET_POINTS;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> LOSE_POINTS;
+
+
     public static final ForgeConfigSpec.ConfigValue<Double> CONSTITUTION_FALL_DAMAGE_REDUCTION;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_FALL_DAMAGE_REDUCTION;
     public static final ForgeConfigSpec.ConfigValue<Double> CONSTITUTION_HP;
@@ -40,7 +44,7 @@ public class LevelUPCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_HUNGER;
 
 
-    public static final ForgeConfigSpec.ConfigValue<Float> FREEPOINTS_PER_LEVEL;
+    public static final ForgeConfigSpec.ConfigValue<Double> FREEPOINTS_PER_LEVEL;
     public static final ForgeConfigSpec.ConfigValue<Integer> LEVEL_CAP;
     public static final ForgeConfigSpec.ConfigValue<Integer> STAT_CAP;
 
@@ -61,7 +65,11 @@ public class LevelUPCommonConfig {
 
         //Config
         FREEPOINTS_PER_LEVEL = BUILDER.comment("How many stat points per level!")
-                        .define("Points Per Level", 3.0f);
+                        .define("Points Per Level", 3.0);
+        RESET_POINTS = BUILDER.comment("Reset player stats after death(and level) - Overrides reset points")
+                .define("Reset", false);
+        LOSE_POINTS = BUILDER.comment("Make player lose stats and levels after death")
+                .define("Lose points", false);
 
 
         CONSTITUTION_FALL_DAMAGE_REDUCTION = BUILDER.comment("height before fall damage per stat")
