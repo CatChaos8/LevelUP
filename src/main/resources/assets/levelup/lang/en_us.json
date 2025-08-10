@@ -69,8 +69,13 @@
   "name.levelup.short": " Lv. ",
 
   "enchantment.levelup.fortifying": "Fortifying",
+  "enchantment.levelup.fortifying.desc": "Increases your constitution",
   "enchantment.levelup.reflex": "Reflex",
+  "enchantment.levelup.reflex.desc": "Increases your dexterity",
   "enchantment.levelup.strengthening": "Strengthening",
+  "enchantment.levelup.strengthening.desc": "Increases your strength",
   "enchantment.levelup.inner_strength": "Inner Strength",
-  "enchantment.levelup.unyielding": "Unyielding"
+  "enchantment.levelup.inner_strength.desc": "Increases your vitality",
+  "enchantment.levelup.unyielding": "Unyielding",
+  "enchantment.levelup.unyielding.desc": "Increases your endurance"
 }

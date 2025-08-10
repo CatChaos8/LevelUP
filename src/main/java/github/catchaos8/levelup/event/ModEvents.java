@@ -113,14 +113,17 @@ public class ModEvents {
                             totalPoints += newStore.getInfo(0);
 
                             if (newStore.getInfo(2) > 0 && totalPoints >= 3) { //Lose points
-                                float freePointLoss = Math.min(newStore.getInfo(0), 3); //Takes freepoints first
-                                newStore.subInfo(0, freePointLoss);
+                                //Points per level
+                                Double pointsPerLvl = LevelUPCommonConfig.FREEPOINTS_PER_LEVEL.get();
 
-                                float lostPoints = freePointLoss;
+                                double freePointLoss = Math.min(newStore.getInfo(0), pointsPerLvl); //Takes freepoints first
+                                newStore.subInfo(0, (float) freePointLoss);
+
+                                double lostPoints = freePointLoss;
 
                                 Random random = new Random();
 
-                                while (lostPoints < 3) {
+                                while (lostPoints < pointsPerLvl) {
                                     int lostStat = random.nextInt(newStore.getLength());
                                     if(newStore.getBaseStat(lostStat) > 0) {
                                         newStore.subBaseStat(lostStat, 1);
