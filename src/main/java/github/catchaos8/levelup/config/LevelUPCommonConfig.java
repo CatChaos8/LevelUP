@@ -74,12 +74,12 @@ public class LevelUPCommonConfig {
         //Config
         FREEPOINTS_PER_LEVEL = BUILDER.comment("How many stat points per level!")
                         .define("Points Per Level", 3.0);
-        RESET_POINTS = BUILDER.comment("Reset player stats after death(and level) - Overrides reset points")
+        RESET_POINTS = BUILDER.comment("Reset player stats after death(and level) - Overrides lose levels")
                 .define("Reset", false);
         LOSE_LEVELS = BUILDER.comment("Make player lose stats and levels after death. When using try and use non-decimal points per level")
-                .define("Lose points", false);
+                .define("Lose levels", false);
 
-        LOSE_XP = BUILDER.comment("Make player xp after death. Makes you lose levels if you have lose levels set to true. ")
+        LOSE_XP = BUILDER.comment("Make player lose xp after death. Makes you lose levels if you have lose levels set to true. ")
                 .define("Lose XP", true);
 
         XP_LOSS_PERCENT = BUILDER.comment("XP % loss after death if lose xp is enabled. 1 = 1%")

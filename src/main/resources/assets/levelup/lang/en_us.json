@@ -77,5 +77,8 @@
   "enchantment.levelup.inner_strength": "Inner Strength",
   "enchantment.levelup.inner_strength.desc": "Increases your vitality",
   "enchantment.levelup.unyielding": "Unyielding",
-  "enchantment.levelup.unyielding.desc": "Increases your endurance"
+  "enchantment.levelup.unyielding.desc": "Increases your endurance",
+
+  "text.levelup.levelupmsg.1": "LevelUP! You are now level ",
+  "text.levelup.levelupmsg.2": "!"
 }

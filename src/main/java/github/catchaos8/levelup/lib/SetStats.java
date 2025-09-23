@@ -87,7 +87,12 @@ public class SetStats {
                 //FreePoints
                 stats.addInfo(0, (float) freepointsGiven);
 
-                player.sendSystemMessage(Component.literal("LevelUP! You are now level " + (int)(level+1) + "!"));
+                Component msg1 = Component.translatable("text.levelup.levelupmsg.1") ;
+                Component msg2 = Component.translatable("text.levelup.levelupmsg.2") ;
+
+                Component msg = Component.literal(msg1.getString() + (int)(level+1) + msg2.getString());
+
+                player.sendSystemMessage(msg);
 
                 //If there is enough xp for another level(Re-adjusts Variables)
                 xp = stats.getInfo(1);

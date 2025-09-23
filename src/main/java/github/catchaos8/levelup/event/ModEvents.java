@@ -94,21 +94,71 @@ public class ModEvents {
             Player player = event.getEntity();
 
             if(!LevelUPCommonConfig.RESET_POINTS.get()) {
+                System.out.println("RESET");
+
                 event.getOriginal().getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(oldStore -> {
+                    System.out.println("OLDSTORE");
                     //
                     event.getEntity().getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(newStore -> {
+                        System.out.println("NEWSTORE");
                         //Remake the stats
                         newStore.copyFrom(oldStore);
+                        System.out.println("COPY");
                         if (event.isWasDeath()) {
 
+                            System.out.println("DEATH");
 
                             if(LevelUPCommonConfig.LOSE_XP.get()) {
-                                //Get the playerXP
+                                System.out.println("LOSE XP");
+
                                 float xp = newStore.getInfo(1);
+                                //Get the amount of xp lost
+                                double xpLost = LevelUPCommonConfig.XP_LOSS_PERCENT.get();
+
+                                //Get level
+                                float level = newStore.getInfo(2);
+                                //Get xp to next level
+                                int xpNeeded = (int) (LevelUPCommonConfig.A_VALUE.get()*(Math.pow(level, LevelUPCommonConfig.D_VALUE.get())) + LevelUPCommonConfig.B_VALUE.get() + LevelUPCommonConfig.C_VALUE.get());
+
+
+                                System.out.println("TOTALXP");
+
+                                //Calculate the lost xp
+                                float lostXP = (float) (xpNeeded*xpLost/100);
+
+                                //Decrease the player xp
+                                newStore.subInfo(1, lostXP);
+
+                                boolean loseLevels = LevelUPCommonConfig.LOSE_LEVELS.get();
+                                System.out.println("CanEXITLOOP");
+
+                                do {
+                                    //new level
+                                    if(loseLevels) {
+                                        System.out.println("Laaaa");
+                                        //Update the level
+                                        level -= 1;
+                                        loseLevel(event, newStore);
+                                        //Calculate the xp needed to next level
+                                        xpNeeded = (int) (LevelUPCommonConfig.A_VALUE.get()*(Math.pow(level, LevelUPCommonConfig.D_VALUE.get())) + LevelUPCommonConfig.B_VALUE.get() + LevelUPCommonConfig.C_VALUE.get());
+                                        //Get xp
+                                        xp = newStore.getInfo(1);
+                                        //Add xp from last level to player
+                                        newStore.addInfo(1, xpNeeded);
+                                    }
+                                } while (loseLevels && xp-lostXP < 0);
+                                //If the user does not have LOSE LEVELS enabled
+                                System.out.println("EXIT Loop");
+                                if(xp - lostXP < 0) {
+                                    //Reset the xp so its not negative again
+                                    xp = 0;
+                                    newStore.setInfo(1, xp);
+                                    System.out.println("MIN 0 ");
+                                }
+                                System.out.println("FINISH");
 
 
 
-                                loseLevel(event, newStore);
                             }
                         }
 
@@ -151,18 +201,22 @@ public class ModEvents {
 
         static void loseLevel(PlayerEvent.Clone event, PlayerStats newStore) {
             if(LevelUPCommonConfig.LOSE_LEVELS.get() && event.isWasDeath()) {
-                //Reset XP if it was death,
+
+
+                //Count total spent points
                 float totalPoints = 0;
                 for (int i = 0; i < newStore.getLength(); i++) {
                     totalPoints += newStore.getBaseStat(i);
                 }
+                //Add freepoitns
                 totalPoints += newStore.getInfo(0);
 
                 //Points per level
                 Double pointsPerLvl = LevelUPCommonConfig.FREEPOINTS_PER_LEVEL.get();
 
-
+                //If the level is > 0
                 if (newStore.getInfo(2) > 0 && totalPoints >= pointsPerLvl) { //Lose points
+                    System.out.println("AAA");
 
                     double freePointLoss = Math.min(newStore.getInfo(0), pointsPerLvl); //Takes freepoints first
                     newStore.subInfo(0, (float) freePointLoss);
@@ -172,6 +226,8 @@ public class ModEvents {
                     Random random = new Random();
 
                     while (lostPoints < pointsPerLvl) {
+                        System.out.println("Asd");
+
                         int lostStat = random.nextInt(newStore.getLength());
                         if(newStore.getBaseStat(lostStat) > 0) {
                             newStore.subBaseStat(lostStat, 1);

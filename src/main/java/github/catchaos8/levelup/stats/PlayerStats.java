@@ -36,15 +36,27 @@ public class PlayerStats {
     }
 
     public void addInfo(int statType, float add) {
-        this.info[statType] = info[statType] + add;
+        if(statType != 1) {
+        this.info[statType] = Math.max(this.info[statType] + add, min_stat);
+    } else {
+        this.info[statType] = this.info[statType] + add;
+    }
     }
 
     public void subInfo(int statType, float sub) {
-        this.info[statType] = Math.max(info[statType] - sub, min_stat);
+        if(statType != 1) {
+            this.info[statType] = Math.max(this.info[statType] - sub, min_stat);
+        } else {
+            this.info[statType] = this.info[statType] - sub;
+        }
     }
 
     public void setInfo(int statType, float amount) {
-        this.info[statType] = Math.max(amount, min_stat);
+        if(statType != 1) {
+            this.info[statType] = Math.max(amount, min_stat);
+        } else {
+            this.info[statType] = amount;
+        }
     }
 
     public StatType[] getStatsTypeArr() {
