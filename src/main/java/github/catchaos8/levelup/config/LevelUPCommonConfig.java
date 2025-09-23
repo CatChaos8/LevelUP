@@ -9,7 +9,9 @@ public class LevelUPCommonConfig {
 
 
     public static final ForgeConfigSpec.ConfigValue<Boolean> RESET_POINTS;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> LOSE_POINTS;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> LOSE_LEVELS;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> LOSE_XP;
+    public static final ForgeConfigSpec.ConfigValue<Double> XP_LOSS_PERCENT;
 
 
     public static final ForgeConfigSpec.ConfigValue<Double> CONSTITUTION_FALL_DAMAGE_REDUCTION;
@@ -74,9 +76,14 @@ public class LevelUPCommonConfig {
                         .define("Points Per Level", 3.0);
         RESET_POINTS = BUILDER.comment("Reset player stats after death(and level) - Overrides reset points")
                 .define("Reset", false);
-        LOSE_POINTS = BUILDER.comment("Make player lose stats and levels after death. When using try and use non-decimal points per level")
+        LOSE_LEVELS = BUILDER.comment("Make player lose stats and levels after death. When using try and use non-decimal points per level")
                 .define("Lose points", false);
 
+        LOSE_XP = BUILDER.comment("Make player xp after death. Makes you lose levels if you have lose levels set to true. ")
+                .define("Lose XP", true);
+
+        XP_LOSS_PERCENT = BUILDER.comment("XP % loss after death if lose xp is enabled. 1 = 1%")
+                .define("Death XP Loss", 25.0);
 
         CONSTITUTION_FALL_DAMAGE_REDUCTION = BUILDER.comment("height before fall damage per stat")
                 .define("Fall dmg mitigation", 0.25);

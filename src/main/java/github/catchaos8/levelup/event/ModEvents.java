@@ -4,10 +4,8 @@ import github.catchaos8.levelup.LevelUP;
 import github.catchaos8.levelup.attributes.ModAttributes;
 import github.catchaos8.levelup.commands.get.*;
 import github.catchaos8.levelup.commands.set.*;
-import github.catchaos8.levelup.config.LevelUPClientConfig;
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
 import github.catchaos8.levelup.lib.DisplayLevelScoreboard;
-import github.catchaos8.levelup.lib.SetStats;
 import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.networking.packet.StatDataSyncS2CPacket;
 import github.catchaos8.levelup.stats.PlayerStats;
@@ -102,39 +100,17 @@ public class ModEvents {
                         //Remake the stats
                         newStore.copyFrom(oldStore);
                         if (event.isWasDeath()) {
-                            newStore.setInfo(1, 0);
-                        }
-                        if(LevelUPCommonConfig.LOSE_POINTS.get() && event.isWasDeath()) {
-                            //Reset XP if it was death,
-                            float totalPoints = 0;
-                            for (int i = 0; i < newStore.getLength(); i++) {
-                                totalPoints += newStore.getBaseStat(i);
+
+
+                            if(LevelUPCommonConfig.LOSE_XP.get()) {
+                                //Get the playerXP
+                                float xp = newStore.getInfo(1);
+
+
+
+                                loseLevel(event, newStore);
                             }
-                            totalPoints += newStore.getInfo(0);
-
-                            if (newStore.getInfo(2) > 0 && totalPoints >= 3) { //Lose points
-                                //Points per level
-                                Double pointsPerLvl = LevelUPCommonConfig.FREEPOINTS_PER_LEVEL.get();
-
-                                double freePointLoss = Math.min(newStore.getInfo(0), pointsPerLvl); //Takes freepoints first
-                                newStore.subInfo(0, (float) freePointLoss);
-
-                                double lostPoints = freePointLoss;
-
-                                Random random = new Random();
-
-                                while (lostPoints < pointsPerLvl) {
-                                    int lostStat = random.nextInt(newStore.getLength());
-                                    if(newStore.getBaseStat(lostStat) > 0) {
-                                        newStore.subBaseStat(lostStat, 1);
-                                        lostPoints +=1;
-                                    }
-                                }
-                                newStore.subInfo(2, 1);
-                            }
-
                         }
-
 
                     });
                 });
@@ -170,6 +146,42 @@ public class ModEvents {
                     //Heal
                     serverPlayer.heal((float) serverPlayer.getAttributeValue(Attributes.MAX_HEALTH));
                 });
+            }
+        }
+
+        static void loseLevel(PlayerEvent.Clone event, PlayerStats newStore) {
+            if(LevelUPCommonConfig.LOSE_LEVELS.get() && event.isWasDeath()) {
+                //Reset XP if it was death,
+                float totalPoints = 0;
+                for (int i = 0; i < newStore.getLength(); i++) {
+                    totalPoints += newStore.getBaseStat(i);
+                }
+                totalPoints += newStore.getInfo(0);
+
+                //Points per level
+                Double pointsPerLvl = LevelUPCommonConfig.FREEPOINTS_PER_LEVEL.get();
+
+
+                if (newStore.getInfo(2) > 0 && totalPoints >= pointsPerLvl) { //Lose points
+
+                    double freePointLoss = Math.min(newStore.getInfo(0), pointsPerLvl); //Takes freepoints first
+                    newStore.subInfo(0, (float) freePointLoss);
+
+                    double lostPoints = freePointLoss;
+
+                    Random random = new Random();
+
+                    while (lostPoints < pointsPerLvl) {
+                        int lostStat = random.nextInt(newStore.getLength());
+                        if(newStore.getBaseStat(lostStat) > 0) {
+                            newStore.subBaseStat(lostStat, 1);
+                            lostPoints +=1;
+                        }
+                    }
+                    //Decrease class level
+                    newStore.subInfo(2, 1);
+                }
+
             }
         }
 
