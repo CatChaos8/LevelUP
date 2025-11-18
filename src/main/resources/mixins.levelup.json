@@ -5,8 +5,8 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "mixins.levelup.refmap.json",
   "mixins": [
-    "PlayerMixin",
-    "ItemStackAttributeMods"
+    "ItemStackAttributeMods",
+    "PlayerMixin"
   ],
   "client": [],
   "injectors": {

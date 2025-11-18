@@ -6,7 +6,6 @@ import github.catchaos8.levelup.commands.get.*;
 import github.catchaos8.levelup.commands.set.*;
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
 import github.catchaos8.levelup.lib.DisplayLevelScoreboard;
-import github.catchaos8.levelup.lib.PlayerHealedEvent;
 import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.networking.packet.StatDataSyncS2CPacket;
 import github.catchaos8.levelup.stats.PlayerStats;
@@ -19,7 +18,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -28,6 +26,7 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerXpEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -271,22 +270,6 @@ public class ModEvents {
         //Vitality/update on attribute stuff
         @SubscribeEvent
         public static void onLivingUpdate(LivingEvent.LivingTickEvent event) {
-            //Trigger player Healed event
-            if(event.getEntity() instanceof Player player) {
-                player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
-                    if(stats.getPrevHP() < 0) {
-                        stats.setPrevHP(player.getHealth());
-                    }
-                    if (stats.getPrevHP() < player.getHealth()) {
-                        float healedAmount = player.getHealth() - stats.getPrevHP();
-
-                        MinecraftForge.EVENT_BUS.post(new PlayerHealedEvent(player, healedAmount));
-                    }
-                    stats.setPrevHP(player.getHealth());
-                });
-            }
-
-
             if (event.getEntity() instanceof Player player && player.tickCount % LevelUPCommonConfig.VITALITY_TICKS_PER_REGEN.get() == 0) {
                 player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
                     if(LevelUPCommonConfig.DO_HP_REGEN.get()) {
@@ -310,15 +293,17 @@ public class ModEvents {
         }
 
         @SubscribeEvent
-        public static void onHeal(PlayerHealedEvent event) {
-            Player player = event.getPlayer();
-            float amount  = event.getHealedAmount();
-            player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
-                float buffedHeal = (float) (amount*LevelUPCommonConfig.VITALITY_HEALING.get()) * stats.getLimitedStat(3);
+        public static void onHeal(LivingHealEvent event) {
 
-                player.heal(buffedHeal);
+            if(event.getEntity() instanceof Player player) {
+                float amount  = event.getAmount();
+                player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
+                    float buffedHeal = (float) (amount*LevelUPCommonConfig.VITALITY_HEALING.get()) * stats.getLimitedStat(3);
 
-            });
+                    event.setAmount(buffedHeal);
+
+                });
+            }
         }
 
         //Constitution max height before fall
