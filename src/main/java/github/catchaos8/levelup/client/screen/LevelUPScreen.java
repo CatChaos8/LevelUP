@@ -322,7 +322,7 @@ public class LevelUPScreen extends Screen {
         if(LevelUPCommonConfig.DO_HEALING.get()) {
             double armorMult = Math.round((LevelUPCommonConfig.ENDURANCE_ARMOR.get() * vitality.getLimited())*1000);
             DO_HEALING_MULT = Component.translatable("gui.levelup.newline").append(PLUS.getString() + armorMult/10 + Component.translatable("gui.levelup.healing").getString());
-        } else {
+        } else if(LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()){
             double armorMult = Math.round((LevelUPCommonConfig.VITALITY_HP_REGEN.get() * vitality.getLimited())*1000);
             DO_HEALING_MULT = Component.translatable("gui.levelup.newline").append(PLUS.getString() + armorMult/10 + Component.translatable("gui.levelup.healing").getString()).withStyle(ChatFormatting.RED);
         }
