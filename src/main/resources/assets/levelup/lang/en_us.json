@@ -47,6 +47,7 @@
   "gui.levelup.toughness": " armour toughness",
   "gui.levelup.knockback_resistance": " knockback resistance",
   "gui.levelup.hunger": "% sprint hunger cost",
+  "gui.levelup.healing": "% healing recieved",
 
   "gui.levelup.line": "----------------------------",
   "gui.levelup.newline": "\n",

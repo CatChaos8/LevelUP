@@ -6,6 +6,7 @@ import github.catchaos8.levelup.commands.get.*;
 import github.catchaos8.levelup.commands.set.*;
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
 import github.catchaos8.levelup.lib.DisplayLevelScoreboard;
+import github.catchaos8.levelup.lib.PlayerHealedEvent;
 import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.networking.packet.StatDataSyncS2CPacket;
 import github.catchaos8.levelup.stats.PlayerStats;
@@ -18,6 +19,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -94,22 +96,15 @@ public class ModEvents {
             Player player = event.getEntity();
 
             if(!LevelUPCommonConfig.RESET_POINTS.get()) {
-                System.out.println("RESET");
 
                 event.getOriginal().getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(oldStore -> {
-                    System.out.println("OLDSTORE");
-                    //
                     event.getEntity().getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(newStore -> {
-                        System.out.println("NEWSTORE");
                         //Remake the stats
                         newStore.copyFrom(oldStore);
-                        System.out.println("COPY");
                         if (event.isWasDeath()) {
 
-                            System.out.println("DEATH");
 
                             if(LevelUPCommonConfig.LOSE_XP.get()) {
-                                System.out.println("LOSE XP");
 
                                 float xp = newStore.getInfo(1);
                                 //Get the amount of xp lost
@@ -121,8 +116,6 @@ public class ModEvents {
                                 int xpNeeded = (int) (LevelUPCommonConfig.A_VALUE.get()*(Math.pow(level, LevelUPCommonConfig.D_VALUE.get())) + LevelUPCommonConfig.B_VALUE.get() + LevelUPCommonConfig.C_VALUE.get());
 
 
-                                System.out.println("TOTALXP");
-
                                 //Calculate the lost xp
                                 float lostXP = (float) (xpNeeded*xpLost/100);
 
@@ -130,12 +123,10 @@ public class ModEvents {
                                 newStore.subInfo(1, lostXP);
 
                                 boolean loseLevels = LevelUPCommonConfig.LOSE_LEVELS.get();
-                                System.out.println("CanEXITLOOP");
 
                                 do {
                                     //new level
                                     if(loseLevels) {
-                                        System.out.println("Laaaa");
                                         //Update the level
                                         level -= 1;
                                         loseLevel(event, newStore);
@@ -148,16 +139,11 @@ public class ModEvents {
                                     }
                                 } while (loseLevels && xp-lostXP < 0);
                                 //If the user does not have LOSE LEVELS enabled
-                                System.out.println("EXIT Loop");
                                 if(xp - lostXP < 0) {
                                     //Reset the xp so its not negative again
                                     xp = 0;
                                     newStore.setInfo(1, xp);
-                                    System.out.println("MIN 0 ");
                                 }
-                                System.out.println("FINISH");
-
-
 
                             }
                         }
@@ -216,7 +202,6 @@ public class ModEvents {
 
                 //If the level is > 0
                 if (newStore.getInfo(2) > 0 && totalPoints >= pointsPerLvl) { //Lose points
-                    System.out.println("AAA");
 
                     double freePointLoss = Math.min(newStore.getInfo(0), pointsPerLvl); //Takes freepoints first
                     newStore.subInfo(0, (float) freePointLoss);
@@ -226,7 +211,6 @@ public class ModEvents {
                     Random random = new Random();
 
                     while (lostPoints < pointsPerLvl) {
-                        System.out.println("Asd");
 
                         int lostStat = random.nextInt(newStore.getLength());
                         if(newStore.getBaseStat(lostStat) > 0) {
@@ -287,23 +271,54 @@ public class ModEvents {
         //Vitality/update on attribute stuff
         @SubscribeEvent
         public static void onLivingUpdate(LivingEvent.LivingTickEvent event) {
-            if (event.getEntity() instanceof Player player) {
+            //Trigger player Healed event
+            if(event.getEntity() instanceof Player player) {
+                player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
+                    if(stats.getPrevHP() < 0) {
+                        stats.setPrevHP(player.getHealth());
+                    }
+                    if (stats.getPrevHP() < player.getHealth()) {
+                        float healedAmount = player.getHealth() - stats.getPrevHP();
+
+                        MinecraftForge.EVENT_BUS.post(new PlayerHealedEvent(player, healedAmount));
+                    }
+                    stats.setPrevHP(player.getHealth());
+                });
+            }
+
+
+            if (event.getEntity() instanceof Player player && player.tickCount % LevelUPCommonConfig.VITALITY_TICKS_PER_REGEN.get() == 0) {
                 player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
                     if(LevelUPCommonConfig.DO_HP_REGEN.get()) {
                         //Do the vit stuff
                         float vitality = stats.getLimitedStat(3);
                         //Regen
-                        double regenMulti = LevelUPCommonConfig.VITALITY_HP_REGEN.get();
+                        double regenMulti = LevelUPCommonConfig.VITALITY_HP_REGEN.get()*LevelUPCommonConfig.VITALITY_TICKS_PER_REGEN.get();
+
+                        double healingMult = LevelUPCommonConfig.VITALITY_HEALING.get()*stats.getLimitedStat(3) + 1;
                         if (vitality > 0) {
+
                             if (!player.level().getLevelData().isHardcore()) {
-                                player.heal((float) (vitality * regenMulti));
+                                player.heal((float) (vitality * regenMulti / healingMult));
                             } else {
-                                player.heal((float) (vitality * regenMulti / LevelUPCommonConfig.VITALITY_HARDCORE_NERF.get()));
+                                player.heal((float) (vitality * regenMulti / LevelUPCommonConfig.VITALITY_HARDCORE_NERF.get() / healingMult));
                             }
                         }
                     }
                 });
             }
+        }
+
+        @SubscribeEvent
+        public static void onHeal(PlayerHealedEvent event) {
+            Player player = event.getPlayer();
+            float amount  = event.getHealedAmount();
+            player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
+                float buffedHeal = (float) (amount*LevelUPCommonConfig.VITALITY_HEALING.get()) * stats.getLimitedStat(3);
+
+                player.heal(buffedHeal);
+
+            });
         }
 
         //Constitution max height before fall

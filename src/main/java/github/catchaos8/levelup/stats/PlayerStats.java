@@ -9,6 +9,8 @@ public class PlayerStats {
 
     private final int min_stat = 0;
 
+    private Float prevHP = 20f;
+
     private StatType[] statTypes = new StatType[] {
             new StatType(0.0f, 0.0f, "Constitution"),
             new StatType(0.0f, 0.0f, "Dexterity"),
@@ -22,6 +24,14 @@ public class PlayerStats {
             0.0f, //Class XP       6
             0.0f, //Class Level    7
     };
+
+    public float getPrevHP() {
+        return prevHP;
+    }
+
+    public void setPrevHP(Float prevHP) {
+        this.prevHP = prevHP;
+    }
 
     public float[] getInfoArr() {
         return this.info;

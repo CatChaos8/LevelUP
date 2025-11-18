@@ -35,9 +35,12 @@ public class LevelUPCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_KNOCKBACK;
     public static final ForgeConfigSpec.ConfigValue<Boolean> ENABLE_STRENGTH;
 
-    public static final ForgeConfigSpec.ConfigValue<Double> VITALITY_ARMOR;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> DO_ARMOR;
+//    public static final ForgeConfigSpec.ConfigValue<Double> VITALITY_ARMOR; //Switched To endurance
+//    public static final ForgeConfigSpec.ConfigValue<Boolean> DO_ARMOR;
     public static final ForgeConfigSpec.ConfigValue<Double> VITALITY_HP_REGEN;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> DO_HEALING;
+    public static final ForgeConfigSpec.ConfigValue<Double> VITALITY_HEALING;
+    public static final ForgeConfigSpec.ConfigValue<Integer> VITALITY_TICKS_PER_REGEN;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_HP_REGEN;
     public static final ForgeConfigSpec.ConfigValue<Double> VITALITY_HARDCORE_NERF;
     public static final ForgeConfigSpec.ConfigValue<Boolean> ENABLE_VITALITY;
@@ -49,6 +52,8 @@ public class LevelUPCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> ENDURANCE_HUNGER;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_HUNGER;
     public static final ForgeConfigSpec.ConfigValue<Boolean> ENABLE_ENDURANCE;
+    public static final ForgeConfigSpec.ConfigValue<Double> ENDURANCE_ARMOR;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> DO_ARMOR;
 
 
     public static final ForgeConfigSpec.ConfigValue<Double> FREEPOINTS_PER_LEVEL;
@@ -122,8 +127,9 @@ public class LevelUPCommonConfig {
                 .define("HP Regen/tick per stat lvl", 0.00025);
         DO_HP_REGEN = BUILDER.comment("Enable vitality regen")
                 .define("Do regen", true);
-        VITALITY_ARMOR = BUILDER.comment("Armor Increase per stat").define("Armor Increase",  0.01);
-        DO_ARMOR = BUILDER.comment("Enable vitality armor")
+        VITALITY_TICKS_PER_REGEN = BUILDER.comment("Ticks per Regen").define("Ticks Per Regen", 1);
+        VITALITY_HEALING = BUILDER.comment("Vitality Healing Buff to all healing").define("Healing Buff",  0.005);
+        DO_HEALING = BUILDER.comment("Enable vitality armor")
                 .define("Do armor", true);
         VITALITY_HARDCORE_NERF = BUILDER.comment("The amount regen is divided by. Divide by 1 to disable, use a number lower than one to buff vitality in hardcore. DO NOT USE 0.")
                 .define("Vitality regen nerf in hardcore", 1.5);
@@ -132,13 +138,18 @@ public class LevelUPCommonConfig {
 
         ENDURANCE_ARMOR_TOUGHNESS = BUILDER.comment("Armor Toughness Increase per stat").define("Armor Toughness Increase", 0.1);
         DO_ARMOR_TOUGHNESS = BUILDER.comment("Enable endurance armor toughness")
-                .define("Do armor toughness", true);
+                .define("Do armor toughness", false);
         ENDURANCE_KNOCKBACK_RESISTANCE = BUILDER.comment("Knockback Resistance per stat").define("KB Res Increase", 0.01);
         DO_KB_RES = BUILDER.comment("Enable endurance kb res")
                 .define("Do kb res", false);
         ENDURANCE_HUNGER = BUILDER.comment("Hunger cost decrease of sprinting per stat").define("Hunger Cost Decrease", 0.01);
         DO_HUNGER = BUILDER.comment("Enable endurance hunger decrease")
                 .define("do hunger decrease", true);
+        ENDURANCE_ARMOR = BUILDER.comment("Armor % increase for each point in endurance")
+                .define("Endurance armor percent", 0.01);
+        DO_ARMOR = BUILDER.comment("Enable Endurance Armor")
+                .define("endurance armor", true);
+
         ENABLE_ENDURANCE = BUILDER.comment("Enable endurance(Doesnt work yet)")
                 .define("Enable Endurance", true);
 

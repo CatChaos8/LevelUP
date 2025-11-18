@@ -300,37 +300,41 @@ public class LevelUPScreen extends Screen {
 
                 .append(Component.translatable("gui.levelup.line"));
 
-            Component DO_HP_REGEN = Component.empty();
-            Component DO_ARMOR = Component.empty();
-            if(LevelUPCommonConfig.DO_HP_REGEN.get()) {
-                if(level.getLevelData().isHardcore()) {
-                    double hpRegenThing = Math.round((LevelUPCommonConfig.VITALITY_HP_REGEN.get() * vitality.getLimited() * 20)*1000);
-                    DO_HP_REGEN = Component.translatable("gui.levelup.newline").append(PLUS.getString() + hpRegenThing/1000 / LevelUPCommonConfig.VITALITY_HARDCORE_NERF.get() + Component.translatable("gui.levelup.heal").getString());
-                } else {
-                    double hpRegenThing = Math.round((LevelUPCommonConfig.VITALITY_HP_REGEN.get() * vitality.getLimited() * 20)*1000);
-                    DO_HP_REGEN = Component.translatable("gui.levelup.newline").append(PLUS.getString() + hpRegenThing/1000 + Component.translatable("gui.levelup.heal").getString());
-                }
-            } else if(LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()) {
-                if(level.getLevelData().isHardcore()) {
-                    double hpRegenThing = Math.round((LevelUPCommonConfig.VITALITY_HP_REGEN.get() * vitality.getLimited() * 20)*1000);
-                    DO_HP_REGEN = Component.translatable("gui.levelup.newline").append(PLUS.getString() + hpRegenThing/1000 / LevelUPCommonConfig.VITALITY_HARDCORE_NERF.get() + Component.translatable("gui.levelup.heal").getString()).withStyle(ChatFormatting.RED);
-                } else {
-                    double hpRegenThing = Math.round((LevelUPCommonConfig.VITALITY_HP_REGEN.get() * vitality.getLimited() * 20)*1000);
-                    DO_HP_REGEN = Component.translatable("gui.levelup.newline").append(PLUS.getString() + hpRegenThing/1000 + Component.translatable("gui.levelup.heal").getString()).withStyle(ChatFormatting.RED);
-                }
+        Component DO_HP_REGEN = Component.empty();
+        Component DO_HEALING_MULT = Component.empty();
+        if(LevelUPCommonConfig.DO_HP_REGEN.get()) {
+            if(level.getLevelData().isHardcore()) {
+                double hpRegenThing = Math.round((LevelUPCommonConfig.VITALITY_HP_REGEN.get() * vitality.getLimited() * 20)*1000);
+                DO_HP_REGEN = Component.translatable("gui.levelup.newline").append(PLUS.getString() + hpRegenThing/1000 / LevelUPCommonConfig.VITALITY_HARDCORE_NERF.get() + Component.translatable("gui.levelup.heal").getString());
+            } else {
+                double hpRegenThing = Math.round((LevelUPCommonConfig.VITALITY_HP_REGEN.get() * vitality.getLimited() * 20)*1000);
+                DO_HP_REGEN = Component.translatable("gui.levelup.newline").append(PLUS.getString() + hpRegenThing/1000 + Component.translatable("gui.levelup.heal").getString());
             }
-            if(LevelUPCommonConfig.DO_ARMOR.get()) {
-                DO_ARMOR = Component.translatable("gui.levelup.newline").append(PLUS.getString() + LevelUPCommonConfig.VITALITY_ARMOR.get() * 100 * vitality.getLimited() + Component.translatable("gui.levelup.armor").getString());
-            } else if(LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()){
-                DO_ARMOR = Component.translatable("gui.levelup.newline").append(PLUS.getString() + LevelUPCommonConfig.VITALITY_ARMOR.get() * 100 * vitality.getLimited() + Component.translatable("gui.levelup.armor").getString()).withStyle(ChatFormatting.RED);
+        } else if(LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()) {
+            if(level.getLevelData().isHardcore()) {
+                double hpRegenThing = Math.round((LevelUPCommonConfig.VITALITY_HP_REGEN.get() * vitality.getLimited() * 20)*1000);
+                DO_HP_REGEN = Component.translatable("gui.levelup.newline").append(PLUS.getString() + hpRegenThing/1000 / LevelUPCommonConfig.VITALITY_HARDCORE_NERF.get() + Component.translatable("gui.levelup.heal").getString()).withStyle(ChatFormatting.RED);
+            } else {
+                double hpRegenThing = Math.round((LevelUPCommonConfig.VITALITY_HP_REGEN.get() * vitality.getLimited() * 20)*1000);
+                DO_HP_REGEN = Component.translatable("gui.levelup.newline").append(PLUS.getString() + hpRegenThing/1000 + Component.translatable("gui.levelup.heal").getString()).withStyle(ChatFormatting.RED);
             }
-        VIT_INFO.append(DO_HP_REGEN).append(DO_ARMOR);
+        }
+        if(LevelUPCommonConfig.DO_HEALING.get()) {
+            double armorMult = Math.round((LevelUPCommonConfig.ENDURANCE_ARMOR.get() * vitality.getLimited())*1000);
+            DO_HEALING_MULT = Component.translatable("gui.levelup.newline").append(PLUS.getString() + armorMult/10 + Component.translatable("gui.levelup.healing").getString());
+        } else {
+            double armorMult = Math.round((LevelUPCommonConfig.VITALITY_HP_REGEN.get() * vitality.getLimited())*1000);
+            DO_HEALING_MULT = Component.translatable("gui.levelup.newline").append(PLUS.getString() + armorMult/10 + Component.translatable("gui.levelup.healing").getString()).withStyle(ChatFormatting.RED);
+        }
+
+        VIT_INFO.append(DO_HP_REGEN).append(DO_HEALING_MULT);
 
         vitalityInfo.setTooltip(Tooltip.create(VIT_INFO));
 
         Component DO_ARMOR_TOUGHNESS = Component.empty();
         Component DO_KB_RES = Component.empty();
         Component DO_HUNGER = Component.empty();
+        Component DO_ARMOR = Component.empty();
 
         MutableComponent END_INFO = Component.translatable("gui.levelup.end_description").append(String.valueOf((float) player.getAttributeValue(ModAttributes.ENDURANCE.get()))).append(Component.translatable("gui.levelup.newline"))
                 .append(Component.translatable("gui.levelup.base")).append(String.valueOf(endurance.getBase()))
@@ -360,8 +364,13 @@ public class LevelUPScreen extends Screen {
             double hungerThing = (Math.round((100 - Math.pow(1.0-LevelUPCommonConfig.ENDURANCE_HUNGER.get(), endurance.getLimited()) * 100)*1000));
             DO_HUNGER = Component.translatable("gui.levelup.newline").append(MINUS.getString() + hungerThing/1000 + Component.translatable("gui.levelup.hunger").getString()).withStyle(ChatFormatting.RED);
         }
+        if(LevelUPCommonConfig.DO_ARMOR.get()) {
+            DO_ARMOR = Component.translatable("gui.levelup.newline").append(PLUS.getString() + LevelUPCommonConfig.ENDURANCE_ARMOR.get() * 100 * endurance.getLimited() + Component.translatable("gui.levelup.armor").getString());
+        } else if(LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()){
+            DO_ARMOR = Component.translatable("gui.levelup.newline").append(PLUS.getString() + LevelUPCommonConfig.ENDURANCE_ARMOR.get() * 100 * endurance.getLimited() + Component.translatable("gui.levelup.armor").getString()).withStyle(ChatFormatting.RED);
+        }
 
-        END_INFO.append(DO_ARMOR_TOUGHNESS).append(DO_KB_RES).append(DO_HUNGER);
+        END_INFO.append(DO_ARMOR_TOUGHNESS).append(DO_KB_RES).append(DO_HUNGER).append(DO_ARMOR);
         enduranceInfo.setTooltip(Tooltip.create(END_INFO));
 
     }

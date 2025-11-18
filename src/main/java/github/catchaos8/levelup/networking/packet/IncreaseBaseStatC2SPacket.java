@@ -51,7 +51,6 @@ public class IncreaseBaseStatC2SPacket {
                 //Check if freepoints is > 0
                 if (stats.getInfo(0) >= amount && stats.getBaseStat(type) < LevelUPCommonConfig.STAT_CAP.get()) {
                     //Increase Stats
-                    System.out.println("Increasing");
                     stats.addBaseStat(type, amount);
 
                     //Increase limited stats
@@ -65,7 +64,6 @@ public class IncreaseBaseStatC2SPacket {
                     };
 
                     if (attribute != null && player.getAttributeValue(attribute) >= stats.getLimitedStat(type)) {
-                        System.out.println("Increased");
                         stats.addLimitedStat(type, amount);
                     }
                     //Sub freepoints

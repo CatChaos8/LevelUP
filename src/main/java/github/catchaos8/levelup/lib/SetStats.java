@@ -175,13 +175,7 @@ public class SetStats {
         if(type == 3 || type == 99) {
             //Regen in events
 
-            //Armor
-            if(LevelUPCommonConfig.DO_ARMOR.get()) {
-                makeAttributeMod(type,
-                        LevelUPCommonConfig.VITALITY_ARMOR.get(),
-                        AttributeModifier.Operation.MULTIPLY_BASE, player,
-                        STATS_MOD_UUID, Attributes.ARMOR);
-            }
+            //HP Mult in events
         }
 
         //Endurance
@@ -200,6 +194,13 @@ public class SetStats {
                         LevelUPCommonConfig.ENDURANCE_KNOCKBACK_RESISTANCE.get(),
                         AttributeModifier.Operation.MULTIPLY_BASE, player,
                         STATS_MOD_UUID, Attributes.KNOCKBACK_RESISTANCE);
+            }
+            //Armor
+            if(LevelUPCommonConfig.DO_ARMOR.get()) {
+                makeAttributeMod(type,
+                        LevelUPCommonConfig.ENDURANCE_ARMOR.get(),
+                        AttributeModifier.Operation.MULTIPLY_BASE, player,
+                        STATS_MOD_UUID, Attributes.ARMOR);
             }
         }
     }
@@ -259,13 +260,7 @@ public class SetStats {
 
         //Vitality
         //Regen in events
-        //Armor
-        if(LevelUPCommonConfig.DO_ARMOR.get()) {
-            makeAttributeMod(3,
-                    LevelUPCommonConfig.VITALITY_ARMOR.get(),
-                    AttributeModifier.Operation.MULTIPLY_BASE, player,
-                    STATS_MOD_UUID, Attributes.ARMOR);
-        }
+        //Healing Multi in Events
 
         //Endurance
         //Armour toughness
@@ -281,6 +276,13 @@ public class SetStats {
                     LevelUPCommonConfig.ENDURANCE_KNOCKBACK_RESISTANCE.get(),
                     AttributeModifier.Operation.MULTIPLY_BASE, player,
                     STATS_MOD_UUID, Attributes.KNOCKBACK_RESISTANCE);
+        }
+        //Armor
+        if(LevelUPCommonConfig.DO_ARMOR.get()) {
+            makeAttributeMod(3,
+                    LevelUPCommonConfig.ENDURANCE_ARMOR.get(),
+                    AttributeModifier.Operation.MULTIPLY_BASE, player,
+                    STATS_MOD_UUID, Attributes.ARMOR);
         }
     }
 
