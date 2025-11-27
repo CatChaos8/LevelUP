@@ -299,9 +299,7 @@ public class ModEvents {
                 float amount  = event.getAmount();
                 player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
                     float buffedHeal = (float) (amount*LevelUPCommonConfig.VITALITY_HEALING.get()) * stats.getLimitedStat(3);
-
-                    event.setAmount(buffedHeal);
-
+                    event.setAmount(buffedHeal + amount);
                 });
             }
         }
