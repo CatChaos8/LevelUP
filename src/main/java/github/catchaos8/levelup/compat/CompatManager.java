@@ -11,5 +11,8 @@ public class CompatManager {
         if(ModList.get().isLoaded("irons_spellbooks")) {
             IronsCompat.init();
         }
+        if(ModList.get().isLoaded("curios_api")) {
+            CuriosCompat.init();
+        }
     }
 }

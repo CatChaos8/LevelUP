@@ -21,6 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModList;
 import org.jetbrains.annotations.NotNull;
 
 public class LevelUPScreen extends Screen {
@@ -296,6 +297,7 @@ public class LevelUPScreen extends Screen {
         Component DO_SPEED = Component.empty();
         Component DO_ATTACK_SPEED = Component.empty();
         Component DO_SWIM_SPEED = Component.empty();
+        Component DO_JUMP_BOOST = Component.empty();
 
         if(LevelUPCommonConfig.DO_SPEED.get()) {
             DO_SPEED = Component.translatable("gui.levelup.newline").append(PLUS.getString() + LevelUPCommonConfig.DEXTERITY_SPEED.get() * 100 * dexterity.getLimited() + Component.translatable("gui.levelup.speed").getString());
@@ -312,8 +314,21 @@ public class LevelUPScreen extends Screen {
         } else if(LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()) {
             DO_SWIM_SPEED = Component.translatable("gui.levelup.newline").append(PLUS.getString() + LevelUPCommonConfig.DEXTERITY_SWIM_SPEED.get() * 100 * dexterity.getLimited() + Component.translatable("gui.levelup.swim_speed").getString()).withStyle(ChatFormatting.RED);
         }
+        if(LevelUPCommonConfig.DO_JUMP_BOOST.get()) {
+            int jumpBoostLevel = (int) Math.floor(dexterity.getLimited() / LevelUPCommonConfig.DEXTERITY_JUMP_BOOST.get());
+            DO_JUMP_BOOST = Component.translatable("gui.levelup.newline")
+                    .append(PLUS.getString() + jumpBoostLevel + Component.translatable("gui.levelup.jump_boost").getString());
 
-        DEX_INFO.append(DO_SPEED).append(DO_ATTACK_SPEED).append(DO_SWIM_SPEED);
+        } else if(LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()) {
+            int jumpBoostLevel = (int) Math.floor(dexterity.getLimited() / LevelUPCommonConfig.DEXTERITY_JUMP_BOOST.get());
+            DO_JUMP_BOOST = Component.translatable("gui.levelup.newline")
+                    .append(PLUS.getString() + jumpBoostLevel + Component.translatable("gui.levelup.jump_boost").getString())
+                    .withStyle(ChatFormatting.RED);
+        }
+
+
+
+        DEX_INFO.append(DO_SPEED).append(DO_ATTACK_SPEED).append(DO_SWIM_SPEED).append(DO_JUMP_BOOST);
         dexterityInfo.setTooltip(Tooltip.create(DEX_INFO));
 
         MutableComponent STR_INFO = Component.translatable("gui.levelup.str_description").append(String.valueOf((float) player.getAttributeValue(ModAttributes.STRENGTH.get()))).append(Component.translatable("gui.levelup.newline"))
@@ -441,6 +456,8 @@ public class LevelUPScreen extends Screen {
 
         Component DO_XP_BOOST = Component.empty();
         Component DO_LEVELSPEED_BOOST = Component.empty();
+        Component DO_ARS_REGEN_BOOST = Component.empty();
+        Component DO_IRONS_REGEN_BOOST = Component.empty();
 
         if(LevelUPCommonConfig.DO_WISDOM_XP.get()) {
             DO_XP_BOOST = Component.translatable("gui.levelup.newline").append(PLUS.getString() + LevelUPCommonConfig.WISDOM_XP_MULTIPLIER.get() * 100 *wisdom.getLimited() + Component.translatable("gui.levelup.xp_boost").getString());
@@ -452,9 +469,19 @@ public class LevelUPScreen extends Screen {
         } else if (LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()) {
             DO_LEVELSPEED_BOOST = Component.translatable("gui.levelup.newline").append(PLUS.getString() + LevelUPCommonConfig.WISDOM_LEVELING_SPEED.get() * 100 *wisdom.getLimited() + Component.translatable("gui.levelup.level_speed").getString()).withStyle(ChatFormatting.RED);
         }
+        if(LevelUPCommonConfig.DO_ARS_MANA_REGEN_BOOST.get() && ModList.get().isLoaded("ars_nouveau")) {
+            DO_ARS_REGEN_BOOST = Component.translatable("gui.levelup.newline").append(PLUS.getString() + LevelUPCommonConfig.WISDOM_ARS_MANA_REGEN_BOOST.get() * 100 *wisdom.getLimited() + Component.translatable("gui.levelup.ars_regen").getString());
+        } else if (LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()) {
+            DO_ARS_REGEN_BOOST = Component.translatable("gui.levelup.newline").append(PLUS.getString() + LevelUPCommonConfig.WISDOM_ARS_MANA_REGEN_BOOST.get() * 100 *wisdom.getLimited() + Component.translatable("gui.levelup.ars_regen").getString()).withStyle(ChatFormatting.RED);
+        }
+        if(LevelUPCommonConfig.DO_IRONS_MANA_REGEN_BOOST.get() && ModList.get().isLoaded("ars_nouveau")) {
+            DO_IRONS_REGEN_BOOST = Component.translatable("gui.levelup.newline").append(PLUS.getString() + LevelUPCommonConfig.WISDOM_IRONS_MANA_REGEN_BOOST.get() * 100 *wisdom.getLimited() + Component.translatable("gui.levelup.irons_regen").getString());
+        } else if (LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()) {
+            DO_IRONS_REGEN_BOOST = Component.translatable("gui.levelup.newline").append(PLUS.getString() + LevelUPCommonConfig.WISDOM_IRONS_MANA_REGEN_BOOST.get() * 100 *wisdom.getLimited() + Component.translatable("gui.levelup.irons_regen").getString()).withStyle(ChatFormatting.RED);
+        }
 
 
-        WIS_INFO.append(DO_XP_BOOST).append(DO_LEVELSPEED_BOOST);
+        WIS_INFO.append(DO_XP_BOOST).append(DO_LEVELSPEED_BOOST).append(DO_ARS_REGEN_BOOST).append(DO_IRONS_REGEN_BOOST);
         wisdomInfo.setTooltip(Tooltip.create(WIS_INFO));
 
         MutableComponent INT_INFO = Component.translatable("gui.levelup.int_description").append(String.valueOf((float) player.getAttributeValue(ModAttributes.INTELLIGENCE.get()))).append(Component.translatable("gui.levelup.newline"))
@@ -469,6 +496,8 @@ public class LevelUPScreen extends Screen {
 
         Component DO_DURABILITY_DAMAGE = Component.empty();
         Component DO_POTION_DURATION = Component.empty();
+        Component DO_ARS_MAX_MANA = Component.empty();
+        Component DO_IRONS_MAX_MANA = Component.empty();
 
         if(LevelUPCommonConfig.DO_DURABILITY_REDUCTION.get()) {
             double reduct = (Math.round((100 - Math.pow(1.0-LevelUPCommonConfig.INTELLIGENCE_DURABILITY_DAMAGE.get(), intelligence.getLimited()) * 100)*1000));
@@ -482,8 +511,18 @@ public class LevelUPScreen extends Screen {
         } else if (LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()) {
             DO_POTION_DURATION = Component.translatable("gui.levelup.newline").append(PLUS.getString() + LevelUPCommonConfig.INTELLIGENCE_POTION_DURATION_BOOST.get() * 100 *intelligence.getLimited() + Component.translatable("gui.levelup.potion_duration").getString()).withStyle(ChatFormatting.RED);
         }
+        if(LevelUPCommonConfig.DO_ARS_MAX_MANA_BOOST.get() && ModList.get().isLoaded("ars_nouveau")) {
+            DO_ARS_MAX_MANA = Component.translatable("gui.levelup.newline").append(PLUS.getString() + LevelUPCommonConfig.INTELLIGENCE_ARS_MAX_MANA_BOOST.get() * 100 * intelligence.getLimited() + Component.translatable("gui.levelup.ars_max_mana").getString());
+        } else if (LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()) {
+            DO_ARS_MAX_MANA = Component.translatable("gui.levelup.newline").append(PLUS.getString() + LevelUPCommonConfig.INTELLIGENCE_ARS_MAX_MANA_BOOST.get() * 100 *intelligence.getLimited() + Component.translatable("gui.levelup.ars_max_mana").getString()).withStyle(ChatFormatting.RED);
+        }
+        if(LevelUPCommonConfig.DO_IRONS_MAX_MANA_BOOST.get() && ModList.get().isLoaded("ars_nouveau")) {
+            DO_IRONS_MAX_MANA = Component.translatable("gui.levelup.newline").append(PLUS.getString() + LevelUPCommonConfig.INTELLIGENCE_IRONS_MAX_MANA_BOOST.get() * 100 * intelligence.getLimited() + Component.translatable("gui.levelup.irons_max_mana").getString());
+        } else if (LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()) {
+            DO_IRONS_MAX_MANA = Component.translatable("gui.levelup.newline").append(PLUS.getString() + LevelUPCommonConfig.INTELLIGENCE_IRONS_MAX_MANA_BOOST.get() * 100 *intelligence.getLimited() + Component.translatable("gui.levelup.irons_max_mana").getString()).withStyle(ChatFormatting.RED);
+        }
 
-        INT_INFO.append(DO_DURABILITY_DAMAGE).append(DO_POTION_DURATION);
+        INT_INFO.append(DO_DURABILITY_DAMAGE).append(DO_POTION_DURATION).append(DO_ARS_MAX_MANA).append(DO_IRONS_MAX_MANA);
         intelligenceInfo.setTooltip(Tooltip.create(INT_INFO));
 
 

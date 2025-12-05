@@ -37,7 +37,7 @@
   "gui.levelup.speed": "% movement speed",
   "gui.levelup.attack_speed": "% attack speed",
   "gui.levelup.swim_speed": "% swim speed",
-
+  "gui.levelup.jump_boost": " levels of jump boost",
 
   "gui.levelup.str_description": "Strength: ",
   "gui.levelup.damage": "% damage",
@@ -57,10 +57,14 @@
   "gui.levelup.wis_description": "Wisdom: ",
   "gui.levelup.xp_boost": "% xp gained",
   "gui.levelup.level_speed": "% LevelUP xp",
+  "gui.levelup.ars_regen": "% Ars mana regen",
+  "gui.levelup.irons_regen" : "% Iron's mana regen",
 
   "gui.levelup.int_description": "Intelligence: ",
   "gui.levelup.durability": "% durability damage taken",
   "gui.levelup.potion_duration": "% potion duration",
+  "gui.levelup.ars_max_mana": "% Ars mana",
+  "gui.levelup.irons_max_mana": "% Iron's mana",
 
   "gui.levelup.line": "----------------------------",
   "gui.levelup.newline": "\n",

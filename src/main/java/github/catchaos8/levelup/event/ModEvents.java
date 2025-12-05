@@ -12,6 +12,8 @@ import github.catchaos8.levelup.stats.PlayerStats;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -289,6 +291,23 @@ public class ModEvents {
         //Vitality/update on attribute stuff
         @SubscribeEvent
         public static void onLivingUpdate(LivingEvent.LivingTickEvent event) {
+            if(event.getEntity() instanceof Player player && player.tickCount % 5 == 0) {
+                player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
+                    if(LevelUPCommonConfig.DO_JUMP_BOOST.get()) {
+                        float dex = stats.getLimitedStat(1);
+                        int jumpBoostLevel = (int) Math.floor(dex/LevelUPCommonConfig.DEXTERITY_JUMP_BOOST.get());
+                        //Caps out jump boost lvl
+                        jumpBoostLevel = Math.min(jumpBoostLevel, 255);
+
+                        if (jumpBoostLevel > 0) {
+                            // Duration 10 ticks (half a second), amplifier = jumpBoostLevel - 1
+                            MobEffectInstance effect = new MobEffectInstance(MobEffects.JUMP, 6, jumpBoostLevel - 1, false, false);
+                            player.addEffect(effect);
+                        }
+                    }
+                });
+            }
+
             if (event.getEntity() instanceof Player player && player.tickCount % LevelUPCommonConfig.VITALITY_TICKS_PER_REGEN.get() == 0) {
                 player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
                     if(LevelUPCommonConfig.DO_HP_REGEN.get()) {

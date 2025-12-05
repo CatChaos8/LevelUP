@@ -2,6 +2,8 @@ package github.catchaos8.levelup.lib;
 
 import com.google.common.collect.Multimap;
 import github.catchaos8.levelup.attributes.ModAttributes;
+import github.catchaos8.levelup.compat.ArsCompat;
+import github.catchaos8.levelup.compat.IronsCompat;
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
 import github.catchaos8.levelup.enchants.ModEnchants;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
@@ -15,6 +17,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.fml.ModList;
 
 import java.util.Map;
 import java.util.UUID;
@@ -208,6 +211,14 @@ public class SetStats {
             }
         }
 
+        if(ModList.get().isLoaded("ars_nouveau")) {
+            ArsCompat.makeArsAttributeMods(player, type);
+        }
+
+        if(ModList.get().isLoaded("irons_spellbooks")) {
+            IronsCompat.makeIronsAttributeMods(player, type);
+        }
+
     }
 
     public static void makeAttributeMods(ServerPlayer player) {
@@ -288,6 +299,13 @@ public class SetStats {
                     LevelUPCommonConfig.ENDURANCE_ARMOR.get(),
                     AttributeModifier.Operation.MULTIPLY_BASE, player,
                     STATS_MOD_UUID, Attributes.ARMOR);
+        }
+
+        if(ModList.get().isLoaded("ars_nouveau")) {
+            ArsCompat.makeArsAttributeMods(player, 99);
+        }
+        if(ModList.get().isLoaded("irons_spellbooks")) {
+            IronsCompat.makeIronsAttributeMods(player, 99);
         }
     }
 

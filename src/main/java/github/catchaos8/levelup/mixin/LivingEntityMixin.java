@@ -32,11 +32,11 @@ public abstract class LivingEntityMixin {
             @Nullable Entity source,
             CallbackInfoReturnable<Boolean> cir
     ) {
-        // If we're already inside our own reentrant call, do nothing and let the original method run
+        // If already inside reentrant call, do nothing and let the original method run
         if (this.levelup_effectReentrancyGuard) return;
 
         if(!LevelUPCommonConfig.DO_POTION_DURATION_BOOST.get()) return;
-        // Only proceed for server-side players (adjust to your needs)
+        // Only proceed for server-side players
 
         if(!((Object) this instanceof ServerPlayer)) return;
 
@@ -48,11 +48,8 @@ public abstract class LivingEntityMixin {
             int intelligence = (int) stats.getLimitedStat(6);
 
             int baseDuration = effect.getDuration();
-            System.out.println("Base: " + baseDuration);
             double multiplier = 1.0 + intelligence * LevelUPCommonConfig.INTELLIGENCE_POTION_DURATION_BOOST.get();
-            System.out.println("Multiplier: " + multiplier);
             int newDuration = (int) Math.ceil(baseDuration * multiplier);
-            System.out.println("New: " + newDuration);
 
             // Build modified instance (preserve amplifier, ambient, visibility, icon)
             MobEffectInstance modified = new MobEffectInstance(
@@ -76,7 +73,7 @@ public abstract class LivingEntityMixin {
                 ((LivingEntity) (Object) this).addEffect(modified, source);
 
                 // Cancel the outer/original call so the unmodified 'effect' is not also applied.
-                cir.setReturnValue(true); // indicate effect was (we hope) applied
+                cir.setReturnValue(true);
                 cir.cancel();
             } finally {
                 this.levelup_effectReentrancyGuard = false;

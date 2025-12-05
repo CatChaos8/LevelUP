@@ -44,7 +44,7 @@ public class ModEnchants {
 
     //Wisdom
     public static RegistryObject<Enchantment> SAGICITY =
-            ENCHANTMENTS.register("sagicity",
+            ENCHANTMENTS.register("sagacity",
                     () -> new EnduranceBoostEnch(Enchantment.Rarity.UNCOMMON,
                             EnchantCategories.ARMOR_AND_WEAPONS, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET, EquipmentSlot.MAINHAND));
 

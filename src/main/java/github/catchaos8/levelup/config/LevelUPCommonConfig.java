@@ -25,6 +25,8 @@ public class LevelUPCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_SWIM_SPEED;
     public static final ForgeConfigSpec.ConfigValue<Double> DEXTERITY_ATTACK_SPEED;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_ATTACK_SPEED;
+    public static final ForgeConfigSpec.ConfigValue<Double> DEXTERITY_JUMP_BOOST;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> DO_JUMP_BOOST;
 
     public static final ForgeConfigSpec.ConfigValue<Double> STRENGTH_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_DAMAGE;
@@ -53,12 +55,20 @@ public class LevelUPCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_WISDOM_XP;
     public static final ForgeConfigSpec.ConfigValue<Double> WISDOM_LEVELING_SPEED;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_WISDOM_LEVELING_SPEED;
+    public static final ForgeConfigSpec.ConfigValue<Double> WISDOM_ARS_MANA_REGEN_BOOST;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> DO_ARS_MANA_REGEN_BOOST;
+    public static final ForgeConfigSpec.ConfigValue<Double> WISDOM_IRONS_MANA_REGEN_BOOST;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> DO_IRONS_MANA_REGEN_BOOST;
 
 
     public static final ForgeConfigSpec.ConfigValue<Double> INTELLIGENCE_DURABILITY_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_DURABILITY_REDUCTION;
     public static final ForgeConfigSpec.ConfigValue<Double> INTELLIGENCE_POTION_DURATION_BOOST;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_POTION_DURATION_BOOST;
+    public static final ForgeConfigSpec.ConfigValue<Double> INTELLIGENCE_ARS_MAX_MANA_BOOST;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> DO_ARS_MAX_MANA_BOOST;
+    public static final ForgeConfigSpec.ConfigValue<Double> INTELLIGENCE_IRONS_MAX_MANA_BOOST;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> DO_IRONS_MAX_MANA_BOOST;
 
 
     public static final ForgeConfigSpec.ConfigValue<Double> FREEPOINTS_PER_LEVEL;
@@ -114,6 +124,9 @@ public class LevelUPCommonConfig {
         DEXTERITY_SWIM_SPEED = BUILDER.comment("Swim Speed Increase per stat").define("Swim speed increase", 0.01);
         DO_SWIM_SPEED = BUILDER.comment("Enable dexterity swim speed")
                 .define("Do swim speed", false);
+        DEXTERITY_JUMP_BOOST = BUILDER.comment("Jump boost level per x stat points").define("Jump height increase", 50.0);
+        DO_JUMP_BOOST = BUILDER.comment("Enable dexterity jump boost")
+                .define("Do jump boost", true);
 
         STRENGTH_DAMAGE = BUILDER.comment("Damage Increase per stat").define("Dmg Increase", 0.01);
         DO_DAMAGE = BUILDER.comment("Enable strength damage")
@@ -163,6 +176,20 @@ public class LevelUPCommonConfig {
         DO_WISDOM_LEVELING_SPEED = BUILDER.comment("Enable Wisdom Leveling Speed")
                 .define("Do wisdom leveling speed", true);
 
+        WISDOM_ARS_MANA_REGEN_BOOST = BUILDER
+                .comment("Ars Nouveau Mana Regen Boost ")
+                .define("Ars mana regen boost", 0.01);
+
+        DO_ARS_MANA_REGEN_BOOST = BUILDER.comment("Enable Ars Nouveau mana regen boost")
+                .define("Do ars mana regen", true);
+
+        WISDOM_IRONS_MANA_REGEN_BOOST = BUILDER
+                .comment("Irons Mana Regen Boost ")
+                .define("Irons regen boost", 0.01);
+
+        DO_IRONS_MANA_REGEN_BOOST = BUILDER.comment("Enable Irons mana regen boost")
+                .define("Do Irons regen", true);
+
         INTELLIGENCE_DURABILITY_DAMAGE = BUILDER
                 .comment("Chance to not take durability damage (Exponential, not linear, like the endurance hunger)")
                 .define("Durability damage reduction", 0.01);
@@ -173,6 +200,20 @@ public class LevelUPCommonConfig {
         INTELLIGENCE_POTION_DURATION_BOOST = BUILDER
                 .comment("Chance to not take durability damage (Exponential, not linear, like the endurance hunger)")
                 .define("Durability damage reduction", 0.01);
+
+        INTELLIGENCE_ARS_MAX_MANA_BOOST = BUILDER
+                .comment("Ars Nouveau Mana Regen Boost ")
+                .define("Ars max mana boost", 0.01);
+
+        DO_ARS_MAX_MANA_BOOST = BUILDER.comment("Enable Irons Spells max regen boost")
+                .define("Do ars max mana", true);
+        INTELLIGENCE_IRONS_MAX_MANA_BOOST = BUILDER
+                .comment("Ars Nouveau Mana Regen Boost ")
+                .define("Iron's max mana boost", 0.01);
+
+        DO_IRONS_MAX_MANA_BOOST = BUILDER.comment("Enable Iron's Spells max regen boost")
+                .define("Do iron's max mana", true);
+
 
         DO_POTION_DURATION_BOOST = BUILDER
                 .comment("Enable intelligence durability reduction")
