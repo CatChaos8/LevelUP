@@ -20,6 +20,8 @@ public class SetAllStatsCommand {
     public static final String STRENGTH =       "stat.levelup.str";
     public static final String VITALITY =       "stat.levelup.vit";
     public static final String ENDURANCE =      "stat.levelup.end";
+    public static final String WISDOM =         "stat.levelup.wis";
+    public static final String INTELLIGENCE =   "stat.levelup.int";
     public static final String FREEPOINTS =     "stat.levelup.fp";
     public static final String CLASSXP =        "stat.levelup.cxp";
     public static final String CLASSLVL =       "stat.levelup.clvl";
@@ -47,7 +49,6 @@ public class SetAllStatsCommand {
         if(player.hasPermissions(2)) {
 
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stat -> {
-                System.out.println("DJASFHUIAHJAUIO" + amount);
                 for (int i = 0; i < stat.getInfoArr().length; i++) {
                     stat.setInfo(i, amount);
                 }
@@ -66,6 +67,8 @@ public class SetAllStatsCommand {
                 player.sendSystemMessage(Component.translatable(STRENGTH).append(Component.literal("" + stat.getBaseStat(2))));
                 player.sendSystemMessage(Component.translatable(VITALITY).append(Component.literal("" + stat.getBaseStat(3))));
                 player.sendSystemMessage(Component.translatable(ENDURANCE).append(Component.literal("" + stat.getBaseStat(4))));
+                player.sendSystemMessage(Component.translatable(WISDOM).append(Component.literal("" + stat.getBaseStat(5))));
+                player.sendSystemMessage(Component.translatable(INTELLIGENCE).append(Component.literal("" + stat.getBaseStat(6))));
                 player.sendSystemMessage(Component.translatable(FREEPOINTS).append(Component.literal("" + stat.getInfo(0))));
                 player.sendSystemMessage(Component.translatable(CLASSXP).append(Component.literal("" + stat.getInfo(1))));
                 player.sendSystemMessage(Component.translatable(CLASSLVL).append(Component.literal("" + stat.getInfo(2))));

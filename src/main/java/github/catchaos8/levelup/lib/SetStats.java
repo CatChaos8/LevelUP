@@ -26,7 +26,9 @@ public class SetStats {
             ModAttributes.DEXTERITY.get(),
             ModAttributes.STRENGTH.get(),
             ModAttributes.VITALITY.get(),
-            ModAttributes.ENDURANCE.get()
+            ModAttributes.ENDURANCE.get(),
+            ModAttributes.WISDOM.get(),
+            ModAttributes.INTELLIGENCE.get()
     };
 
     public static void setAttributeStat(float amount, int type, ServerPlayer player) {
@@ -124,6 +126,8 @@ public class SetStats {
                         STATS_MOD_UUID, Attributes.MAX_HEALTH);
             }
             //Max fall before fall dmg is in mod events
+
+            player.heal(0.001f);
         }
 
         //Dexterity
@@ -203,6 +207,7 @@ public class SetStats {
                         STATS_MOD_UUID, Attributes.ARMOR);
             }
         }
+
     }
 
     public static void makeAttributeMods(ServerPlayer player) {
@@ -314,7 +319,9 @@ public class SetStats {
                 ModAttributes.DEXTERITY.get(), EnchantmentHelper.getEnchantments(item).getOrDefault(ModEnchants.REFLEX.get(), 0),
                 ModAttributes.STRENGTH.get(), EnchantmentHelper.getEnchantments(item).getOrDefault(ModEnchants.STRENGTHENING.get(), 0),
                 ModAttributes.VITALITY.get(), EnchantmentHelper.getEnchantments(item).getOrDefault(ModEnchants.INNER_STRENGTH.get(), 0),
-                ModAttributes.ENDURANCE.get(), EnchantmentHelper.getEnchantments(item).getOrDefault(ModEnchants.UNYIELDING.get(), 0)
+                ModAttributes.ENDURANCE.get(), EnchantmentHelper.getEnchantments(item).getOrDefault(ModEnchants.UNYIELDING.get(), 0),
+                ModAttributes.WISDOM.get(), EnchantmentHelper.getEnchantments(item).getOrDefault(ModEnchants.SAGICITY.get(), 0),
+                ModAttributes.INTELLIGENCE.get(), EnchantmentHelper.getEnchantments(item).getOrDefault(ModEnchants.INTELLECT.get(), 0)
         );
 
         for (Map.Entry<Attribute, Integer> entry : attributeLevels.entrySet()) {

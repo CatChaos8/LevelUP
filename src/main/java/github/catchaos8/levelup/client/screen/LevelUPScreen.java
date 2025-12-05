@@ -9,6 +9,7 @@ import github.catchaos8.levelup.lib.StatType;
 import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.networking.packet.IncreaseBaseStatC2SPacket;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
@@ -30,6 +31,8 @@ public class LevelUPScreen extends Screen {
     private static final Component STRENGTH = Component.translatable("stat.levelup.str");
     private static final Component VITALITY = Component.translatable("stat.levelup.vit");
     private static final Component ENDURANCE = Component.translatable("stat.levelup.end");
+    private static final Component WISDOM = Component.translatable("stat.levelup.wis");
+    private static final Component INTELLIGENCE = Component.translatable("stat.levelup.int");
     private static final Component FREEPOINTS = Component.translatable("stat.levelup.fp");
 
     private static final Component PLUS = Component.translatable("gui.levelup.plus");
@@ -57,13 +60,26 @@ public class LevelUPScreen extends Screen {
     private Button strengthInfo;
     private Button vitalityInfo;
     private Button enduranceInfo;
+    private Button wisdomInfo;
+    private Button intelligenceInfo;
 
 
     public LevelUPScreen() {
         super(TITLE);
 
         this.imageWidth = 176;
-        this.imageHeight = 166;
+        this.imageHeight = 204;
+    }
+
+    @Override
+    public boolean keyPressed(int keyPressed, int scanCode, int modifiers) {
+
+        if(Minecraft.getInstance().options.keyInventory.matches(keyPressed, scanCode)) {
+            this.onClose();
+            return true;
+        }
+
+        return super.keyPressed(keyPressed, scanCode, modifiers);
     }
 
     @Override
@@ -118,11 +134,29 @@ public class LevelUPScreen extends Screen {
                         .bounds(this.leftPos + increase_button_x, this.topPos + 118, 10, 10)
                         .build());
 
+        //Wisdom
+        addRenderableWidget(
+                ImageButton.builder(
+                                PLUS,
+                                this::handleWisButton)
+                        .bounds(this.leftPos + increase_button_x, this.topPos + 138, 10, 10)
+                        .build());
+
+        //Intelligence
+        addRenderableWidget(
+                ImageButton.builder(
+                                PLUS,
+                                this::handleIntButton)
+                        .bounds(this.leftPos + increase_button_x, this.topPos + 158, 10, 10)
+                        .build());
+
+
+        //Limit Button
         addRenderableWidget(
                 ImageButton.builder(
                                 LIMIT,
                                 this::handleLimitButton)
-                        .bounds(this.leftPos + 108, this.topPos + 137, 60, 12)
+                        .bounds(this.leftPos + 108, this.topPos + 175, 60, 12)
                         .build());
 
         var player = this.minecraft.player;
@@ -168,6 +202,22 @@ public class LevelUPScreen extends Screen {
                         .build()
         );
 
+        wisdomInfo = addRenderableOnly(
+                ImageButton.builder(
+                                INFO, this::handleInfoButton)
+                        .bounds(this.leftPos + info_button_x, this.topPos + 138, 12, 12)
+                        .tooltip(Tooltip.create(Component.empty()))
+                        .build()
+        );
+
+        intelligenceInfo = addRenderableOnly(
+                ImageButton.builder(
+                                INFO, this::handleInfoButton)
+                        .bounds(this.leftPos + info_button_x, this.topPos + 158, 12, 12)
+                        .tooltip(Tooltip.create(Component.empty()))
+                        .build()
+        );
+
 
     }
 
@@ -187,6 +237,8 @@ public class LevelUPScreen extends Screen {
         StatType strength = getStat(2);
         StatType vitality = getStat(3);
         StatType endurance = getStat(4);
+        StatType wisdom = getStat(5);
+        StatType intelligence = getStat(6);
 
 
         drawXpBar(graphics, this.imageWidth - 14);
@@ -201,8 +253,12 @@ public class LevelUPScreen extends Screen {
                 this.leftPos + text_x, this.topPos + 100, 0x404040, false);
         graphics.drawString(this.font, ENDURANCE.getString() + "%.0f".formatted((float) player.getAttributeValue(ModAttributes.ENDURANCE.get())),
                 this.leftPos + text_x, this.topPos + 120, 0x404040, false);
+        graphics.drawString(this.font, WISDOM.getString() + "%.0f".formatted((float) player.getAttributeValue(ModAttributes.WISDOM.get())),
+                this.leftPos + text_x, this.topPos + 140, 0x404040, false);
+        graphics.drawString(this.font, INTELLIGENCE.getString() + "%.0f".formatted((float) player.getAttributeValue(ModAttributes.INTELLIGENCE.get())),
+                this.leftPos + text_x, this.topPos + 160, 0x404040, false);
         graphics.drawString(this.font, FREEPOINTS.getString() + "%.2f".formatted(this.getInfo(0)),
-                this.leftPos + 8, this.topPos + 140, 0x404040, false);
+                this.leftPos + 8, this.topPos + 178, 0x404040, false);
 
         Component DO_HP = Component.empty();
         Component DO_FALL = Component.empty();
@@ -373,6 +429,66 @@ public class LevelUPScreen extends Screen {
         END_INFO.append(DO_ARMOR_TOUGHNESS).append(DO_KB_RES).append(DO_HUNGER).append(DO_ARMOR);
         enduranceInfo.setTooltip(Tooltip.create(END_INFO));
 
+        MutableComponent WIS_INFO = Component.translatable("gui.levelup.wis_description").append(String.valueOf((float) player.getAttributeValue(ModAttributes.WISDOM.get()))).append(Component.translatable("gui.levelup.newline"))
+                .append(Component.translatable("gui.levelup.base")).append(String.valueOf(wisdom.getBase()))
+                .append(Component.translatable("gui.levelup.newline"))
+
+                .append(Component.translatable("gui.levelup.items"))
+                .append(String.valueOf((float) player.getAttributeValue(ModAttributes.WISDOM.get()) - wisdom.getBase()))
+                .append(Component.translatable("gui.levelup.newline"))
+
+                .append(Component.translatable("gui.levelup.line"));
+
+        Component DO_XP_BOOST = Component.empty();
+        Component DO_LEVELSPEED_BOOST = Component.empty();
+
+        if(LevelUPCommonConfig.DO_WISDOM_XP.get()) {
+            DO_XP_BOOST = Component.translatable("gui.levelup.newline").append(PLUS.getString() + LevelUPCommonConfig.WISDOM_XP_MULTIPLIER.get() * 100 *wisdom.getLimited() + Component.translatable("gui.levelup.xp_boost").getString());
+        } else if (LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()) {
+            DO_XP_BOOST = Component.translatable("gui.levelup.newline").append(PLUS.getString() + LevelUPCommonConfig.WISDOM_XP_MULTIPLIER.get() * 100 *wisdom.getLimited() + Component.translatable("gui.levelup.xp_boost").getString()).withStyle(ChatFormatting.RED);
+        }
+        if(LevelUPCommonConfig.DO_WISDOM_LEVELING_SPEED.get()) {
+            DO_LEVELSPEED_BOOST = Component.translatable("gui.levelup.newline").append(PLUS.getString() + LevelUPCommonConfig.WISDOM_LEVELING_SPEED.get() * 100 *wisdom.getLimited() + Component.translatable("gui.levelup.level_speed").getString());
+        } else if (LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()) {
+            DO_LEVELSPEED_BOOST = Component.translatable("gui.levelup.newline").append(PLUS.getString() + LevelUPCommonConfig.WISDOM_LEVELING_SPEED.get() * 100 *wisdom.getLimited() + Component.translatable("gui.levelup.level_speed").getString()).withStyle(ChatFormatting.RED);
+        }
+
+
+        WIS_INFO.append(DO_XP_BOOST).append(DO_LEVELSPEED_BOOST);
+        wisdomInfo.setTooltip(Tooltip.create(WIS_INFO));
+
+        MutableComponent INT_INFO = Component.translatable("gui.levelup.int_description").append(String.valueOf((float) player.getAttributeValue(ModAttributes.INTELLIGENCE.get()))).append(Component.translatable("gui.levelup.newline"))
+                .append(Component.translatable("gui.levelup.base")).append(String.valueOf(intelligence.getBase()))
+                .append(Component.translatable("gui.levelup.newline"))
+
+                .append(Component.translatable("gui.levelup.items"))
+                .append(String.valueOf((float) player.getAttributeValue(ModAttributes.INTELLIGENCE.get()) - intelligence.getBase()))
+                .append(Component.translatable("gui.levelup.newline"))
+
+                .append(Component.translatable("gui.levelup.line"));
+
+        Component DO_DURABILITY_DAMAGE = Component.empty();
+        Component DO_POTION_DURATION = Component.empty();
+
+        if(LevelUPCommonConfig.DO_DURABILITY_REDUCTION.get()) {
+            double reduct = (Math.round((100 - Math.pow(1.0-LevelUPCommonConfig.INTELLIGENCE_DURABILITY_DAMAGE.get(), intelligence.getLimited()) * 100)*1000));
+            DO_DURABILITY_DAMAGE = Component.translatable("gui.levelup.newline").append(MINUS.getString() + reduct/1000 + Component.translatable("gui.levelup.durability").getString());
+        } else if(LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()) {
+            double reduct = (Math.round((100 - Math.pow(1.0-LevelUPCommonConfig.INTELLIGENCE_DURABILITY_DAMAGE.get(), intelligence.getLimited()) * 100)*1000));
+            DO_DURABILITY_DAMAGE = Component.translatable("gui.levelup.newline").append(MINUS.getString() + reduct/1000 + Component.translatable("gui.levelup.durability").getString()).withStyle(ChatFormatting.RED);
+        }
+        if(LevelUPCommonConfig.DO_POTION_DURATION_BOOST.get()) {
+            DO_POTION_DURATION = Component.translatable("gui.levelup.newline").append(PLUS.getString() + LevelUPCommonConfig.INTELLIGENCE_POTION_DURATION_BOOST.get() * 100 *intelligence.getLimited() + Component.translatable("gui.levelup.potion_duration").getString());
+        } else if (LevelUPClientConfig.DISPLAY_DISABLED_STAT_INCREASE.get()) {
+            DO_POTION_DURATION = Component.translatable("gui.levelup.newline").append(PLUS.getString() + LevelUPCommonConfig.INTELLIGENCE_POTION_DURATION_BOOST.get() * 100 *intelligence.getLimited() + Component.translatable("gui.levelup.potion_duration").getString()).withStyle(ChatFormatting.RED);
+        }
+
+        INT_INFO.append(DO_DURABILITY_DAMAGE).append(DO_POTION_DURATION);
+        intelligenceInfo.setTooltip(Tooltip.create(INT_INFO));
+
+
+
+
     }
     private void handleConButton(Button increase) {
         ModNetwork.sendToServer(new IncreaseBaseStatC2SPacket(0, 1.0f));
@@ -389,6 +505,13 @@ public class LevelUPScreen extends Screen {
     private void handleEndButton(Button increase) {
         ModNetwork.sendToServer(new IncreaseBaseStatC2SPacket(4, 1.0f));
     }
+    private void handleWisButton(Button increase) {
+        ModNetwork.sendToServer(new IncreaseBaseStatC2SPacket(5, 1.0f));
+    }
+    private void handleIntButton(Button increase) {
+        ModNetwork.sendToServer(new IncreaseBaseStatC2SPacket(6, 1.0f));
+    }
+
 
     private void handleLimitButton(Button button) {
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> ClientHooks::openLevelUPLimitGUI);

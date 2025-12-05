@@ -16,7 +16,9 @@ public class PlayerStats {
             new StatType(0.0f, 0.0f, "Dexterity"),
             new StatType(0.0f, 0.0f, "Strength"),
             new StatType(0.0f, 0.0f, "Vitality"),
-            new StatType(0.0f, 0.0f, "Endurance")
+            new StatType(0.0f, 0.0f, "Endurance"),
+            new StatType(0.0f, 0.0f, "Wisdom"),
+            new StatType(0.0f, 0.0f, "Intelligence")
     };
 
     private float[] info = {

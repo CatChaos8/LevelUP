@@ -52,6 +52,8 @@ public class ModEvents {
             new GetStrCommand(event.getDispatcher());
             new GetVitCommand(event.getDispatcher());
             new GetEndCommand(event.getDispatcher());
+            new GetWisCommand(event.getDispatcher());
+            new GetIntCommand(event.getDispatcher());
 
             new GetAllStatsCommand(event.getDispatcher());
 
@@ -65,6 +67,8 @@ public class ModEvents {
             new SetStrCommand(event.getDispatcher());
             new SetVitCommand(event.getDispatcher());
             new SetEndCommand(event.getDispatcher());
+            new SetIntCommand(event.getDispatcher());
+            new SetWisCommand(event.getDispatcher());
 
             new SetAllStatsCommand(event.getDispatcher());
 
@@ -84,7 +88,6 @@ public class ModEvents {
                 if (!event.getObject().getCapability(PlayerStatsProvider.PLAYER_STATS).isPresent()) {
                     event.addCapability(new ResourceLocation(LevelUP.MOD_ID, "levelup"), new PlayerStatsProvider());
                 }
-
             }
         }
 
@@ -164,7 +167,9 @@ public class ModEvents {
                             ModAttributes.DEXTERITY.get(),
                             ModAttributes.STRENGTH.get(),
                             ModAttributes.VITALITY.get(),
-                            ModAttributes.ENDURANCE.get()
+                            ModAttributes.ENDURANCE.get(),
+                            ModAttributes.WISDOM.get(),
+                            ModAttributes.INTELLIGENCE.get()
                     };
 
                     for (int i = 0; i < attributes.length; i++) {
@@ -255,13 +260,27 @@ public class ModEvents {
                 // server-side execution
                 if (!player.level().isClientSide && player instanceof ServerPlayer serverPlayer) {
                     player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
-                        stats.addInfo(1, xpAmount);
+
+                        //Increase LevelUP xp gained from orb
+                        float newXP = xpAmount;
+                        if(LevelUPCommonConfig.DO_WISDOM_LEVELING_SPEED.get()) {
+                            newXP = (float) ((1 + (LevelUPCommonConfig.WISDOM_LEVELING_SPEED.get())*stats.getLimitedStat(5))* xpAmount);
+                        }
+
+                        stats.addInfo(1, newXP);
 
                         //see if player can levelup
                         increaseLevel(serverPlayer);
 
                         //Sync
                         ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), serverPlayer);
+
+                        //Increase xp gained from orb
+
+                        if(LevelUPCommonConfig.DO_WISDOM_XP.get()) {
+                            player.giveExperiencePoints((int) (orb.value*(1+LevelUPCommonConfig.WISDOM_XP_MULTIPLIER.get()*stats.getLimitedStat(5))));
+                        }
+
                     });
                 }
             }
@@ -369,7 +388,9 @@ public class ModEvents {
                             new StatRecord(ModAttributes.DEXTERITY.get(), 1),
                             new StatRecord(ModAttributes.STRENGTH.get(), 2),
                             new StatRecord(ModAttributes.VITALITY.get(), 3),
-                            new StatRecord(ModAttributes.ENDURANCE.get(), 4)
+                            new StatRecord(ModAttributes.ENDURANCE.get(), 4),
+                            new StatRecord(ModAttributes.WISDOM.get(), 5),
+                            new StatRecord(ModAttributes.INTELLIGENCE.get(), 6)
                     );
 
                     for (StatRecord info : statRecordList) {
@@ -417,6 +438,8 @@ public class ModEvents {
                     event.add(type, ModAttributes.STRENGTH.get(), 0.0);
                     event.add(type, ModAttributes.VITALITY.get(), 0.0);
                     event.add(type, ModAttributes.ENDURANCE.get(), 0.0);
+                    event.add(type, ModAttributes.WISDOM.get(), 0.0);
+                    event.add(type, ModAttributes.INTELLIGENCE.get());
                 }
             }
             event.add(EntityType.PLAYER, ModAttributes.CONSTITUTION.get(), 0.0);
@@ -424,6 +447,8 @@ public class ModEvents {
             event.add(EntityType.PLAYER, ModAttributes.STRENGTH.get(), 0.0);
             event.add(EntityType.PLAYER, ModAttributes.VITALITY.get(), 0.0);
             event.add(EntityType.PLAYER, ModAttributes.ENDURANCE.get(), 0.0);
+            event.add(EntityType.PLAYER, ModAttributes.WISDOM.get(), 0.0);
+            event.add(EntityType.PLAYER, ModAttributes.INTELLIGENCE.get(), 0.0);
         }
     }
 }

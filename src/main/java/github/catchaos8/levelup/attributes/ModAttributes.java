@@ -32,6 +32,15 @@ public class ModAttributes {
             ATTRIBUTES.register("endurance", () -> new RangedAttribute("attribute.levelup.end", 0, 0,1073741824)
                     .setSyncable(true));
 
+
+    public static final RegistryObject<Attribute> WISDOM =
+            ATTRIBUTES.register("wisdom", () -> new RangedAttribute("attribute.levelup.wis", 0, 0,1073741824)
+                    .setSyncable(true));
+
+    public static final RegistryObject<Attribute> INTELLIGENCE =
+            ATTRIBUTES.register("intelligence", () -> new RangedAttribute("attribute.levelup.int", 0, 0,1073741824)
+                    .setSyncable(true));
+
     public static void register(IEventBus eventBus) {
         ATTRIBUTES.register(eventBus);
     }

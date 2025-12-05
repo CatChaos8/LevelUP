@@ -2,6 +2,7 @@ package github.catchaos8.levelup;
 
 import com.mojang.logging.LogUtils;
 import github.catchaos8.levelup.attributes.ModAttributes;
+import github.catchaos8.levelup.compat.CompatManager;
 import github.catchaos8.levelup.config.LevelUPClientConfig;
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
 import github.catchaos8.levelup.enchants.ModEnchants;
@@ -41,6 +42,8 @@ public class LevelUP {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         ModNetwork.register();
+
+        event.enqueueWork(CompatManager::init);
     }
 
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)

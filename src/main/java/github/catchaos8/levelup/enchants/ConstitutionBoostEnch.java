@@ -19,6 +19,8 @@ public class ConstitutionBoostEnch extends Enchantment{
         return super.checkCompatibility(pOther) && !(pOther instanceof StrengthBoostEnch
                 || pOther instanceof VitalityBoostEnch
                 || pOther instanceof EnduranceBoostEnch
-                || pOther instanceof DexterityBoostEnch);
+                || pOther instanceof DexterityBoostEnch
+                || pOther instanceof WisdomBoostEnch
+                || pOther instanceof IntelligenceBoostEnch);
     }
 }

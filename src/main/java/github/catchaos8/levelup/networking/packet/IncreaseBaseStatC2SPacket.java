@@ -48,7 +48,7 @@ public class IncreaseBaseStatC2SPacket {
             assert player != null;
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
 
-                //Check if freepoints is > 0
+                //Check if freepoints is > 0 and if the stat u r upgrading is below stat cap
                 if (stats.getInfo(0) >= amount && stats.getBaseStat(type) < LevelUPCommonConfig.STAT_CAP.get()) {
                     //Increase Stats
                     stats.addBaseStat(type, amount);
@@ -60,10 +60,12 @@ public class IncreaseBaseStatC2SPacket {
                         case 2 -> ModAttributes.STRENGTH.get();
                         case 3 -> ModAttributes.VITALITY.get();
                         case 4 -> ModAttributes.ENDURANCE.get();
+                        case 5 -> ModAttributes.WISDOM.get();
+                        case 6 -> ModAttributes.INTELLIGENCE.get();
                         default -> null;
                     };
 
-                    if (attribute != null && player.getAttributeValue(attribute) >= stats.getLimitedStat(type)) {
+                    if (attribute != null && player.getAttributeValue(attribute) == stats.getLimitedStat(type)) {
                         stats.addLimitedStat(type, amount);
                     }
                     //Sub freepoints

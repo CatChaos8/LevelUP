@@ -36,12 +36,23 @@ public class ModEnchants {
                     () -> new VitalityBoostEnch(Enchantment.Rarity.UNCOMMON,
                             EnchantCategories.ARMOR_AND_WEAPONS, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET, EquipmentSlot.MAINHAND));
 
-    //Constitution
+    //Endurance
     public static RegistryObject<Enchantment> UNYIELDING =
             ENCHANTMENTS.register("unyielding",
                     () -> new EnduranceBoostEnch(Enchantment.Rarity.UNCOMMON,
                             EnchantCategories.ARMOR_AND_WEAPONS, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET, EquipmentSlot.MAINHAND));
 
+    //Wisdom
+    public static RegistryObject<Enchantment> SAGICITY =
+            ENCHANTMENTS.register("sagicity",
+                    () -> new EnduranceBoostEnch(Enchantment.Rarity.UNCOMMON,
+                            EnchantCategories.ARMOR_AND_WEAPONS, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET, EquipmentSlot.MAINHAND));
+
+    //Intelligence
+    public static RegistryObject<Enchantment> INTELLECT =
+            ENCHANTMENTS.register("intellect",
+                    () -> new EnduranceBoostEnch(Enchantment.Rarity.UNCOMMON,
+                            EnchantCategories.ARMOR_AND_WEAPONS, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET, EquipmentSlot.MAINHAND));
 
     public static void register (IEventBus eventBus) {
         ENCHANTMENTS.register(eventBus);

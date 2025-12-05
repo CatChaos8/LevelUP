@@ -4,8 +4,8 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
-public class EnduranceBoostEnch extends Enchantment {
-    public EnduranceBoostEnch(Rarity pRarity, EnchantmentCategory pCategory, EquipmentSlot... pApplicableSlots) {
+public class IntelligenceBoostEnch extends Enchantment {
+    public IntelligenceBoostEnch(Rarity pRarity, EnchantmentCategory pCategory, EquipmentSlot... pApplicableSlots) {
         super(pRarity, pCategory, pApplicableSlots);
     }
 
@@ -20,7 +20,7 @@ public class EnduranceBoostEnch extends Enchantment {
                 || pOther instanceof VitalityBoostEnch
                 || pOther instanceof ConstitutionBoostEnch
                 || pOther instanceof DexterityBoostEnch
-                || pOther instanceof WisdomBoostEnch
-                || pOther instanceof IntelligenceBoostEnch);
+                || pOther instanceof EnduranceBoostEnch
+                || pOther instanceof WisdomBoostEnch);
     }
 }

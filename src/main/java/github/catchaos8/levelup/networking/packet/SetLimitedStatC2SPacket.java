@@ -53,6 +53,8 @@ public class SetLimitedStatC2SPacket {
                     case 2 -> ModAttributes.STRENGTH.get();
                     case 3 -> ModAttributes.VITALITY.get();
                     case 4 -> ModAttributes.ENDURANCE.get();
+                    case 5 -> ModAttributes.WISDOM.get();
+                    case 6 -> ModAttributes.INTELLIGENCE.get();
                     default -> null;
                 };
 

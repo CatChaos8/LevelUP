@@ -19,6 +19,8 @@ public class SetStatsCommand {
     public static final String STRENGTH =       "stat.levelup.str";
     public static final String VITALITY =   "stat.levelup.vit";
     public static final String ENDURANCE =      "stat.levelup.end";
+    public static final String WISDOM =         "stat.levelup.wis";
+    public static final String INTELLIGENCE =   "stat.levelup.int";
     public static final String FREEPOINTS =     "stat.levelup.fp";
     public static final String CLASSXP =        "stat.levelup.cxp";
     public static final String CLASSLVL =       "stat.levelup.clvl";
@@ -65,10 +67,14 @@ public class SetStatsCommand {
                 } else if(stat == 4) {
                     player.sendSystemMessage(Component.translatable(ENDURANCE).append(Component.literal("" + stats.getBaseStat(4))));
                 } else if(stat == 5) {
-                    player.sendSystemMessage(Component.translatable(FREEPOINTS).append(Component.literal("" + stats.getInfo(0))));
+                    player.sendSystemMessage(Component.translatable(WISDOM).append(Component.literal("" + stats.getBaseStat(5))));
                 } else if(stat == 6) {
-                    player.sendSystemMessage(Component.translatable(CLASSXP).append(Component.literal("" + stats.getInfo(1))));
+                    player.sendSystemMessage(Component.translatable(INTELLIGENCE).append(Component.literal("" + stats.getBaseStat(6))));
                 } else if(stat == 7) {
+                    player.sendSystemMessage(Component.translatable(FREEPOINTS).append(Component.literal("" + stats.getInfo(0))));
+                } else if(stat == 8) {
+                    player.sendSystemMessage(Component.translatable(CLASSXP).append(Component.literal("" + stats.getInfo(1))));
+                } else if(stat == 9) {
                     player.sendSystemMessage(Component.translatable(CLASSLVL).append(Component.literal("" + stats.getInfo(2))));
                 }
                 ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), player);

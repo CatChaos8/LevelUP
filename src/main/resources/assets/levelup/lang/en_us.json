@@ -7,12 +7,17 @@
   "key.levelup.upgrade_dex": "Increase Dexterity",
   "key.levelup.upgrade_vit": "Increase Vitality",
   "key.levelup.upgrade_end": "Increase Endurance",
+  "key.levelup.upgrade_wis": "Increase Wisdom",
+  "key.levelup.upgrade_int": "Increase Intelligence",
+
 
   "stat.levelup.con": "Constitution: ",
   "stat.levelup.dex": "Dexterity: ",
   "stat.levelup.str": "Strength: ",
   "stat.levelup.vit": "Vitality: ",
   "stat.levelup.end": "Endurance: ",
+  "stat.levelup.wis": "Wisdom: ",
+  "stat.levelup.int": "Intelligence: ",
   "stat.levelup.fp": "Free Points: ",
   "stat.levelup.cxp" : "Class XP: ",
   "stat.levelup.clvl": "Class LVL: ",
@@ -49,6 +54,14 @@
   "gui.levelup.hunger": "% sprint hunger cost",
   "gui.levelup.healing": "% healing recieved",
 
+  "gui.levelup.wis_description": "Wisdom: ",
+  "gui.levelup.xp_boost": "% xp gained",
+  "gui.levelup.level_speed": "% LevelUP xp",
+
+  "gui.levelup.int_description": "Intelligence: ",
+  "gui.levelup.durability": "% durability damage taken",
+  "gui.levelup.potion_duration": "% potion duration",
+
   "gui.levelup.line": "----------------------------",
   "gui.levelup.newline": "\n",
   "gui.levelup.open_bracket": "(",
@@ -66,6 +79,8 @@
   "attribute.levelup.str": "Strength",
   "attribute.levelup.vit": "Vitality",
   "attribute.levelup.end": "Endurance",
+  "attribute.levelup.wis": "Wisdom",
+  "attribute.levelup.int": "Intelligence",
 
   "name.levelup.short": " Lv. ",
 
@@ -79,6 +94,10 @@
   "enchantment.levelup.inner_strength.desc": "Increases your vitality",
   "enchantment.levelup.unyielding": "Unyielding",
   "enchantment.levelup.unyielding.desc": "Increases your endurance",
+  "enchantment.levelup.sagacity": "Sagacity",
+  "enchantment.levelup.sagacity.desc": "Increases your wisdom",
+  "enchantment.levelup.intellect": "Intellect",
+  "enchantment.levelup.intellect.desc": "Increases your intelligence",
 
   "text.levelup.levelupmsg.1": "LevelUP! You are now level ",
   "text.levelup.levelupmsg.2": "!"

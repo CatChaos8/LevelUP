@@ -6,6 +6,7 @@ import github.catchaos8.levelup.client.ClientStatData;
 import github.catchaos8.levelup.lib.StatType;
 import github.catchaos8.levelup.networking.ModNetwork;
 import github.catchaos8.levelup.networking.packet.SetLimitedStatC2SPacket;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -22,6 +23,8 @@ public class LevelUPLimitScreen extends Screen {
     private static final Component STRENGTH = Component.translatable("stat.levelup.str");
     private static final Component VITALITY = Component.translatable("stat.levelup.vit");
     private static final Component ENDURANCE = Component.translatable("stat.levelup.end");
+    private static final Component WISDOM = Component.translatable("stat.levelup.wis");
+    private static final Component INTELLIGENCE = Component.translatable("stat.levelup.int");
 
     private static final ResourceLocation GUI_LOCATION = new ResourceLocation(LevelUP.MOD_ID, "textures/gui/container/levelup_gui.png");
 
@@ -33,7 +36,18 @@ public class LevelUPLimitScreen extends Screen {
         super(TITLE);
 
         this.imageWidth = 176;
-        this.imageHeight = 166;
+        this.imageHeight = 204;
+    }
+
+    @Override
+    public boolean keyPressed(int keyPressed, int scanCode, int modifiers) {
+
+        if(Minecraft.getInstance().options.keyInventory.matches(keyPressed, scanCode)) {
+            this.onClose();
+            return true;
+        }
+
+        return super.keyPressed(keyPressed, scanCode, modifiers);
     }
 
     @Override
@@ -54,6 +68,8 @@ public class LevelUPLimitScreen extends Screen {
         StatType strength = getStatTypes(2);
         StatType vitality = getStatTypes(3);
         StatType endurance = getStatTypes(4);
+        StatType wisdom = getStatTypes(5);
+        StatType intelligence = getStatTypes(6);
 
         //Con
         addRenderableWidget(new ForgeSlider(
@@ -84,7 +100,7 @@ public class LevelUPLimitScreen extends Screen {
         //dex
         addRenderableWidget(new ForgeSlider(
                 leftPos + 8,
-                topPos + 46,
+                topPos + 42,
                 160,
                 20,
                 DEXTERITY,
@@ -110,7 +126,7 @@ public class LevelUPLimitScreen extends Screen {
         //Str
         addRenderableWidget(new ForgeSlider(
                 leftPos + 8,
-                topPos + 72,
+                topPos + 66,
                 160,
                 20,
                 STRENGTH,
@@ -136,7 +152,7 @@ public class LevelUPLimitScreen extends Screen {
          //vit
          addRenderableWidget(new ForgeSlider(
                 leftPos + 8,
-                topPos + 100,
+                topPos + 90,
                 160,
                 20,
                 VITALITY,
@@ -162,7 +178,7 @@ public class LevelUPLimitScreen extends Screen {
         //end
         addRenderableWidget(new ForgeSlider(
                 leftPos + 8,
-                topPos + 128,
+                topPos + 114,
                 160,
                 20,
                 ENDURANCE,
@@ -182,6 +198,58 @@ public class LevelUPLimitScreen extends Screen {
             public void onDrag(double mouseX, double mouseY, double deltaX, double deltaY) {
                 super.onDrag(mouseX, mouseY, deltaX, deltaY);
                 setLimitedStat(4, (float) this.getValue());
+            }
+        });
+
+        //wis
+        addRenderableWidget(new ForgeSlider(
+                leftPos + 8,
+                topPos + 138,
+                160,
+                20,
+                WISDOM,
+                Component.empty(),
+                0.0,
+                getAttribute(5),
+                wisdom.getLimited(),
+                true
+        ){
+            @Override
+            public void onRelease(double mouseX, double mouseY) {
+                super.onRelease(mouseX, mouseY);
+
+                setLimitedStat(5, (float) this.getValue());
+            }
+            @Override
+            public void onDrag(double mouseX, double mouseY, double deltaX, double deltaY) {
+                super.onDrag(mouseX, mouseY, deltaX, deltaY);
+                setLimitedStat(5, (float) this.getValue());
+            }
+        });
+
+        //int
+        addRenderableWidget(new ForgeSlider(
+                leftPos + 8,
+                topPos + 162,
+                160,
+                20,
+                INTELLIGENCE,
+                Component.empty(),
+                0.0,
+                getAttribute(6),
+                intelligence.getLimited(),
+                true
+        ){
+            @Override
+            public void onRelease(double mouseX, double mouseY) {
+                super.onRelease(mouseX, mouseY);
+
+                setLimitedStat(6, (float) this.getValue());
+            }
+            @Override
+            public void onDrag(double mouseX, double mouseY, double deltaX, double deltaY) {
+                super.onDrag(mouseX, mouseY, deltaX, deltaY);
+                setLimitedStat(6, (float) this.getValue());
             }
         });
     }
@@ -209,6 +277,8 @@ public class LevelUPLimitScreen extends Screen {
                 case 2 -> (float) player.getAttributeValue(ModAttributes.STRENGTH.get());
                 case 3 -> (float) player.getAttributeValue(ModAttributes.VITALITY.get());
                 case 4 -> (float) player.getAttributeValue(ModAttributes.ENDURANCE.get());
+                case 5 -> (float) player.getAttributeValue(ModAttributes.WISDOM.get());
+                case 6 -> (float) player.getAttributeValue(ModAttributes.INTELLIGENCE.get());
                 default -> 0.0f;
 
             };

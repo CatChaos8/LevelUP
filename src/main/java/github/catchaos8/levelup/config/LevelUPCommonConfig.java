@@ -18,7 +18,6 @@ public class LevelUPCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_FALL_DAMAGE_REDUCTION;
     public static final ForgeConfigSpec.ConfigValue<Double> CONSTITUTION_HP;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_HP;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> ENABLE_CONSTITUTION;
 
     public static final ForgeConfigSpec.ConfigValue<Double> DEXTERITY_SPEED;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_SPEED;
@@ -26,14 +25,11 @@ public class LevelUPCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_SWIM_SPEED;
     public static final ForgeConfigSpec.ConfigValue<Double> DEXTERITY_ATTACK_SPEED;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_ATTACK_SPEED;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> ENABLE_DEXTERITY;
-
 
     public static final ForgeConfigSpec.ConfigValue<Double> STRENGTH_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_DAMAGE;
     public static final ForgeConfigSpec.ConfigValue<Double> STRENGTH_KNOCKBACK;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_KNOCKBACK;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> ENABLE_STRENGTH;
 
 //    public static final ForgeConfigSpec.ConfigValue<Double> VITALITY_ARMOR; //Switched To endurance
 //    public static final ForgeConfigSpec.ConfigValue<Boolean> DO_ARMOR;
@@ -43,7 +39,6 @@ public class LevelUPCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> VITALITY_TICKS_PER_REGEN;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_HP_REGEN;
     public static final ForgeConfigSpec.ConfigValue<Double> VITALITY_HARDCORE_NERF;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> ENABLE_VITALITY;
 
     public static final ForgeConfigSpec.ConfigValue<Double> ENDURANCE_ARMOR_TOUGHNESS;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_ARMOR_TOUGHNESS;
@@ -51,9 +46,19 @@ public class LevelUPCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_KB_RES;
     public static final ForgeConfigSpec.ConfigValue<Double> ENDURANCE_HUNGER;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_HUNGER;
-    public static final ForgeConfigSpec.ConfigValue<Boolean> ENABLE_ENDURANCE;
     public static final ForgeConfigSpec.ConfigValue<Double> ENDURANCE_ARMOR;
     public static final ForgeConfigSpec.ConfigValue<Boolean> DO_ARMOR;
+
+    public static final ForgeConfigSpec.ConfigValue<Double> WISDOM_XP_MULTIPLIER;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> DO_WISDOM_XP;
+    public static final ForgeConfigSpec.ConfigValue<Double> WISDOM_LEVELING_SPEED;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> DO_WISDOM_LEVELING_SPEED;
+
+
+    public static final ForgeConfigSpec.ConfigValue<Double> INTELLIGENCE_DURABILITY_DAMAGE;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> DO_DURABILITY_REDUCTION;
+    public static final ForgeConfigSpec.ConfigValue<Double> INTELLIGENCE_POTION_DURATION_BOOST;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> DO_POTION_DURATION_BOOST;
 
 
     public static final ForgeConfigSpec.ConfigValue<Double> FREEPOINTS_PER_LEVEL;
@@ -90,29 +95,25 @@ public class LevelUPCommonConfig {
         XP_LOSS_PERCENT = BUILDER.comment("XP % loss after death if lose xp is enabled. 1 = 1%")
                 .define("Death XP Loss", 25.0);
 
-        CONSTITUTION_FALL_DAMAGE_REDUCTION = BUILDER.comment("height before fall damage per stat")
+        CONSTITUTION_FALL_DAMAGE_REDUCTION = BUILDER.comment("Height before fall damage per stat")
                 .define("Fall dmg mitigation", 0.25);
         DO_FALL_DAMAGE_REDUCTION = BUILDER.comment("Enable constitution fall damage")
                 .define("Do fall damage reduction", true);
 
-        CONSTITUTION_HP = BUILDER.comment("HP Increase per stat").define("HP Increase",  0.01);
+        CONSTITUTION_HP = BUILDER.comment("HP increase per stat").define("HP increase",  0.01);
         DO_HP = BUILDER.comment("Enable constitution hp increase")
                 .define("Do hp", true);
-        ENABLE_CONSTITUTION = BUILDER.comment("Enable constitution(Doesnt work yet)")
-                .define("Enable Constitution", true);
 
 
-        DEXTERITY_SPEED = BUILDER.comment("Speed Increase per stat").define("Speed Increase",  0.01);
+        DEXTERITY_SPEED = BUILDER.comment("Speed Increase per stat").define("Speed increase",  0.01);
         DO_SPEED = BUILDER.comment("Enable dexterity speed")
                 .define("Do speed", true);
-        DEXTERITY_ATTACK_SPEED = BUILDER.comment("Attack speed Increase per stat").define("Attack Speed Increase", 0.01);
+        DEXTERITY_ATTACK_SPEED = BUILDER.comment("Attack speed Increase per stat").define("Attack Speed increase", 0.01);
         DO_ATTACK_SPEED = BUILDER.comment("Enable dexterity attack speed")
                 .define("Do attack speed", true);
-        DEXTERITY_SWIM_SPEED = BUILDER.comment("Swim Speed Increase per stat").define("Swim speed Increase", 0.01);
+        DEXTERITY_SWIM_SPEED = BUILDER.comment("Swim Speed Increase per stat").define("Swim speed increase", 0.01);
         DO_SWIM_SPEED = BUILDER.comment("Enable dexterity swim speed")
                 .define("Do swim speed", false);
-        ENABLE_DEXTERITY = BUILDER.comment("Enable dexterity(Doesnt work yet)")
-                .define("Enable Dexterity", true);
 
         STRENGTH_DAMAGE = BUILDER.comment("Damage Increase per stat").define("Dmg Increase", 0.01);
         DO_DAMAGE = BUILDER.comment("Enable strength damage")
@@ -120,8 +121,6 @@ public class LevelUPCommonConfig {
         STRENGTH_KNOCKBACK = BUILDER.comment("Knockback Increase per stat").define("Kb Increase", 0.01);
         DO_KNOCKBACK = BUILDER.comment("Enable strength knockback")
                 .define("Do Knockback", true);
-        ENABLE_STRENGTH = BUILDER.comment("Enable strength(Doesnt work yet)")
-                .define("Enable Strength", true);
 
         VITALITY_HP_REGEN = BUILDER.comment("HP Regen/tick per stat lvl")
                 .define("HP Regen/tick per stat lvl", 0.00025);
@@ -133,8 +132,6 @@ public class LevelUPCommonConfig {
                 .define("Do armor", true);
         VITALITY_HARDCORE_NERF = BUILDER.comment("The amount regen is divided by. Divide by 1 to disable, use a number lower than one to buff vitality in hardcore. DO NOT USE 0.")
                 .define("Vitality regen nerf in hardcore", 1.5);
-        ENABLE_VITALITY = BUILDER.comment("Enable vitality(Doesnt work yet)")
-                .define("Enable Vitality", true);
 
         ENDURANCE_ARMOR_TOUGHNESS = BUILDER.comment("Armor Toughness Increase per stat").define("Armor Toughness Increase", 0.1);
         DO_ARMOR_TOUGHNESS = BUILDER.comment("Enable endurance armor toughness")
@@ -150,13 +147,44 @@ public class LevelUPCommonConfig {
         DO_ARMOR = BUILDER.comment("Enable Endurance Armor")
                 .define("endurance armor", true);
 
-        ENABLE_ENDURANCE = BUILDER.comment("Enable endurance(Doesnt work yet)")
-                .define("Enable Endurance", true);
+
+        WISDOM_XP_MULTIPLIER = BUILDER
+                .comment("XP gain multiplier per stat ")
+                .define("Wisdom XP Multiplier", 0.01);
+
+        DO_WISDOM_XP = BUILDER
+                .comment("Enable wisdom XP gain bonus")
+                .define("Do wisdom xp", true);
+
+        WISDOM_LEVELING_SPEED = BUILDER
+                .comment("LevelUP xp multiplier ")
+                .define("Wisdom leveling speed multiplier", 0.01);
+
+        DO_WISDOM_LEVELING_SPEED = BUILDER.comment("Enable Wisdom Leveling Speed")
+                .define("Do wisdom leveling speed", true);
+
+        INTELLIGENCE_DURABILITY_DAMAGE = BUILDER
+                .comment("Chance to not take durability damage (Exponential, not linear, like the endurance hunger)")
+                .define("Durability damage reduction", 0.01);
+
+        DO_DURABILITY_REDUCTION = BUILDER
+                .comment("Enable intelligence durability reduction")
+                .define("Do durability reduction", true);
+        INTELLIGENCE_POTION_DURATION_BOOST = BUILDER
+                .comment("Chance to not take durability damage (Exponential, not linear, like the endurance hunger)")
+                .define("Durability damage reduction", 0.01);
+
+        DO_POTION_DURATION_BOOST = BUILDER
+                .comment("Enable intelligence durability reduction")
+                .define("Do durability reduction", true);
+
 
         LEVEL_CAP = BUILDER.comment("Max Level a player can reach without commands")
                 .define("Max Level", 999999);
         STAT_CAP = BUILDER.comment("Max stat a player can reach without commands")
                 .define("Max Stat", 1073741824);
+
+
 
         A_VALUE = BUILDER.comment("The a value in the equation for calculating xp for next level: ax^d+bx+c     a increases how fast the xp needed for the next level increases")
                 .define("A value", 0.2);
