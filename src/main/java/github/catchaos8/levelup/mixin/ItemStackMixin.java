@@ -14,26 +14,50 @@ import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
 
+import java.util.Random;
+
 import static github.catchaos8.levelup.lib.SetStats.applyEnchantModifiers;
 
 
-@Mixin(ItemStack.class)
+@Mixin(value = ItemStack.class, priority = 1500)
 public class ItemStackMixin {
 
+    //Gets the player and randomsourse to be used
+    @Unique private ServerPlayer levelUP$player;
+    @Unique private RandomSource levelUP$random;
 
-    @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
-    private void reduceDurabilityDamage(int amount, RandomSource random, @Nullable ServerPlayer player, CallbackInfoReturnable<Boolean> cir) {
-        if (player == null) return;
-        if (!LevelUPCommonConfig.DO_DURABILITY_REDUCTION.get()) return;
+    @Inject(method = "hurt", at = @At("HEAD"))
+    private void levelup$GetVars(
+            int amount, RandomSource random, @Nullable ServerPlayer player,
+            CallbackInfoReturnable<Boolean> cir
+    ) {
+        this.levelUP$player = player;
+        this.levelUP$random = random;
+    }
+    //Run the function to get the things
+    @ModifyVariable(method = "hurt", at = @At("HEAD"), ordinal = 0, argsOnly = true)
+    private int levelUP$reduceDurabilityDamage(int value) {
+        return levelUP$calculateDurabilityDamage(value, this.levelUP$random, this.levelUP$player);
+    }
 
 
-        player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
+
+    @Unique
+    private int levelUP$calculateDurabilityDamage(int amount, RandomSource random, @Nullable ServerPlayer player) {
+        if (player == null) return amount;
+        if (!LevelUPCommonConfig.DO_DURABILITY_REDUCTION.get()) return amount;
+
+        //check if player has int, otherwise return normal amount
+        return player.getCapability(PlayerStatsProvider.PLAYER_STATS).map(stats -> {
+            //Get int
             int intelligence = (int) stats.getLimitedStat(6);
             double chance = Math.pow(1 - LevelUPCommonConfig.INTELLIGENCE_DURABILITY_DAMAGE.get(), intelligence);
 
@@ -42,12 +66,9 @@ public class ItemStackMixin {
             if(random.nextDouble() > chance && newAmount > 0) {
                 newAmount--;
             }
-            ItemStack item = (ItemStack) (Object) this;
 
-            item.setDamageValue(item.getDamageValue() + newAmount);
-
-            cir.cancel();
-        });
+            return Math.max(newAmount, 0);
+        }).orElse(amount);
     }
 
     @Inject(method = "getAttributeModifiers", at = @At("RETURN"), cancellable = true)

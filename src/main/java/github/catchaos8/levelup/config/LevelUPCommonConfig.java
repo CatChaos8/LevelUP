@@ -216,8 +216,8 @@ public class LevelUPCommonConfig {
 
 
         DO_POTION_DURATION_BOOST = BUILDER
-                .comment("Enable intelligence durability reduction")
-                .define("Do durability reduction", true);
+                .comment("Enable intelligence potion duration boost")
+                .define("Do potion duration boost", true);
 
 
         LEVEL_CAP = BUILDER.comment("Max Level a player can reach without commands")
