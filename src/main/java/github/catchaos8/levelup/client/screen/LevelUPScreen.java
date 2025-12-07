@@ -579,10 +579,10 @@ public class LevelUPScreen extends Screen {
     private void drawXpBar(@NotNull GuiGraphics graphics, int width) {
         float currentXp = getInfo(1); // Get XP value
         float level = getInfo(2);
-        int maxXp = (int) (LevelUPCommonConfig.A_VALUE.get() * (level * level) + LevelUPCommonConfig.B_VALUE.get() * level + LevelUPCommonConfig.C_VALUE.get()); // xp to level up
+        int maxXp = (int) (LevelUPCommonConfig.A_VALUE.get() * Math.pow(level, LevelUPCommonConfig.D_VALUE.get()) + LevelUPCommonConfig.B_VALUE.get() * level + LevelUPCommonConfig.C_VALUE.get()); // xp to level up
 
         // get width of the filled portion
-        int filledWidth = (int) ((currentXp / (float) maxXp) * width);
+        int filledWidth = (int) Math.min(((currentXp / (float) maxXp) * width), width);
 
         // Adjust position relative to `leftPos` and `topPos`
         int adjustedX = 7 + this.leftPos;
