@@ -6,8 +6,10 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 
 public class GetFreePointsCommand {
 
@@ -18,14 +20,17 @@ public class GetFreePointsCommand {
                 .then(Commands.literal("stats")
                 .then(Commands.literal("get")
                         .then(Commands.literal("freepoints")
-                .executes((this::execute))))));
+                                .then(Commands.argument("player", EntityArgument.player())
+                .executes((this::execute)))))));
 
     }
 
     private int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayer();
+        Player detected = EntityArgument.getPlayer(context, "player");
 
-        player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(getStats -> {
+        assert player != null;
+        detected.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(getStats -> {
             player.sendSystemMessage(Component.translatable(FREEPOINTS).append(Component.literal("" + getStats.getInfo(0))));
         });
 

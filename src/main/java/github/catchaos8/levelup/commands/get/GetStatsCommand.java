@@ -3,11 +3,14 @@ package github.catchaos8.levelup.commands.get;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import github.catchaos8.levelup.stats.PlayerStatsProvider;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 
 public class GetStatsCommand {
 
@@ -25,16 +28,18 @@ public class GetStatsCommand {
                 .then(Commands.literal("stats")
                         .then(Commands.literal("get")
                                 .then(Commands.argument("stat", IntegerArgumentType.integer(0,7))
-                                        .executes((this::execute))))));
+                                        .then(Commands.argument("player", EntityArgument.player())
+                                        .executes((this::execute)))))));
 
     }
 
-    private int execute(CommandContext<CommandSourceStack> context) {
+    private int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayer();
+        Player detected = EntityArgument.getPlayer(context, "player");
         int stat = IntegerArgumentType.getInteger(context, "stat");
 
         assert player != null;
-        player.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(getStats -> {
+        detected.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(getStats -> {
             if(stat == 0) {
                 player.sendSystemMessage(Component.translatable(CONSTITUTION).append(Component.literal("" + getStats.getBaseStat(0))));
             } else if(stat == 1) {
