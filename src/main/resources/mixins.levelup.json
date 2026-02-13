@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "github.catchaos8.levelup.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "mixins.levelup.refmap.json",
+  "mixins": [
+    "ItemStackMixin",
+    "PlayerMixin",
+    "LivingEntityMixin"
+  ],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
