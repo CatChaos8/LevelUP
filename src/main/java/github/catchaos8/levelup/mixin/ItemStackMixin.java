@@ -22,8 +22,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
 
-import java.util.Random;
-
 import static github.catchaos8.levelup.lib.SetStats.applyEnchantModifiers;
 
 

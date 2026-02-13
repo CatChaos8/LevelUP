@@ -13,7 +13,6 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 
 public class SetDexCommand {
 
@@ -33,7 +32,7 @@ public class SetDexCommand {
 
     private int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayer();
-        Player detected = EntityArgument.getPlayer(context, "player");
+        ServerPlayer detected = EntityArgument.getPlayer(context, "player");
 
         int amount = IntegerArgumentType.getInteger(context, "amount");
 
@@ -42,8 +41,8 @@ public class SetDexCommand {
             detected.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
                 stats.setLimitedStat(1, stats.getLimitedStat(1)-stats.getBaseStat(1) + amount);
                 stats.setBaseStat(1, amount);
-                SetStats.setAttributeStat(amount, 1 ,player);
-                ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), player);
+                SetStats.setAttributeStat(amount, 1 ,detected);
+                ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), detected);
 
                 player.sendSystemMessage(Component.translatable(DEXTERITY).append(Component.literal("" + stats.getBaseStat(1))));
             });

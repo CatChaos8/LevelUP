@@ -14,7 +14,6 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 
 public class SetAllStatsCommand {
 
@@ -45,7 +44,7 @@ public class SetAllStatsCommand {
 
     private int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayer();
-        Player detected = EntityArgument.getPlayer(context, "player");
+        ServerPlayer detected = EntityArgument.getPlayer(context, "player");
 
         int amount = IntegerArgumentType.getInteger(context, "amount");
 
@@ -60,11 +59,11 @@ public class SetAllStatsCommand {
                 for (int i = 0; i < stat.getStatsTypeArr().length; i++) {
                     stat.setLimitedStat(i, stat.getLimitedStat(i)-stat.getBaseStat(i) + amount);
                     stat.setBaseStat(i, amount);
-                    SetStats.setAttributeStat(amount, i, player);
+                    SetStats.setAttributeStat(amount, i, detected);
                 }
-                SetStats.makeAttributeMods(player);
+                SetStats.makeAttributeMods(detected);
                 float level = stat.getInfo(1);
-                DisplayLevelScoreboard.updateLevel(player, level);
+                DisplayLevelScoreboard.updateLevel(detected, level);
 
                 player.sendSystemMessage(Component.literal(("Your stats are: ")));
                 player.sendSystemMessage(Component.translatable(CONSTITUTION).append(Component.literal("" + stat.getBaseStat(0))));
@@ -78,7 +77,7 @@ public class SetAllStatsCommand {
                 player.sendSystemMessage(Component.translatable(CLASSXP).append(Component.literal("" + stat.getInfo(1))));
                 player.sendSystemMessage(Component.translatable(CLASSLVL).append(Component.literal("" + stat.getInfo(2))));
 
-                ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stat.getInfoArr(), stat.getStatsTypeArr()), player);
+                ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stat.getInfoArr(), stat.getStatsTypeArr()), detected);
             });
 
         } else {

@@ -12,7 +12,6 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 
 public class SetFreePointsCommand {
 
@@ -32,7 +31,7 @@ public class SetFreePointsCommand {
 
     private int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayer();
-        Player detected = EntityArgument.getPlayer(context, "player");
+        ServerPlayer detected = EntityArgument.getPlayer(context, "player");
 
         int amount = IntegerArgumentType.getInteger(context, "amount");
 
@@ -41,7 +40,7 @@ public class SetFreePointsCommand {
             detected.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
 
                     stats.setInfo(0, amount);
-                    ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), player);
+                    ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), detected);
 
                     player.sendSystemMessage(Component.translatable(FREEPOINTS).append(Component.literal("" + stats.getInfo(0))));
                 });

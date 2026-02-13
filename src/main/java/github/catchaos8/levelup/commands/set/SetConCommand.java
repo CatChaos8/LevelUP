@@ -13,7 +13,6 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 
 public class SetConCommand {
     public static final String CONSTITUTION =       "stat.levelup.con";
@@ -31,7 +30,7 @@ public class SetConCommand {
 
     private int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayer();
-        Player detected = EntityArgument.getPlayer(context, "player");
+        ServerPlayer detected = EntityArgument.getPlayer(context, "player");
 
         int amount = IntegerArgumentType.getInteger(context, "amount");
 
@@ -40,8 +39,8 @@ public class SetConCommand {
             detected.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
                 stats.setLimitedStat(0, stats.getLimitedStat(0)-stats.getBaseStat(0) + amount);
                 stats.setBaseStat(0, amount);
-                SetStats.setAttributeStat(amount, 0 ,player);
-                ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), player);
+                SetStats.setAttributeStat(amount, 0 ,detected);
+                ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), detected);
 
                 player.sendSystemMessage(Component.translatable(CONSTITUTION).append(Component.literal("" + stats.getBaseStat(0))));
             });

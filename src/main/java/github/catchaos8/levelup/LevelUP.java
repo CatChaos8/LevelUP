@@ -6,8 +6,11 @@ import github.catchaos8.levelup.compat.CompatManager;
 import github.catchaos8.levelup.config.LevelUPClientConfig;
 import github.catchaos8.levelup.config.LevelUPCommonConfig;
 import github.catchaos8.levelup.enchants.ModEnchants;
+import github.catchaos8.levelup.items.ModItems;
 import github.catchaos8.levelup.networking.ModNetwork;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -30,13 +33,16 @@ public class LevelUP {
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::addCreative);
 
         ModAttributes.register(modEventBus);
-
+        ModItems.register(modEventBus);
         ModEnchants.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
+
 
     }
 
@@ -44,6 +50,13 @@ public class LevelUP {
         ModNetwork.register();
 
         event.enqueueWork(CompatManager::init);
+    }
+
+    private void addCreative(BuildCreativeModeTabContentsEvent event) {
+        if(event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+            event.accept(ModItems.ORB_OF_RECONSTRUCTION);
+            event.accept(ModItems.ORB_OF_THE_VOID);
+        }
     }
 
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)

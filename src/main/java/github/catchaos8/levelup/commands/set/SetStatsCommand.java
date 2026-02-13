@@ -13,7 +13,6 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 
 public class SetStatsCommand {
 
@@ -43,7 +42,7 @@ public class SetStatsCommand {
 
     private int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayer();
-        Player detected = EntityArgument.getPlayer(context, "player");
+        ServerPlayer detected = EntityArgument.getPlayer(context, "player");
         int stat = IntegerArgumentType.getInteger(context, "stat");
         int amount = IntegerArgumentType.getInteger(context, "amount");
 
@@ -54,7 +53,7 @@ public class SetStatsCommand {
             detected.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
                 if (stat < stats.getStatsTypeArr().length) {
                     stats.setBaseStat(stat, amount);
-                    SetStats.setAttributeStat(amount, stat, player);
+                    SetStats.setAttributeStat(amount, stat, detected);
                 } else {
                     stats.setInfo(stat - stats.getStatsTypeArr().length, amount);
                 }
@@ -81,7 +80,7 @@ public class SetStatsCommand {
                 } else if(stat == 9) {
                     player.sendSystemMessage(Component.translatable(CLASSLVL).append(Component.literal("" + stats.getInfo(2))));
                 }
-                ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), player);
+                ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), detected);
             });
         } else {
             player.sendSystemMessage(Component.translatable("cmd.levelup.noperms"));

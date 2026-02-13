@@ -13,7 +13,6 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 
 public class SetEndCommand {
 
@@ -33,7 +32,7 @@ public class SetEndCommand {
 
     private int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayer();
-        Player detected = EntityArgument.getPlayer(context, "player");
+        ServerPlayer detected = EntityArgument.getPlayer(context, "player");
 
         int amount = IntegerArgumentType.getInteger(context, "amount");
 
@@ -42,8 +41,8 @@ public class SetEndCommand {
             detected.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
             stats.setLimitedStat(4, stats.getLimitedStat(4)-stats.getBaseStat(4) + amount);
             stats.setBaseStat(4, amount);
-            SetStats.setAttributeStat(amount, 4,player);
-            ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), player);
+            SetStats.setAttributeStat(amount, 4,detected);
+            ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), detected);
 
             player.sendSystemMessage(Component.translatable(ENDURANCE).append(Component.literal("" + stats.getBaseStat(4))));
         });

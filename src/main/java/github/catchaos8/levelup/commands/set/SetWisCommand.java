@@ -13,7 +13,6 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 
 public class SetWisCommand {
 
@@ -33,7 +32,7 @@ public class SetWisCommand {
 
     private int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayer();
-        Player detected = EntityArgument.getPlayer(context, "player");
+        ServerPlayer detected = EntityArgument.getPlayer(context, "player");
 
         int amount = IntegerArgumentType.getInteger(context, "amount");
 
@@ -43,9 +42,9 @@ public class SetWisCommand {
             detected.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
                 stats.setLimitedStat(5, stats.getLimitedStat(5)-stats.getBaseStat(5) + amount);
                 stats.setBaseStat(5, amount);
-                SetStats.setAttributeStat(amount, 5, player);
+                SetStats.setAttributeStat(amount, 5, detected);
 
-                ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), player);
+                ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), detected);
                 player.sendSystemMessage(Component.translatable(WISDOM).append(Component.literal("" + stats.getBaseStat(5))));
             });
         } else {

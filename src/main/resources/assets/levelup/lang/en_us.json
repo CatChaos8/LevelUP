@@ -104,5 +104,12 @@
   "enchantment.levelup.intellect.desc": "Increases your intelligence",
 
   "text.levelup.levelupmsg.1": "LevelUP! You are now level ",
-  "text.levelup.levelupmsg.2": "!"
+  "text.levelup.levelupmsg.2": "!",
+
+  "item.levelup.orb_of_reconstruction": "Orb of Reconstruction",
+  "item.levelup.used_orb_of_reconstruction": "All stats reset!",
+  "item.levelup.used_orb_of_reconstruction_fail": "You don't have any points to reset!",
+  "item.levelup.orb_of_the_void": "Orb of The Void",
+  "item.levelup.used_orb_of_the_void": "You have been reset!",
+  "item.levelup.used_orb_of_the_void_fail": "You don't have anything to reset!"
 }

@@ -13,7 +13,6 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 
 public class SetClassLevelCommand {
     public static final String CLASSLVL =       "stat.levelup.clvl";
@@ -32,7 +31,7 @@ public class SetClassLevelCommand {
 
     private int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayer();
-        Player detected = EntityArgument.getPlayer(context, "player");
+        ServerPlayer detected = EntityArgument.getPlayer(context, "player");
 
 
         int amount = IntegerArgumentType.getInteger(context, "amount");
@@ -41,9 +40,9 @@ public class SetClassLevelCommand {
         if(player.hasPermissions(2)) {
             detected.getCapability(PlayerStatsProvider.PLAYER_STATS).ifPresent(stats -> {
                 stats.setInfo( 2, amount);
-                ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), player);
+                ModNetwork.sendToPlayer(new StatDataSyncS2CPacket(stats.getInfoArr(), stats.getStatsTypeArr()), detected);
                 float level = stats.getInfo(2);
-                DisplayLevelScoreboard.updateLevel(player, level);
+                DisplayLevelScoreboard.updateLevel(detected, level);
                 player.sendSystemMessage(Component.translatable(CLASSLVL).append(Component.literal("" + level)));
             });
 
