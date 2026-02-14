@@ -133,25 +133,6 @@ dependencies {
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-
-    compileOnly "curse.maven:ars-nouveau-401955:6688854"
-    compileOnly "curse.maven:irons-spells-n-spellbooks-855414:6970299"
-    compileOnly "curse.maven:curios-api-309927:6418456"
-
-
-    //===================Ars===================//
-    runtimeOnly "curse.maven:ars-nouveau-401955:6688854"
-
-    //===================Irons===================//
-    runtimeOnly "curse.maven:irons-spells-n-spellbooks-855414:6970299"
-    runtimeOnly "curse.maven:geckolib-388172:7025129"
-    runtimeOnly "curse.maven:player-animator-658587:4587214"
-    runtimeOnly "curse.maven:caelus-api-308989:5281700"
-
-    //===================Curios===================//
-    runtimeOnly "curse.maven:curios-api-309927:6418456"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

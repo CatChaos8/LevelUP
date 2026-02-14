@@ -1,115 +1,13 @@
 {
-  "key.category.levelup": "LevelUP",
-  "key.levelup.open_gui": "Open LevelUP GUI",
+  "itemGroup.levelup": "Example Mod Tab",
+  "block.levelup.example_block": "Example Block",
+  "item.levelup.example_item": "Example Item",
 
-  "key.levelup.upgrade_con": "Increase Constitution",
-  "key.levelup.upgrade_str": "Increase Strength",
-  "key.levelup.upgrade_dex": "Increase Dexterity",
-  "key.levelup.upgrade_vit": "Increase Vitality",
-  "key.levelup.upgrade_end": "Increase Endurance",
-  "key.levelup.upgrade_wis": "Increase Wisdom",
-  "key.levelup.upgrade_int": "Increase Intelligence",
-
-
-  "stat.levelup.con": "Constitution: ",
-  "stat.levelup.dex": "Dexterity: ",
-  "stat.levelup.str": "Strength: ",
-  "stat.levelup.vit": "Vitality: ",
-  "stat.levelup.end": "Endurance: ",
-  "stat.levelup.wis": "Wisdom: ",
-  "stat.levelup.int": "Intelligence: ",
-  "stat.levelup.fp": "Free Points: ",
-  "stat.levelup.cxp" : "Class XP: ",
-  "stat.levelup.clvl": "Class LVL: ",
-
-  "gui.levelup.level_gui": "LevelUP",
-  "gui.levelup.level_gui_limit": "Stat Limiter",
-  "gui.levelup.plus": "+",
-  "gui.levelup.minus": "-",
-  "gui.levelup.limit": "Limit Stats",
-
-  "gui.levelup.info": "i",
-  "gui.levelup.percent_hp": "% health",
-  "gui.levelup.max_fall_height": " max fall height",
-  "gui.levelup.con_description": "Constitution: ",
-
-  "gui.levelup.dex_description": "Dexterity: ",
-  "gui.levelup.speed": "% movement speed",
-  "gui.levelup.attack_speed": "% attack speed",
-  "gui.levelup.swim_speed": "% swim speed",
-  "gui.levelup.jump_boost": " levels of jump boost",
-
-  "gui.levelup.str_description": "Strength: ",
-  "gui.levelup.damage": "% damage",
-  "gui.levelup.knockback": "% knockback",
-
-
-  "gui.levelup.vit_description": "Vitality: ",
-  "gui.levelup.heal": " passive regeneration",
-  "gui.levelup.armor": "% armor",
-
-  "gui.levelup.end_description": "Endurance: ",
-  "gui.levelup.toughness": " armour toughness",
-  "gui.levelup.knockback_resistance": " knockback resistance",
-  "gui.levelup.hunger": "% sprint hunger cost",
-  "gui.levelup.healing": "% healing recieved",
-
-  "gui.levelup.wis_description": "Wisdom: ",
-  "gui.levelup.xp_boost": "% xp gained",
-  "gui.levelup.level_speed": "% LevelUP xp",
-  "gui.levelup.ars_regen": "% Ars mana regen",
-  "gui.levelup.irons_regen" : "% Iron's mana regen",
-
-  "gui.levelup.int_description": "Intelligence: ",
-  "gui.levelup.durability": "% durability damage taken",
-  "gui.levelup.potion_duration": "% potion duration",
-  "gui.levelup.ars_max_mana": "% Ars mana",
-  "gui.levelup.irons_max_mana": "% Iron's mana",
-
-  "gui.levelup.line": "----------------------------",
-  "gui.levelup.newline": "\n",
-  "gui.levelup.open_bracket": "(",
-  "gui.levelup.base": "Base: ",
-  "gui.levelup.items": "Items: ",
-  "gui.levelup.closed_bracket": ")",
-
-  "cmd.levelup.noperms": "You don't have the required permission to use this command",
-
-  "scoreboard.levelup.lvl": "LevelUP Levels",
-  "name.levelup.lvl": " - Level ",
-
-  "attribute.levelup.con": "Constitution",
-  "attribute.levelup.dex": "Dexterity",
-  "attribute.levelup.str": "Strength",
-  "attribute.levelup.vit": "Vitality",
-  "attribute.levelup.end": "Endurance",
-  "attribute.levelup.wis": "Wisdom",
-  "attribute.levelup.int": "Intelligence",
-
-  "name.levelup.short": " Lv. ",
-
-  "enchantment.levelup.fortifying": "Fortifying",
-  "enchantment.levelup.fortifying.desc": "Increases your constitution",
-  "enchantment.levelup.reflex": "Reflex",
-  "enchantment.levelup.reflex.desc": "Increases your dexterity",
-  "enchantment.levelup.strengthening": "Strengthening",
-  "enchantment.levelup.strengthening.desc": "Increases your strength",
-  "enchantment.levelup.inner_strength": "Inner Strength",
-  "enchantment.levelup.inner_strength.desc": "Increases your vitality",
-  "enchantment.levelup.unyielding": "Unyielding",
-  "enchantment.levelup.unyielding.desc": "Increases your endurance",
-  "enchantment.levelup.sagacity": "Sagacity",
-  "enchantment.levelup.sagacity.desc": "Increases your wisdom",
-  "enchantment.levelup.intellect": "Intellect",
-  "enchantment.levelup.intellect.desc": "Increases your intelligence",
-
-  "text.levelup.levelupmsg.1": "LevelUP! You are now level ",
-  "text.levelup.levelupmsg.2": "!",
-
-  "item.levelup.orb_of_reconstruction": "Orb of Reconstruction",
-  "item.levelup.used_orb_of_reconstruction": "All stats reset!",
-  "item.levelup.used_orb_of_reconstruction_fail": "You don't have any points to reset!",
-  "item.levelup.orb_of_the_void": "Orb of The Void",
-  "item.levelup.used_orb_of_the_void": "You have been reset!",
-  "item.levelup.used_orb_of_the_void_fail": "You don't have anything to reset!"
+  "levelup.configuration.title": "LevelUP Configs",
+  "levelup.configuration.section.levelup.common.toml": "LevelUP Configs",
+  "levelup.configuration.section.levelup.common.toml.title": "LevelUP Configs",
+  "levelup.configuration.items": "Item List",
+  "levelup.configuration.logDirtBlock": "Log Dirt Block",
+  "levelup.configuration.magicNumberIntroduction": "Magic Number Text",
+  "levelup.configuration.magicNumber": "Magic Number"
 }
