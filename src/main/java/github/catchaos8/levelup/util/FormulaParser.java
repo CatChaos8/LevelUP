@@ -1,5 +1,7 @@
 package github.catchaos8.levelup.util;
 
+import github.catchaos8.levelup.LevelUP;
+
 public class FormulaParser {
 
     private String expression;
@@ -18,8 +20,9 @@ public class FormulaParser {
                     .replace("x", "(" + x + ")");
             return new FormulaParser(prepared).parseExpression();
         } catch (Exception e) {
+            LevelUP.LOGGER.info("Falling Back to default equation");
             // Fallback
-            return 0.5 * Math.pow(2, x) + 25;
+            return 0.5 * Math.pow(2, (x/10)) + 25;
         }
     }
 

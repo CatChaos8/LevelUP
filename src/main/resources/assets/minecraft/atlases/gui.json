@@ -4,6 +4,11 @@
       "type": "directory",
       "source": "gui/container",
       "prefix": "gui/container/"
+    },
+    {
+      "type": "directory",
+      "source": "gui/sprites/levelup",
+      "prefix": "gui/sprites/levelup/"
     }
   ]
 }

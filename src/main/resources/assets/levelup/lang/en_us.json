@@ -76,13 +76,20 @@
   "scoreboard.levelup.lvl": "LevelUP Levels",
   "name.levelup.lvl": " - Level ",
 
-  "attribute.levelup.con": "Constitution",
-  "attribute.levelup.dex": "Dexterity",
-  "attribute.levelup.str": "Strength",
-  "attribute.levelup.vit": "Vitality",
-  "attribute.levelup.end": "Endurance",
-  "attribute.levelup.wis": "Wisdom",
-  "attribute.levelup.int": "Intelligence",
+  "attribute.levelup.constitution": "Constitution",
+  "attribute.levelup.dexterity": "Dexterity",
+  "attribute.levelup.strength": "Strength",
+  "attribute.levelup.vitality": "Vitality",
+  "attribute.levelup.endurance": "Endurance",
+  "attribute.levelup.wisdom": "Wisdom",
+  "attribute.levelup.intelligence": "Intelligence",
+
+  "attribute.levelup.passive_regen": "Passive Regeneration",
+  "attribute.levelup.healing_multi": "Healing Multiplier",
+  "attribute.levelup.hunger_cost_reduction": "Hunger Cost Reduction",
+  "attribute.levelup.leveling_speed": "Leveling Speed",
+  "attribute.levelup.item_durability_damage_reduction": "Item Durability Damage Reduction",
+  "attribute.levelup.potion_duration_multi": "Potion Duration Multiplier",
 
   "name.levelup.short": " Lv. ",
 
@@ -113,5 +120,6 @@
   "gui.levelup.stats": "Stats",
   "gui.levelup.total": "Total",
   "gui.levelup.username_stat": "'s Stats",
-  "gui.levelup.xp": " XP"
+  "gui.levelup.xp": " XP",
+  "gui.levelup.level": "Level: "
 }

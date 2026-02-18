@@ -33,9 +33,9 @@ public class Config {
         builder.comment("LevelUP Configuration").push("xp");
 
         builder.comment("Formula for XP required to level up(Rounded to the nearest whole number). Use 'x' as the current level variable.",
-                        "Example: '0.5*(2^x) + 25'")
+                        "Example: '0.5*(2^(x/10)) + 25'")
                 .push("formula");
-        XP_FORMULA = builder.define("xp_formula", "0.5*(2^x) + 25");
+        XP_FORMULA = builder.define("xp_formula", "0.5*(2^(x/10)) + 100");
         builder.pop();
 
         builder.comment("Experience Orb XP").push("xp_orbs");

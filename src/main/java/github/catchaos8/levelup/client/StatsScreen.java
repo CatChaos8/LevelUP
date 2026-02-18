@@ -41,7 +41,9 @@ public class StatsScreen extends Screen {
 
     private static final int step = 22;
 
-    private int spendAmount = 1;
+    private int spendIndex = 0;
+
+    private final int[] spendIncrements = {1, 3, 5, 10, 15, 20, 25, 50, 100, 250, 500, 1000};
 
     private StatSlider[] sliders = new StatSlider[STAT_NAMES.length];
 
@@ -54,8 +56,8 @@ public class StatsScreen extends Screen {
 
     @Override
     protected void init() {
-        int upperPanelY = height/2 - LOWER_PANEL_HEIGHT/2 - UPPER_PANEL_HEIGHT;
-        int upperPanelX = width/2 - UPPER_PANEL_WIDTH;
+        int upperPanelY = height/2 - LOWER_PANEL_HEIGHT/2 - UPPER_PANEL_HEIGHT/2;
+        int upperPanelX = width/2 - UPPER_PANEL_WIDTH/2;
 
         int lowerPanelY = height/2 - LOWER_PANEL_HEIGHT/2 + UPPER_PANEL_HEIGHT/2 + PANEL_GAP;
         int lowerPanelX = width/2 - LOWER_PANEL_WIDTH/2;
@@ -69,7 +71,7 @@ public class StatsScreen extends Screen {
             this.addRenderableWidget(new Button.Builder(
                     Component.translatable("gui.levelup.plus"),
                     btn -> {
-                        PacketDistributor.sendToServer(new SpendPointsC2SPacket(statIndex, spendAmount));
+                        PacketDistributor.sendToServer(new SpendPointsC2SPacket(statIndex, spendIncrements[spendIndex]));
                     }).pos(lowerPanelX + LOWER_PANEL_WIDTH - 80 - sliderSize, rowY)
                     .size(sliderSize, sliderSize)
                     .build()
@@ -80,6 +82,25 @@ public class StatsScreen extends Screen {
             this.addRenderableWidget(slider);
         }
 
+
+        //Step increase
+        this.addRenderableWidget(new Button.Builder(
+                Component.translatable("gui.levelup.plus"),
+                btn -> {
+                    this.spendIndex = (spendIndex+ 1) % spendIncrements.length;
+                }).pos(upperPanelX+UPPER_PANEL_WIDTH-36, upperPanelY + 30)
+                .size(sliderSize, sliderSize)
+                .build());
+
+        //Step minus
+        this.addRenderableWidget(new Button.Builder(
+                Component.translatable("gui.levelup.minus"),
+                btn -> {
+                    this.spendIndex = (spendIndex - 1 + spendIncrements.length) % spendIncrements.length;
+                }).pos(upperPanelX+UPPER_PANEL_WIDTH-77, upperPanelY + 30)
+                .size(sliderSize, sliderSize)
+                .build());
+
         refreshSliders();
     }
 
@@ -88,6 +109,24 @@ public class StatsScreen extends Screen {
             if (sliders[i] != null) {
                 sliders[i].updateRange(stats[i], limitedStats[i]);
             }
+        }
+    }
+
+    private void drawXPBar(GuiGraphics graphics, int x, int y, int width, int height) {
+        double fillPercent = (double) Math.round(100 * (xp / xpRequired)) /100;
+        int filledWidth = (int) Math.min((width*fillPercent), width);
+
+
+        graphics.blitSprite(ResourceLocation.fromNamespaceAndPath(LevelUP.MOD_ID, "gui/sprites/levelup/experience_bar_background"),
+                x, y,
+                width, height
+        );
+
+        if(fillPercent > 0) {
+            graphics.blitSprite(ResourceLocation.fromNamespaceAndPath(LevelUP.MOD_ID, "gui/sprites/levelup/experience_bar_progress"),
+                    x, y,
+                    filledWidth, height
+            );
         }
     }
 
@@ -126,7 +165,10 @@ public class StatsScreen extends Screen {
 
         //Upper Panel strings
 
-//      Display 'username's stats'
+
+
+
+        //Display 'username's stats'
         graphics.drawString(this.font, Component.literal(name + Component.translatable("gui.levelup.username_stat").getString()),
                 upperPanelX + 10,
                 upperPanelY + 10,
@@ -136,10 +178,29 @@ public class StatsScreen extends Screen {
         graphics.drawCenteredString(this.font, Component.literal(xp + "/" + xpRequired +
                 Component.translatable("gui.levelup.xp").getString()),
                 upperPanelX + UPPER_PANEL_WIDTH - 50,
-                upperPanelY + 10,
+                upperPanelY + 21,
                 0xFFFFFF
                 );
 
+        drawXPBar(graphics, upperPanelX + 10, upperPanelY + 22, UPPER_PANEL_WIDTH/2 - 10, 5);
+
+        //Display Level
+        graphics.drawCenteredString(this.font, Component.literal(Component.translatable("gui.levelup.level").getString() + level)
+        , upperPanelX + UPPER_PANEL_WIDTH - 50,
+                upperPanelY + 10,
+                0xFFFFFF);
+
+        //Display Free Points
+        graphics.drawString(this.font, Component.literal(Component.translatable("stat.levelup.fp").getString() + freePoints),
+                upperPanelX + 10,
+                upperPanelY + 32,
+                0xFFFFFF);
+
+        //Draw Step
+        graphics.drawCenteredString(this.font, Component.literal(String.valueOf(spendIncrements[spendIndex])),
+                upperPanelX+UPPER_PANEL_WIDTH-50,
+                upperPanelY + 32,
+                0xFFFFFF);
 
         //Draw Titles
         graphics.drawString(this.font, Component.translatable("gui.levelup.stats"),

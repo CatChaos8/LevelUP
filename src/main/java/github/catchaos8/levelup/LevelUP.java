@@ -1,6 +1,7 @@
 package github.catchaos8.levelup;
 
 import com.mojang.logging.LogUtils;
+import github.catchaos8.levelup.attributes.ModAttributes;
 import github.catchaos8.levelup.networking.ModPackets;
 import github.catchaos8.levelup.registries.ModAttachments;
 import net.neoforged.bus.api.IEventBus;
@@ -31,12 +32,11 @@ public class LevelUP {
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
-        //Register Packetrs
+        //Register Packets
         modEventBus.addListener(ModPackets::register);
 
-        // Register ourselves for server and other game events we are interested in.
-        // Note that this is necessary if and only if we want *this* class (LevelUP) to respond directly to events.
-        // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
+        ModAttributes.ATTRIBUTES.register(modEventBus);
+
 //        NeoForge.EVENT_BUS.register(this);
 
         // Register the item to a creative tab

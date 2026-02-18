@@ -53,7 +53,7 @@ public record SpendPointsC2SPacket(int index, int amount)
                 }
                 baseStats[index] += increase;
 
-                newFreePoints = freePoints-increase;
+                newFreePoints = (double) Math.round(100 * (freePoints - increase)) /100;
             }
 
 

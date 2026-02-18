@@ -2,16 +2,20 @@ package github.catchaos8.levelup.events;
 
 import github.catchaos8.levelup.Config;
 import github.catchaos8.levelup.LevelUP;
+import github.catchaos8.levelup.attributes.ModAttributes;
 import github.catchaos8.levelup.registries.ModAttachments;
 import github.catchaos8.levelup.util.FormulaParser;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 
@@ -139,5 +143,21 @@ public class ModEvents {
         if(mob instanceof ServerPlayer) totalXp*=10;
 
         awardXp(player, totalXp);
+    }
+
+    @SubscribeEvent
+    public static void onAttributeRegistration(EntityAttributeModificationEvent event) {
+        event.add(EntityType.PLAYER, ModAttributes.CONSTITUTION);
+        event.add(EntityType.PLAYER, ModAttributes.DEXTERITY);
+        event.add(EntityType.PLAYER, ModAttributes.STRENGTH);
+        event.add(EntityType.PLAYER, ModAttributes.VITALITY);
+        event.add(EntityType.PLAYER, ModAttributes.WISDOM);
+        event.add(EntityType.PLAYER, ModAttributes.INTELLIGENCE);
+        event.add(EntityType.PLAYER, ModAttributes.PASSIVE_REGEN);
+        event.add(EntityType.PLAYER, ModAttributes.HEALING_MULTIPLIER);
+        event.add(EntityType.PLAYER, ModAttributes.HUNGER_COST_REDUCTION);
+        event.add(EntityType.PLAYER, ModAttributes.LEVELING_SPEED);
+        event.add(EntityType.PLAYER, ModAttributes.ITEM_DURABILITY_DAMAGE_REDUCTION);
+        event.add(EntityType.PLAYER, ModAttributes.POTION_DURATION_MULTI);
     }
 }
