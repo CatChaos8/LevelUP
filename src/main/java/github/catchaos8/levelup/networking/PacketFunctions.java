@@ -1,6 +1,5 @@
 package github.catchaos8.levelup.networking;
 
-import github.catchaos8.levelup.LevelUP;
 import github.catchaos8.levelup.networking.packets.SyncS2CPacket;
 import github.catchaos8.levelup.registries.ModAttachments;
 import net.minecraft.server.level.ServerPlayer;

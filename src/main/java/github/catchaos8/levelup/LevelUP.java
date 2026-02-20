@@ -1,9 +1,9 @@
 package github.catchaos8.levelup;
 
 import com.mojang.logging.LogUtils;
-import github.catchaos8.levelup.attributes.ModAttributes;
 import github.catchaos8.levelup.networking.ModPackets;
 import github.catchaos8.levelup.registries.ModAttachments;
+import github.catchaos8.levelup.registries.ModAttributes;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -43,7 +43,7 @@ public class LevelUP {
         modEventBus.addListener(this::addCreative);
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        modContainer.registerConfig(ModConfig.Type.SERVER, Config.SPEC);
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {

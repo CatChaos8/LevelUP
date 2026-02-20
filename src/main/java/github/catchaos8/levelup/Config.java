@@ -13,6 +13,11 @@ public class Config {
     // EXP ORB XP
     public static final ModConfigSpec.BooleanValue ENABLE_EXPERIENCE_ORB_XP;
 
+    //Enable lose levels
+    public static final ModConfigSpec.BooleanValue LOSE_LEVELS;
+    //Amount of lost levels
+    public static final ModConfigSpec.IntValue LOST_LEVELS_COUNT;
+
     // Mob XP
     public static final ModConfigSpec.DoubleValue MOB_HEALTH_DIVISOR;
     public static final ModConfigSpec.DoubleValue MOB_SPEED_DIVISOR;
@@ -23,9 +28,18 @@ public class Config {
 
     // Stats
     public static final ModConfigSpec.IntValue STAT_CAP;
+    public static final ModConfigSpec.ConfigValue<List<? extends String>> CONSTITUTION_ATTRIBUTES;
+    public static final ModConfigSpec.ConfigValue<List<? extends String>> DEXTERITY_ATTRIBUTES;
+    public static final ModConfigSpec.ConfigValue<List<? extends String>> STRENGTH_ATTRIBUTES;
+    public static final ModConfigSpec.ConfigValue<List<? extends String>> VITALITY_ATTRIBUTES;
+    public static final ModConfigSpec.ConfigValue<List<? extends String>> WISDOM_ATTRIBUTES;
+    public static final ModConfigSpec.ConfigValue<List<? extends String>> INTELLIGENCE_ATTRIBUTES;
 
     // Leveling
     public static final ModConfigSpec.DoubleValue FREE_POINTS_PER_LEVEL;
+
+    //Attributes
+    public static final ModConfigSpec.DoubleValue TICKS_BETWEEN_REGEN;
 
     static {
         ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
@@ -40,7 +54,19 @@ public class Config {
 
         builder.comment("Experience Orb XP").push("xp_orbs");
         ENABLE_EXPERIENCE_ORB_XP = builder.comment("Gain xp when picking up experience orbs")
-                        .define("xp_orbs_enabled", false);
+                .define("xp_orbs_enabled", false);
+        builder.pop();
+
+        builder.comment("Lose Levels on Death").push("death");
+        LOSE_LEVELS = builder.comment("Enable losing levels on death")
+                .define("lose_levels_on_death", true);
+
+        LOST_LEVELS_COUNT = builder.comment("Amount of levels lost per death if lose_levels is enabled")
+                        .defineInRange("lost_levels_amount", 1, 1, Integer.MAX_VALUE);
+
+        builder.pop();
+
+
 
         builder.comment("Mob XP Settings").push("mobs");
         MOB_HEALTH_DIVISOR = builder
@@ -100,11 +126,16 @@ public class Config {
                 });
         builder.pop();
 
-        builder.comment("Stats Settings").push("stats");
+        builder.pop();
+
+        builder.comment("Stats settings").push("stats");
+
+        builder.comment("Max value").push("max");
         STAT_CAP = builder
                 .comment("Maximum value a single stat can reach")
                 .defineInRange("stat_cap", 99999, 1, Integer.MAX_VALUE);
         builder.pop();
+
 
         builder.comment("Leveling Settings").push("leveling");
         FREE_POINTS_PER_LEVEL = builder
@@ -112,6 +143,107 @@ public class Config {
                 .defineInRange("free_points_per_level", 3, 0.1, Double.MAX_VALUE);
         builder.pop();
 
+        builder.comment("Attributes affected by stats").push("attributes");
+        builder.comment("Constitution Attributes").push("constitution");
+        CONSTITUTION_ATTRIBUTES = builder.comment(
+                "Attributes that get increased by Constitution. Format: modid:attribute,signum,amount",
+                "Example: 'minecraft:generic.max_health,multiplication,0.01'",
+                "Possible signums: multiplication, addition",
+                "No spaces"
+        ).defineListAllowEmpty("constitution_attribute_list",
+                List.of("minecraft:generic.max_health,multiplication,0.01",
+                "minecraft:generic.safe_fall_distance,addition,0.25"), Config::validateAttributeEntry);
+        builder.pop();
+
+
+
+        builder.comment("Dexterity Attributes").push("dexterity");
+        DEXTERITY_ATTRIBUTES = builder.comment(
+                "Attributes that get increased by Dexterity. Format: modid:attribute,signum,amount",
+                "Example: 'minecraft:generic.max_health,multiplication,0.01'",
+                "Possible signums: multiplication, addition",
+                "No spaces"
+        ).defineListAllowEmpty("dexterity_attribute_list",
+                List.of("minecraft:generic.movement_speed,multiplication,0.01",
+                        "minecraft:generic.attack_speed,multiplication,0.01",
+                        "minecraft:generic.jump_strength,addition,0.0001"), Config::validateAttributeEntry);
+        builder.pop();
+
+
+
+        builder.comment("Strength Attributes").push("strength");
+        STRENGTH_ATTRIBUTES = builder.comment(
+                "Attributes that get increased by Strength. Format: modid:attribute,signum,amount",
+                "Example: 'minecraft:generic.max_health,multiplication,0.01'",
+                "Possible signums: multiplication, addition",
+                "No spaces"
+        ).defineListAllowEmpty("strength_attribute_list",
+                List.of("minecraft:generic.attack_damage,multiplication,0.01",
+                        "minecraft:generic.attack_knockback,multiplication,0.01"), Config::validateAttributeEntry);
+        builder.pop();
+
+        builder.comment("Vitality Attributes").push("vitality");
+        VITALITY_ATTRIBUTES = builder.comment(
+                "Attributes that get increased by Vitality. Format: modid:attribute,signum,amount",
+                "Example: 'minecraft:generic.max_health,multiplication,0.01'",
+                "Possible signums: multiplication, addition",
+                "No spaces"
+        ).defineListAllowEmpty("vitality_attribute_list",
+                List.of("levelup:passive_regen,addition,0.01",
+                        "levelup:healing_multi,addition,0.01"), Config::validateAttributeEntry);
+        builder.pop();
+
+        builder.comment("Wisdom Attributes").push("wisdom");
+        WISDOM_ATTRIBUTES = builder.comment(
+                "Attributes that get increased by Wisdom. Format: modid:attribute,signum,amount",
+                "Example: 'minecraft:generic.max_health,multiplication,0.01'",
+                "Possible signums: multiplication, addition",
+                "No spaces"
+        ).defineListAllowEmpty("wisdom_attribute_list",
+                List.of("levelup:leveling_speed,addition,0.01"), Config::validateAttributeEntry);
+        builder.pop();
+
+        builder.comment("Intelligence Attributes").push("intelligence");
+        INTELLIGENCE_ATTRIBUTES = builder.comment(
+                "Attributes that get increased by Intelligence. Format: modid:attribute,signum,amount",
+                "Example: 'minecraft:generic.max_health,multiplication,0.01'",
+                "Possible signums: multiplication, addition",
+                "No spaces"
+        ).defineListAllowEmpty("intelligence_attribute_list",
+                List.of("levelup:item_durability_damage_reduction,addition,0.01",
+                        "levelup:potion_duration_multi,addition,0.01"), Config::validateAttributeEntry);
+        builder.pop();
+
+        builder.pop();
+        builder.pop();
+
+
+        builder.comment("Attribute Settings").push("attributes");
+        builder.comment("Healing Tick attributes").push("healing_tick");
+        TICKS_BETWEEN_REGEN = builder
+                .comment("How many ticks between healing ticks")
+                .defineInRange("healing_tick_delay", 0, 0, Double.MAX_VALUE);
+        builder.pop();
+
         SPEC = builder.build();
+    }
+
+
+
+    private static boolean validateAttributeEntry(Object entry) {
+        if (!(entry instanceof String s)) return false;
+        String[] parts = s.split(",");
+        if (parts.length != 3) return false; // Changed from 2 to 3
+        try {
+            Double.parseDouble(parts[2].trim()); // Changed from parts[1] to parts[2]
+            String operation = parts[1].trim().toLowerCase();
+            // Validate operation is either "addition" or "multiplication"
+            if (!operation.equals("addition") && !operation.equals("multiplication")) {
+                return false;
+            }
+            return parts[0].trim().contains(":");
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

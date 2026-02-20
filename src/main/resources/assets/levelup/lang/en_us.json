@@ -26,6 +26,13 @@
   "gui.levelup.minus": "-",
   "gui.levelup.limit": "Limit",
 
+  "gui.levelup.con_upgrade": "Increase Constitution",
+  "gui.levelup.dex_upgrade": "Increase Dexterity",
+  "gui.levelup.str_upgrade": "Increase Strength",
+  "gui.levelup.vit_upgrade": "Increase Vitality",
+  "gui.levelup.wis_upgrade": "Increase Wisdom",
+  "gui.levelup.int_upgrade": "Increase Intelligence",
+
   "gui.levelup.info": "i",
   "gui.levelup.percent_hp": "% health",
   "gui.levelup.max_fall_height": " max fall height",
@@ -118,8 +125,10 @@
   "item.levelup.used_orb_of_the_void": "You have been reset!",
   "item.levelup.used_orb_of_the_void_fail": "You don't have anything to reset!",
   "gui.levelup.stats": "Stats",
-  "gui.levelup.total": "Total",
+  "gui.levelup.total": "Total: ",
   "gui.levelup.username_stat": "'s Stats",
   "gui.levelup.xp": " XP",
-  "gui.levelup.level": "Level: "
+  "gui.levelup.level": "Level: ",
+  "gui.levelup.step_description": "Step value of how much you increase a stat by",
+  "gui.levelup.total_stats": "Total"
 }

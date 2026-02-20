@@ -8,17 +8,42 @@ import github.catchaos8.levelup.Config;
 import github.catchaos8.levelup.LevelUP;
 import github.catchaos8.levelup.networking.packets.SetLimitedStatsC2SPacket;
 import github.catchaos8.levelup.networking.packets.SpendPointsC2SPacket;
+import github.catchaos8.levelup.registries.ModAttributes;
 import github.catchaos8.levelup.util.FormulaParser;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.network.PacketDistributor;
 
+import java.util.List;
+
 public class StatsScreen extends Screen {
+
+    private static final Holder<Attribute>[] attributes = new Holder[]{
+            ModAttributes.CONSTITUTION,
+            ModAttributes.DEXTERITY,
+            ModAttributes.STRENGTH,
+            ModAttributes.VITALITY,
+            ModAttributes.WISDOM,
+            ModAttributes.INTELLIGENCE
+    };
+
+    private List<ModConfigSpec.ConfigValue<List<? extends String>>> lists = List.of(
+            Config.CONSTITUTION_ATTRIBUTES,
+            Config.DEXTERITY_ATTRIBUTES,
+            Config.STRENGTH_ATTRIBUTES,
+            Config.VITALITY_ATTRIBUTES,
+            Config.WISDOM_ATTRIBUTES,
+            Config.INTELLIGENCE_ATTRIBUTES);
 
     private static final String[] STAT_NAMES = {"CON", "DEX", "STR", "VIT", "WIS", "INT"};
 
@@ -73,6 +98,7 @@ public class StatsScreen extends Screen {
                     btn -> {
                         PacketDistributor.sendToServer(new SpendPointsC2SPacket(statIndex, spendIncrements[spendIndex]));
                     }).pos(lowerPanelX + LOWER_PANEL_WIDTH - 80 - sliderSize, rowY)
+                    .tooltip(Tooltip.create(Component.translatable("gui.levelup."+ STAT_NAMES[i].toLowerCase() + "_upgrade")))
                     .size(sliderSize, sliderSize)
                     .build()
             );
@@ -89,6 +115,7 @@ public class StatsScreen extends Screen {
                 btn -> {
                     this.spendIndex = (spendIndex+ 1) % spendIncrements.length;
                 }).pos(upperPanelX+UPPER_PANEL_WIDTH-36, upperPanelY + 30)
+                .tooltip(Tooltip.create(Component.translatable("gui.levelup.step_description")))
                 .size(sliderSize, sliderSize)
                 .build());
 
@@ -98,6 +125,7 @@ public class StatsScreen extends Screen {
                 btn -> {
                     this.spendIndex = (spendIndex - 1 + spendIncrements.length) % spendIncrements.length;
                 }).pos(upperPanelX+UPPER_PANEL_WIDTH-77, upperPanelY + 30)
+                .tooltip(Tooltip.create(Component.translatable("gui.levelup.step_description")))
                 .size(sliderSize, sliderSize)
                 .build());
 
@@ -107,7 +135,8 @@ public class StatsScreen extends Screen {
     private void refreshSliders() {
         for (int i = 0; i < STAT_NAMES.length; i++) {
             if (sliders[i] != null) {
-                sliders[i].updateRange(stats[i], limitedStats[i]);
+                assert Minecraft.getInstance().player != null;
+                sliders[i].updateRange((int) Minecraft.getInstance().player.getAttributeValue(attributes[i]), limitedStats[i]);
             }
         }
     }
@@ -163,11 +192,7 @@ public class StatsScreen extends Screen {
                 UPPER_PANEL_WIDTH, UPPER_PANEL_HEIGHT);
 
 
-        //Upper Panel strings
-
-
-
-
+        //==============================UPPER PANEL==============================
         //Display 'username's stats'
         graphics.drawString(this.font, Component.literal(name + Component.translatable("gui.levelup.username_stat").getString()),
                 upperPanelX + 10,
@@ -206,7 +231,7 @@ public class StatsScreen extends Screen {
         graphics.drawString(this.font, Component.translatable("gui.levelup.stats"),
                 lowerPanelX + 10,
                 lowerPanelY + 10, 0xFFFFFF);
-        graphics.drawString(this.font, Component.translatable("gui.levelup.total"),
+        graphics.drawString(this.font, Component.translatable("gui.levelup.total_stats"),
                 lowerPanelX + 72,
                 lowerPanelY + 10, 0xFFFFFF);
         graphics.drawString(this.font, Component.translatable("gui.levelup.limit"),
@@ -224,18 +249,57 @@ public class StatsScreen extends Screen {
                     rowY, 0xFFFFFF
                     );
 
-            //Display invested amount
-            if(ClientData.getBase() != null) graphics.drawString(this.font,
-                    Component.literal(String.valueOf(ClientData.getBase()[i])),
-                    lowerPanelX + 72,
-                    rowY,
-                    0xFFFFFF
-                    );
+            //Display attribute value
+            if(ClientData.getBase() != null && Minecraft.getInstance().player != null) {
+                int amount = (int) Minecraft.getInstance().player.getAttributeValue(attributes[i]);
+
+                graphics.drawString(this.font,
+                        Component.literal(String.valueOf(amount)),
+                        lowerPanelX + 72,
+                        rowY,
+                        0xFFFFFF
+                );
+            }
         }
 
 
-
         super.render(graphics, mouseX, mouseY, partialTick);
+
+        // Render stat tooltips
+        for(int i = 0; i < STAT_NAMES.length; i++) {
+            int rowY = lowerPanelY + 26 + i*step;
+            int textWidth = this.font.width(Component.translatable("stat.levelup." + STAT_NAMES[i]));
+
+            if(mouseX >= lowerPanelX + 10 && mouseX <= lowerPanelX + textWidth - 10 &&
+                    mouseY >= rowY && mouseY <= rowY + this.font.lineHeight) {
+
+                List<Component> tooltip = buildStatTooltipList(i);
+                graphics.renderComponentTooltip(this.font, tooltip, mouseX, mouseY);
+
+                break;
+            }
+        }
+        // Render stat value tooltips
+        for(int i = 0; i < STAT_NAMES.length; i++) {
+            int rowY = lowerPanelY + 26 + i*step;
+
+            if(ClientData.getBase() != null && Minecraft.getInstance().player != null) {
+                double attributeValue = Minecraft.getInstance().player.getAttributeValue(attributes[i]);
+                String displayText = String.format("%d", (int) attributeValue);
+                int textWidth = this.font.width(displayText);
+
+                if(mouseX >= lowerPanelX + 72 && mouseX <= lowerPanelX + 72 + textWidth &&
+                        mouseY >= rowY && mouseY <= rowY + this.font.lineHeight) {
+
+                    List<Component> tooltip = buildAttributeBreakdownTooltip(i);
+                    graphics.renderComponentTooltip(this.font, tooltip, mouseX, mouseY);
+
+                    break;
+                }
+            }
+        }
+
+
     }
 
     @Override
@@ -301,4 +365,58 @@ public class StatsScreen extends Screen {
     @Override
     public void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
     }
+    private List<Component> buildStatTooltipList(int statIndex) {
+        List<Component> tooltipLines = new java.util.ArrayList<>();
+
+        if(ClientData.getBase() == null) return tooltipLines;
+
+        int statValue = ClientData.getBase()[statIndex];
+        List<? extends String> attributeList = lists.get(statIndex).get();
+
+        for(String entry : attributeList) {
+            String[] parts = entry.split(",");
+            if(parts.length != 3) continue;
+
+            String attributeID = parts[0].trim();
+            String operation = parts[1].trim();
+            double amountPerPoint = Double.parseDouble(parts[2].trim());
+            double totalBonus = amountPerPoint*statValue;
+
+            ResourceLocation attrLocation = ResourceLocation.parse(attributeID);
+            Holder<Attribute> attribute = BuiltInRegistries.ATTRIBUTE.getHolder(attrLocation).orElse(null);
+
+            String attributeName = "";
+            if(attribute != null) attributeName = Component.translatable(attribute.value().getDescriptionId()).getString();
+
+            String sign = totalBonus >= 0 ? "+" : "";
+            String valueString;
+
+            if(operation.equals("multiplication")) {
+                valueString = String.format("%s%.1f%%", sign, totalBonus * 100);
+            } else {
+                valueString = String.format("%s%.2f", sign, totalBonus);
+            }
+
+            tooltipLines.add(Component.literal(valueString + " " + attributeName));
+        }
+
+        return tooltipLines;
+    }
+
+    private List<Component> buildAttributeBreakdownTooltip(int statIndex) {
+        List<Component> tooltipLines = new java.util.ArrayList<>();
+
+        if(ClientData.getBase() == null || Minecraft.getInstance().player == null) return tooltipLines;
+
+        int baseStatValue = ClientData.getBase()[statIndex];
+        double totalAttributeValue = Minecraft.getInstance().player.getAttributeValue(attributes[statIndex]);
+        double itemBonus = totalAttributeValue - baseStatValue;
+
+        tooltipLines.add(Component.translatable("gui.levelup.base").append(": " + String.format("%d", baseStatValue)));
+        tooltipLines.add(Component.translatable("gui.levelup.items").append(": " + String.format("%.0f", itemBonus)));
+        tooltipLines.add(Component.translatable("gui.levelup.total").append(": " + String.format("%.0f", totalAttributeValue)));
+
+        return tooltipLines;
+    }
+
 }

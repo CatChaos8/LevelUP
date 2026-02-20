@@ -2,6 +2,7 @@ package github.catchaos8.levelup.networking.packets;
 
 import github.catchaos8.levelup.LevelUP;
 import github.catchaos8.levelup.registries.ModAttachments;
+import github.catchaos8.levelup.util.MakeAttributeModifiers;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -63,7 +64,7 @@ public record SpendPointsC2SPacket(int index, int amount)
                     baseStats);
             player.setData(ModAttachments.LIMITED_STATS,
                     limitedStats);
-
+            MakeAttributeModifiers.makeModifiers(player);
             syncToPlayer(player);
         });
     }

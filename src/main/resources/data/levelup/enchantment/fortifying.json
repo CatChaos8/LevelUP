@@ -1,0 +1,40 @@
+{
+  "description": {
+    "translate": "enchantment.levelup.fortifying"
+  },
+  "exclusive_set": [
+    "levelup:intellect",
+    "levelup:reflex",
+    "levelup:sagacity",
+    "levelup:strengthening",
+    "levelup:unyielding"
+  ],
+  "supported_items": "#minecraft:enchantable/durability",
+  "primary_items": "#minecraft:enchantable/durability",
+  "weight": 3,
+  "max_level": 10,
+  "min_cost": {
+    "base": 5,
+    "per_level_above_first": 1
+  },
+  "max_cost": {
+    "base": 10,
+    "per_level_above_first": 2
+  },
+  "anvil_cost": 2,
+  "slots": ["any"],
+  "effects": {
+    "minecraft:attributes": [
+      {
+        "attribute": "levelup:constitution",
+        "amount": {
+          "type": "minecraft:linear",
+          "base": 5.0,
+          "per_level_above_first": 5
+        },
+        "operation": "add_value",
+        "id": "levelup:constitution_increase"
+      }
+    ]
+  }
+}
