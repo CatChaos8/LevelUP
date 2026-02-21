@@ -2,6 +2,8 @@ package github.catchaos8.levelup.events;
 
 import github.catchaos8.levelup.Config;
 import github.catchaos8.levelup.LevelUP;
+import github.catchaos8.levelup.commands.GetStatsCommand;
+import github.catchaos8.levelup.commands.SetStatCommand;
 import github.catchaos8.levelup.registries.ModAttachments;
 import github.catchaos8.levelup.registries.ModAttributes;
 import github.catchaos8.levelup.util.FormulaParser;
@@ -12,16 +14,22 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.TickTask;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.neoforged.neoforge.event.entity.living.LivingHealEvent;
@@ -327,6 +335,27 @@ public class ModEvents {
             }
 
         }
+    }
+
+    @SubscribeEvent
+    public static void onLivingDamage(LivingDamageEvent.Pre event) {
+        DamageSource source = event.getSource();
+        Entity attacker = source.getDirectEntity();
+        if(attacker instanceof Projectile projectile) {
+            Entity owner = projectile.getOwner();
+
+            if(owner instanceof Player player) {
+                double bonus = player.getAttributeValue(ModAttributes.PROJECTILE_DAMAGE);
+                float newDamage = (float) (event.getNewDamage() * (1 + bonus));
+                event.setNewDamage(newDamage);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onRegisterCommands(RegisterCommandsEvent event) {
+        SetStatCommand.register(event.getDispatcher());
+        GetStatsCommand.register(event.getDispatcher());
     }
 
 }

@@ -152,7 +152,8 @@ public class Config {
                 "No spaces"
         ).defineListAllowEmpty("constitution_attribute_list",
                 List.of("minecraft:generic.max_health,multiplication,0.01",
-                "minecraft:generic.safe_fall_distance,addition,0.25"), Config::validateAttributeEntry);
+                "minecraft:generic.safe_fall_distance,addition,0.25",
+                        "levelup:hunger_cost_reduction,addition,1"), Config::validateAttributeEntry);
         builder.pop();
 
 
@@ -200,7 +201,8 @@ public class Config {
                 "Possible signums: multiplication, addition",
                 "No spaces"
         ).defineListAllowEmpty("wisdom_attribute_list",
-                List.of("levelup:leveling_speed,addition,0.01"), Config::validateAttributeEntry);
+                List.of("levelup:leveling_speed,addition,0.01",
+                        "levelup:projectile_damage_increase,addition,0.01"), Config::validateAttributeEntry);
         builder.pop();
 
         builder.comment("Intelligence Attributes").push("intelligence");
@@ -210,7 +212,7 @@ public class Config {
                 "Possible signums: multiplication, addition",
                 "No spaces"
         ).defineListAllowEmpty("intelligence_attribute_list",
-                List.of("levelup:item_durability_damage_reduction,addition,0.01",
+                List.of("levelup:item_durability_damage_reduction,addition,1",
                         "levelup:potion_duration_multi,addition,0.01"), Config::validateAttributeEntry);
         builder.pop();
 

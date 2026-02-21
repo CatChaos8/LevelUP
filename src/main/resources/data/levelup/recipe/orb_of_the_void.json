@@ -1,4 +1,3 @@
-
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
@@ -8,17 +7,17 @@
   ],
   "key": {
     "A": {
-      "item": "minecraft:lapis_block"
+      "item": "minecraft:redstone"
     },
     "B": {
-      "item": "minecraft:diamond_block"
+      "item": "minecraft:lapis_lazuli"
     },
     "C": {
-      "item": "levelup:orb_of_the_void"
+      "item": "minecraft:ender_pearl"
     }
   },
   "result": {
-    "item": "levelup:orb_of_reconstruction",
+    "id": "levelup:orb_of_the_void",
     "count": 1
   }
 }

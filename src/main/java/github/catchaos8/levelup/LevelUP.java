@@ -4,6 +4,8 @@ import com.mojang.logging.LogUtils;
 import github.catchaos8.levelup.networking.ModPackets;
 import github.catchaos8.levelup.registries.ModAttachments;
 import github.catchaos8.levelup.registries.ModAttributes;
+import github.catchaos8.levelup.registries.ModItems;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -36,6 +38,7 @@ public class LevelUP {
         modEventBus.addListener(ModPackets::register);
 
         ModAttributes.ATTRIBUTES.register(modEventBus);
+        ModItems.ITEMS.register(modEventBus);
 
 //        NeoForge.EVENT_BUS.register(this);
 
@@ -53,7 +56,10 @@ public class LevelUP {
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-
+        if(event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
+            event.accept(ModItems.ORB_OF_THE_VOID.get());
+            event.accept(ModItems.ORB_OF_RECONSTRUCTION.get());
+        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

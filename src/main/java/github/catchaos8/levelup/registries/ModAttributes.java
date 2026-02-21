@@ -28,15 +28,15 @@ public class ModAttributes {
             () -> new RangedAttribute("attribute.levelup.passive_regen", 0.0, 0.0, Integer.MAX_VALUE));
     public static final DeferredHolder<Attribute, Attribute> HEALING_MULTIPLIER = ATTRIBUTES.register("healing_multi",                                      //Done
             () -> new RangedAttribute("attribute.levelup.healing_multi", 1.0, 0.001, Integer.MAX_VALUE));
-    public static final DeferredHolder<Attribute, Attribute> HUNGER_COST_REDUCTION = ATTRIBUTES.register("hunger_cost_reduction",                           //
+    public static final DeferredHolder<Attribute, Attribute> HUNGER_COST_REDUCTION = ATTRIBUTES.register("hunger_cost_reduction",                           //Done
             () -> new RangedAttribute("attribute.levelup.hunger_cost_reduction", 0.0, 0.0, Integer.MAX_VALUE));
     public static final DeferredHolder<Attribute, Attribute> LEVELING_SPEED = ATTRIBUTES.register("leveling_speed",                                         //Done
             () -> new RangedAttribute("attribute.levelup.leveling_speed", 1.0, 0.0, Integer.MAX_VALUE));
-    public static final DeferredHolder<Attribute, Attribute> ITEM_DURABILITY_DAMAGE_REDUCTION = ATTRIBUTES.register("item_durability_damage_reduction",     //
-            () -> new RangedAttribute("attribute.levelup.item_durability_damage_reduction", 0.0, 0.0, 1.0));
-    public static final DeferredHolder<Attribute, Attribute> POTION_DURATION_MULTI = ATTRIBUTES.register("potion_duration_multi",                           //
-            () -> new RangedAttribute("attribute.levelup.potion_duration_multi", 0.0, 0.0, Integer.MAX_VALUE));
-    public static final DeferredHolder<Attribute, Attribute> PROJECTILE_DAMAGE = ATTRIBUTES.register("projectile_damage_increase",                           //
+    public static final DeferredHolder<Attribute, Attribute> ITEM_DURABILITY_DAMAGE_REDUCTION = ATTRIBUTES.register("item_durability_damage_reduction",     //Done
+            () -> new RangedAttribute("attribute.levelup.item_durability_damage_reduction", 0.0, 0.0, Integer.MAX_VALUE));
+    public static final DeferredHolder<Attribute, Attribute> POTION_DURATION_MULTI = ATTRIBUTES.register("potion_duration_multi",                           //Done
+            () -> new RangedAttribute("attribute.levelup.potion_duration_multi", 1.0, 0.0, Integer.MAX_VALUE));
+    public static final DeferredHolder<Attribute, Attribute> PROJECTILE_DAMAGE = ATTRIBUTES.register("projectile_damage_increase",                          //Done
             () -> new RangedAttribute("attribute.levelup.projectile_damage_increase", 0.0, 0.0, Integer.MAX_VALUE));
 
 
